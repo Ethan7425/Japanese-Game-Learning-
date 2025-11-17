@@ -418,5 +418,524 @@
       "past": "分かった",
       "te": "分かって"
     }
+  },
+
+  {
+    "dictionary": "開ける",
+    "furigana": "あける",
+    "meaning": "to open",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "開けます",
+      "tai": "開けたい",
+      "negative": "開けない",
+      "past": "開けた",
+      "te": "開けて"
+    }
+  },
+  {
+    "dictionary": "閉める",
+    "furigana": "しめる",
+    "meaning": "to close",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "閉めます",
+      "tai": "閉めたい",
+      "negative": "閉めない",
+      "past": "閉めた",
+      "te": "閉めて"
+    }
+  },
+  {
+    "dictionary": "押す",
+    "furigana": "おす",
+    "meaning": "to push",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "押します",
+      "tai": "押したい",
+      "negative": "押さない",
+      "past": "押した",
+      "te": "押して"
+    }
+  },
+  {
+    "dictionary": "引く",
+    "furigana": "ひく",
+    "meaning": "to pull",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "引きます",
+      "tai": "引きたい",
+      "negative": "引かない",
+      "past": "引いた",
+      "te": "引いて"
+    }
+  },
+  {
+    "dictionary": "洗う",
+    "furigana": "あらう",
+    "meaning": "to wash",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "洗います",
+      "tai": "洗いたい",
+      "negative": "洗わない",
+      "past": "洗った",
+      "te": "洗って"
+    }
+  },
+  {
+    "dictionary": "切る",
+    "furigana": "きる",
+    "meaning": "to cut",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "切ります",
+      "tai": "切りたい",
+      "negative": "切らない",
+      "past": "切った",
+      "te": "切って"
+    }
+  },
+  {
+    "dictionary": "貸す",
+    "furigana": "かす",
+    "meaning": "to lend",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "貸します",
+      "tai": "貸したい",
+      "negative": "貸さない",
+      "past": "貸した",
+      "te": "貸して"
+    }
+  },
+  {
+    "dictionary": "借りる",
+    "furigana": "かりる",
+    "meaning": "to borrow",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "借ります",
+      "tai": "借りたい",
+      "negative": "借りない",
+      "past": "借りた",
+      "te": "借りて"
+    }
+  },
+  {
+    "dictionary": "送る",
+    "furigana": "おくる",
+    "meaning": "to send",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "送ります",
+      "tai": "送りたい",
+      "negative": "送らない",
+      "past": "送った",
+      "te": "送って"
+    }
+  },
+  {
+    "dictionary": "返す",
+    "furigana": "かえす",
+    "meaning": "to return something",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "返します",
+      "tai": "返したい",
+      "negative": "返さない",
+      "past": "返した",
+      "te": "返して"
+    }
+  },
+  {
+    "dictionary": "遊ぶ",
+    "furigana": "あそぶ",
+    "meaning": "to play, to hang out",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "遊びます",
+      "tai": "遊びたい",
+      "negative": "遊ばない",
+      "past": "遊んだ",
+      "te": "遊んで"
+    }
+  },
+  {
+    "dictionary": "働く",
+    "furigana": "はたらく",
+    "meaning": "to work",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "働きます",
+      "tai": "働きたい",
+      "negative": "働かない",
+      "past": "働いた",
+      "te": "働いて"
+    }
+  },
+  {
+    "dictionary": "休む",
+    "furigana": "やすむ",
+    "meaning": "to rest, be absent",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "休みます",
+      "tai": "休みたい",
+      "negative": "休まない",
+      "past": "休んだ",
+      "te": "休んで"
+    }
+  },
+  {
+    "dictionary": "開く",
+    "furigana": "ひらく",
+    "meaning": "to open (objects, events)",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "開きます",
+      "tai": "開きたい",
+      "negative": "開かない",
+      "past": "開いた",
+      "te": "開いて"
+    }
+  },
+  {
+    "dictionary": "閉まる",
+    "furigana": "しまる",
+    "meaning": "to be closed",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "閉まります",
+      "tai": "閉まりたい",
+      "negative": "閉まらない",
+      "past": "閉まった",
+      "te": "閉まって"
+    }
+  },
+  {
+    "dictionary": "売る",
+    "furigana": "うる",
+    "meaning": "to sell",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "売ります",
+      "tai": "売りたい",
+      "negative": "売らない",
+      "past": "売った",
+      "te": "売って"
+    }
+  },
+  {
+    "dictionary": "乗せる",
+    "furigana": "のせる",
+    "meaning": "to put on top",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "乗せます",
+      "tai": "乗せたい",
+      "negative": "乗せない",
+      "past": "乗せた",
+      "te": "乗せて"
+    }
+  },
+  {
+    "dictionary": "消す",
+    "furigana": "けす",
+    "meaning": "to erase, turn off",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "消します",
+      "tai": "消したい",
+      "negative": "消さない",
+      "past": "消した",
+      "te": "消して"
+    }
+  },
+  {
+    "dictionary": "付ける",
+    "furigana": "つける",
+    "meaning": "to turn on",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "付けます",
+      "tai": "付けたい",
+      "negative": "付けない",
+      "past": "付けた",
+      "te": "付けて"
+    }
+  },
+  {
+    "dictionary": "止まる",
+    "furigana": "とまる",
+    "meaning": "to stop",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "止まります",
+      "tai": "止まりたい",
+      "negative": "止まらない",
+      "past": "止まった",
+      "te": "止まって"
+    }
+  },
+  {
+    "dictionary": "始まる",
+    "furigana": "はじまる",
+    "meaning": "to begin (intransitive)",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "始まります",
+      "tai": "始まりたい",
+      "negative": "始まらない",
+      "past": "始まった",
+      "te": "始まって"
+    }
+  },
+  {
+    "dictionary": "始める",
+    "furigana": "はじめる",
+    "meaning": "to start (something)",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "始めます",
+      "tai": "始めたい",
+      "negative": "始めない",
+      "past": "始めた",
+      "te": "始めて"
+    }
+  },
+  {
+    "dictionary": "終わる",
+    "furigana": "おわる",
+    "meaning": "to finish",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "終わります",
+      "tai": "終わりたい",
+      "negative": "終わらない",
+      "past": "終わった",
+      "te": "終わって"
+    }
+  },
+  {
+    "dictionary": "取る",
+    "furigana": "とる",
+    "meaning": "to take",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "取ります",
+      "tai": "取りたい",
+      "negative": "取らない",
+      "past": "取った",
+      "te": "取って"
+    }
+  },
+  {
+    "dictionary": "伝える",
+    "furigana": "つたえる",
+    "meaning": "to convey, to tell",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "伝えます",
+      "tai": "伝えたい",
+      "negative": "伝えない",
+      "past": "伝えた",
+      "te": "伝えて"
+    }
+  },
+  {
+    "dictionary": "降る",
+    "furigana": "ふる",
+    "meaning": "to fall (rain/snow)",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "降ります",
+      "tai": "降りたい",
+      "negative": "降らない",
+      "past": "降った",
+      "te": "降って"
+    }
+  },
+  {
+    "dictionary": "曲がる",
+    "furigana": "まがる",
+    "meaning": "to turn (direction)",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "曲がります",
+      "tai": "曲がりたい",
+      "negative": "曲がらない",
+      "past": "曲がった",
+      "te": "曲がって"
+    }
+  },
+  {
+    "dictionary": "渡る",
+    "furigana": "わたる",
+    "meaning": "to cross",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "渡ります",
+      "tai": "渡りたい",
+      "negative": "渡らない",
+      "past": "渡った",
+      "te": "渡って"
+    }
+  },
+  {
+    "dictionary": "頑張る",
+    "furigana": "がんばる",
+    "meaning": "to do your best",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "頑張ります",
+      "tai": "頑張りたい",
+      "negative": "頑張らない",
+      "past": "頑張った",
+      "te": "頑張って"
+    }
+  },
+  {
+    "dictionary": "急ぐ",
+    "furigana": "いそぐ",
+    "meaning": "to hurry",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "急ぎます",
+      "tai": "急ぎたい",
+      "negative": "急がない",
+      "past": "急いだ",
+      "te": "急いで"
+    }
+  },
+  {
+    "dictionary": "選ぶ",
+    "furigana": "えらぶ",
+    "meaning": "to choose",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "選びます",
+      "tai": "選びたい",
+      "negative": "選ばない",
+      "past": "選んだ",
+      "te": "選んで"
+    }
+  },
+  {
+    "dictionary": "笑う",
+    "furigana": "わらう",
+    "meaning": "to laugh, smile",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "笑います",
+      "tai": "笑いたい",
+      "negative": "笑わない",
+      "past": "笑った",
+      "te": "笑って"
+    }
+  },
+  {
+    "dictionary": "泣く",
+    "furigana": "なく",
+    "meaning": "to cry",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "泣きます",
+      "tai": "泣きたい",
+      "negative": "泣かない",
+      "past": "泣いた",
+      "te": "泣いて"
+    }
+  },
+  {
+    "dictionary": "晴れる",
+    "furigana": "はれる",
+    "meaning": "to clear up (weather)",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "晴れます",
+      "tai": "晴れたい",
+      "negative": "晴れない",
+      "past": "晴れた",
+      "te": "晴れて"
+    }
+  },
+  {
+    "dictionary": "曇る",
+    "furigana": "くもる",
+    "meaning": "to get cloudy",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "曇ります",
+      "tai": "曇りたい",
+      "negative": "曇らない",
+      "past": "曇った",
+      "te": "曇って"
+    }
+  },
+  {
+    "dictionary": "練習する",
+    "furigana": "れんしゅうする",
+    "meaning": "to practice",
+    "group": 3,
+    "level": "N5",
+    "forms": {
+      "masu": "練習します",
+      "tai": "練習したい",
+      "negative": "練習しない",
+      "past": "練習した",
+      "te": "練習して"
+    }
+  },
+  {
+    "dictionary": "勉強する",
+    "furigana": "べんきょうする",
+    "meaning": "to study",
+    "group": 3,
+    "level": "N5",
+    "forms": {
+      "masu": "勉強します",
+      "tai": "勉強したい",
+      "negative": "勉強しない",
+      "past": "勉強した",
+      "te": "勉強して"
+    }
   }
 ]

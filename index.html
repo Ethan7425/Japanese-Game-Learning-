@@ -9,43 +9,144 @@
 </head>
 <body class="dark-theme" data-page="menu">
   <div class="app-shell">
-    <header class="app-header">
-      <h1>Japanese Verb Trainer</h1>
-      <div class="header-meta">
-        <span id="current-difficulty-label">Level: N5</span>
-        <span id="highscore-label">Best Quiz: 0 / 10</span>
-        <span id="xp-label">Lv. 1 · 0/50 XP</span>
+    <header class="app-header app-header--menu">
+      <div class="header-main">
+        <h1>Japanese Verb Trainer</h1>
+        <div class="header-meta">
+          <span id="current-difficulty-label">Level: N5</span>
+          <span id="highscore-label">Best Quiz: 0 / 10</span>
+          <span id="xp-label">Lv. 1 · 0/50 XP</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="location.href='profile.html'"
+          title="Profile & stats"
+        >
+          <span class="icon-circle">
+            <span class="icon-dot"></span>
+          </span>
+          <span class="icon-label">Profile</span>
+        </button>
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="location.href='options.html'"
+          title="Options"
+        >
+          <span class="icon-circle icon-circle-gear">
+            <span class="icon-gear-spoke"></span>
+          </span>
+          <span class="icon-label">Options</span>
+        </button>
       </div>
     </header>
 
     <main>
       <section>
         <h2>Main Menu</h2>
-        <div class="menu-buttons">
-          <button class="primary-btn" onclick="location.href='study.html'">
-            Study Mode
-          </button>
-          <button class="primary-btn" onclick="location.href='quiz.html'">
-            Quick Quiz (10 questions)
-          </button>
-          <button class="primary-btn" onclick="location.href='forms.html'">
-            Form Type Game
-          </button>
-          <button class="primary-btn" onclick="location.href='groups.html'">
-            Verb Group Game
-          </button>
-          <button class="secondary-btn" onclick="location.href='endless.html'">
-            Endless Mode (3 lives)
-          </button>
-          <button class="secondary-btn" onclick="location.href='profile.html'">
-            Profile & Stats
-          </button>
-          <button class="secondary-btn" onclick="location.href='options.html'">
-            Options
-          </button>
+
+        <div class="menu-grid">
+          <article class="menu-card">
+            <div class="menu-card-header">
+              <div class="menu-card-tag">Study</div>
+            </div>
+            <h3>Study Mode</h3>
+            <p class="menu-card-text">
+              Browse verbs one by one with furigana, group and core forms. Reveal ます・ない・て・た when you're ready.
+            </p>
+            <div class="menu-card-footer">
+              <button
+                class="card-btn"
+                type="button"
+                onclick="location.href='study.html'"
+              >
+                Open
+              </button>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="menu-card-header">
+              <div class="menu-card-tag">Quiz</div>
+            </div>
+            <h3>Quick Quiz</h3>
+            <p class="menu-card-text">
+              10-question run. Same verb, same form or mixed. Track your high score and earn a chunk of XP.
+            </p>
+            <div class="menu-card-footer">
+              <button
+                class="card-btn"
+                type="button"
+                onclick="location.href='quiz.html'"
+              >
+                Play
+              </button>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="menu-card-header">
+              <div class="menu-card-tag">Endless</div>
+            </div>
+            <h3>Endless Mode</h3>
+            <p class="menu-card-text">
+              3 lives, infinite questions. Build streaks, break your records and farm XP over time.
+            </p>
+            <div class="menu-card-footer">
+              <button
+                class="card-btn"
+                type="button"
+                onclick="location.href='endless.html'"
+              >
+                Start
+              </button>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="menu-card-header">
+              <div class="menu-card-tag">Forms</div>
+            </div>
+            <h3>Form Type Game</h3>
+            <p class="menu-card-text">
+              Get a conjugated form like 書いて and choose whether it’s dictionary, polite, negative, て or た.
+            </p>
+            <div class="menu-card-footer">
+              <button
+                class="card-btn"
+                type="button"
+                onclick="location.href='forms.html'"
+              >
+                Train
+              </button>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <div class="menu-card-header">
+              <div class="menu-card-tag">Groups</div>
+            </div>
+            <h3>Verb Group Game</h3>
+            <p class="menu-card-text">
+              See a verb and guess: Group 1, Group 2 or irregular. Good for building intuition quickly.
+            </p>
+            <div class="menu-card-footer">
+              <button
+                class="card-btn"
+                type="button"
+                onclick="location.href='groups.html'"
+              >
+                Guess
+              </button>
+            </div>
+          </article>
         </div>
+
         <p class="hint">
-          Earn XP across all modes. Learn forms, recognize grammar, guess verb groups, and push your streak in Endless Mode.
+          XP and level are shared across all modes. Mix quizzes, endless runs and mini-games to grow your streak and level.
         </p>
       </section>
     </main>
