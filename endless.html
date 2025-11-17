@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Japanese Verb Trainer - Quick Quiz</title>
+  <title>Japanese Verb Trainer - Endless Mode</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="assets/icon.png" />
 </head>
-<body class="dark-theme" data-page="quiz">
+<body class="dark-theme" data-page="endless">
   <div class="app-shell">
     <header class="app-header">
       <h1>Japanese Verb Trainer</h1>
@@ -22,42 +22,43 @@
       <section>
         <div class="screen-header">
           <button class="ghost-btn" onclick="location.href='index.html'">← Main Menu</button>
-          <h2>Quick Quiz (10 questions)</h2>
+          <h2>Endless Mode</h2>
         </div>
 
         <div class="card">
-          <div id="quiz-status" class="quiz-status">
-            Question <span id="quiz-question-number">1</span> / 10 ·
-            Score: <span id="quiz-score">0</span>
+          <div class="game-status">
+            Score: <span id="endless-score">0</span> ·
+            Streak: <span id="endless-streak">0</span> ·
+            Lives: <span id="endless-lives">♥♥♥</span>
           </div>
 
           <div class="quiz-question">
-            <div id="quiz-verb-furigana" class="verb-furigana">
+            <div id="endless-verb-furigana" class="verb-furigana">
               <!-- Furigana -->
             </div>
-            <p id="quiz-question-text" class="quiz-text">
+            <p id="endless-question-text" class="quiz-text">
               <!-- Question text -->
             </p>
           </div>
 
-          <div id="quiz-answers" class="quiz-answers">
-            <!-- Answer buttons injected here -->
+          <div id="endless-answers" class="quiz-answers">
+            <!-- buttons -->
           </div>
 
-          <div id="quiz-feedback" class="quiz-feedback"></div>
+          <div id="endless-feedback" class="quiz-feedback"></div>
 
           <div class="card-footer">
-            <button id="quiz-next-btn" class="primary-btn" disabled>
-              Next Question
+            <button id="endless-next-btn" class="primary-btn" disabled>
+              Next
             </button>
           </div>
         </div>
 
-        <div id="quiz-summary" class="quiz-summary" hidden>
-          <h3>Quiz Finished!</h3>
-          <p id="quiz-summary-text"></p>
-          <p id="quiz-summary-xp" class="hint"></p>
-          <button id="quiz-restart-btn" class="secondary-btn">Play Again</button>
+        <div id="endless-summary" class="quiz-summary" hidden>
+          <h3>Game Over</h3>
+          <p id="endless-summary-text"></p>
+          <p id="endless-summary-xp" class="hint"></p>
+          <button id="endless-restart-btn" class="secondary-btn">Play Again</button>
         </div>
       </section>
     </main>

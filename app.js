@@ -1,14 +1,32 @@
 // =====================================
 // Japanese Verb Trainer - app.js
-// Multi-page version with quiz modes
+// Multi-page + quiz modes + XP + stats + profile
 // =====================================
 
 let allVerbs = [];
+
+// Global settings stored in localStorage
 let settings = {
   darkMode: true,
-  difficulty: "N5",
-  quizMode: "sameVerb" // "sameVerb" or "sameForm"
+  difficulty: "N5",      // N5 or N4
+  quizMode: "sameVerb",  // "sameVerb" | "sameForm" | "mixed"
+  xp: 0                  // total XP across the whole site
 };
+
+// Stats stored separately
+let stats = {
+  quizGames: 0,
+  quizBestScore: 0,
+
+  endlessGames: 0,
+  endlessBestScore: 0,
+  endlessBestStreak: 0,
+
+  recognitionCorrect: 0,
+  groupCorrect: 0
+};
+
+// Quick Quiz state (10 questions)
 let quizState = {
   currentQuestion: 0,
   totalQuestions: 10,
@@ -18,9 +36,32 @@ let quizState = {
   answered: false
 };
 
+// Endless Mode state
+let endlessState = {
+  score: 0,
+  streak: 0,
+  maxStreak: 0,
+  lives: 3,
+  currentVerb: null,
+  currentFormKey: null,
+  answered: false
+};
+
+// Form recognition game state
+let recognitionState = {
+  currentVerb: null,
+  currentFormKey: null
+};
+
+// Group game state
+let groupState = {
+  currentVerb: null
+};
+
 const STORAGE_KEYS = {
   SETTINGS: "jvt_settings",
-  HIGHSCORE: "jvt_quiz_highscore"
+  HIGHSCORE: "jvt_quiz_highscore",
+  STATS: "jvt_stats"
 };
 
 const FORM_CONFIG = {
@@ -30,10 +71,18 @@ const FORM_CONFIG = {
   past: "た form"
 };
 
+const FORM_LABELS = {
+  dictionary: "Dictionary",
+  masu: "Polite (〜ます)",
+  negative: "Negative (〜ない)",
+  te: "Te-form (〜て)",
+  past: "Past (〜た)"
+};
+
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
-/** Furigana renderer */
+/** Furigana renderer: <ruby>食べる<rt>たべる</rt></ruby> */
 function renderFurigana(kanji, reading) {
   const ruby = document.createElement("ruby");
   const rt = document.createElement("rt");
@@ -43,20 +92,26 @@ function renderFurigana(kanji, reading) {
   return ruby;
 }
 
-/** Settings / localStorage */
+/** Settings / stats / localStorage */
+
 function loadSettingsFromStorage() {
   const raw = localStorage.getItem(STORAGE_KEYS.SETTINGS);
   if (!raw) return;
   try {
     const parsed = JSON.parse(raw);
-    if (typeof parsed.darkMode === "boolean") {
-      settings.darkMode = parsed.darkMode;
-    }
+    if (typeof parsed.darkMode === "boolean") settings.darkMode = parsed.darkMode;
     if (parsed.difficulty === "N4" || parsed.difficulty === "N5") {
       settings.difficulty = parsed.difficulty;
     }
-    if (parsed.quizMode === "sameVerb" || parsed.quizMode === "sameForm") {
+    if (
+      parsed.quizMode === "sameVerb" ||
+      parsed.quizMode === "sameForm" ||
+      parsed.quizMode === "mixed"
+    ) {
       settings.quizMode = parsed.quizMode;
+    }
+    if (typeof parsed.xp === "number" && parsed.xp >= 0) {
+      settings.xp = parsed.xp;
     }
   } catch (e) {
     console.warn("Failed to parse settings:", e);
@@ -65,6 +120,41 @@ function loadSettingsFromStorage() {
 
 function saveSettingsToStorage() {
   localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+}
+
+function loadStatsFromStorage() {
+  const raw = localStorage.getItem(STORAGE_KEYS.STATS);
+  if (!raw) return;
+  try {
+    const parsed = JSON.parse(raw);
+    stats.quizGames = Number.isFinite(parsed.quizGames) ? parsed.quizGames : 0;
+    stats.quizBestScore = Number.isFinite(parsed.quizBestScore)
+      ? parsed.quizBestScore
+      : 0;
+
+    stats.endlessGames = Number.isFinite(parsed.endlessGames)
+      ? parsed.endlessGames
+      : 0;
+    stats.endlessBestScore = Number.isFinite(parsed.endlessBestScore)
+      ? parsed.endlessBestScore
+      : 0;
+    stats.endlessBestStreak = Number.isFinite(parsed.endlessBestStreak)
+      ? parsed.endlessBestStreak
+      : 0;
+
+    stats.recognitionCorrect = Number.isFinite(parsed.recognitionCorrect)
+      ? parsed.recognitionCorrect
+      : 0;
+    stats.groupCorrect = Number.isFinite(parsed.groupCorrect)
+      ? parsed.groupCorrect
+      : 0;
+  } catch (e) {
+    console.warn("Failed to parse stats:", e);
+  }
+}
+
+function saveStatsToStorage() {
+  localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(stats));
 }
 
 function getHighScore() {
@@ -80,7 +170,8 @@ function setHighScore(score) {
   }
 }
 
-/** Theme + UI sync */
+/** Theme + XP + header meta */
+
 function applyTheme() {
   const body = document.body;
   body.classList.remove("light-theme", "dark-theme");
@@ -89,6 +180,50 @@ function applyTheme() {
   } else {
     body.classList.add("light-theme");
   }
+}
+
+/**
+ * Exponential-ish level system.
+ * Level 1 -> 50 XP to next
+ * Each level requires ~1.4x more XP than the previous.
+ */
+function getLevelInfo(xp) {
+  let level = 1;
+  let requirement = 50; // XP needed for next level at current level
+  let remaining = xp || 0;
+
+  while (remaining >= requirement) {
+    remaining -= requirement;
+    level += 1;
+    requirement = Math.floor(requirement * 1.4); // increase requirement
+  }
+
+  return {
+    level,
+    intoLevel: remaining,
+    perLevel: requirement
+  };
+}
+
+function updateXpLabel() {
+  const xp = settings.xp || 0;
+  const { level, intoLevel, perLevel } = getLevelInfo(xp);
+  const el = $("#xp-label");
+  if (el) {
+    el.textContent = `Lv. ${level} · ${intoLevel}/${perLevel} XP`;
+  }
+
+  const optionsXp = $("#options-xp-label");
+  if (optionsXp) {
+    optionsXp.textContent = String(xp);
+  }
+}
+
+function addXp(amount) {
+  if (!Number.isFinite(amount) || amount <= 0) return;
+  settings.xp = (settings.xp || 0) + amount;
+  saveSettingsToStorage();
+  updateXpLabel();
 }
 
 function syncSettingsToUI() {
@@ -112,16 +247,21 @@ function syncSettingsToUI() {
     darkToggle.checked = settings.darkMode;
   }
 
+  // Difficulty radios
   $$('input[name="difficulty"]').forEach((input) => {
     input.checked = input.value === settings.difficulty;
   });
 
+  // Quiz mode radios
   $$('input[name="quizMode"]').forEach((input) => {
     input.checked = input.value === settings.quizMode;
   });
+
+  updateXpLabel();
 }
 
 /** Verb pool by difficulty */
+
 function getCurrentVerbPool() {
   if (!allVerbs.length) return [];
   let pool = allVerbs.filter((v) => v.level === settings.difficulty);
@@ -131,7 +271,8 @@ function getCurrentVerbPool() {
   return pool;
 }
 
-/** Study mode */
+/** Study Mode */
+
 let currentStudyVerb = null;
 
 function loadRandomStudyVerb() {
@@ -174,7 +315,8 @@ function revealStudyForm(formKey) {
       if ($("#study-form-masu")) $("#study-form-masu").textContent = value;
       break;
     case "negative":
-      if ($("#study-form-negative")) $("#study-form-negative").textContent = value;
+      if ($("#study-form-negative"))
+        $("#study-form-negative").textContent = value;
       break;
     case "te":
       if ($("#study-form-te")) $("#study-form-te").textContent = value;
@@ -185,19 +327,7 @@ function revealStudyForm(formKey) {
   }
 }
 
-/** Quiz logic */
-function updateQuizStatus() {
-  const qNum = $("#quiz-question-number");
-  const scoreEl = $("#quiz-score");
-  if (qNum) {
-    qNum.textContent = String(
-      Math.min(quizState.currentQuestion + 1, quizState.totalQuestions)
-    );
-  }
-  if (scoreEl) {
-    scoreEl.textContent = String(quizState.score);
-  }
-}
+/** Utility */
 
 function shuffleArray(arr) {
   const a = arr.slice();
@@ -214,11 +344,21 @@ function pickRandomFormKey() {
   return keys[index];
 }
 
-/**
- * Same verb, different forms:
- * - All options are conjugations of the same verb
- * - Wrong answers: other forms (ます/ない/て/た) of that verb
- */
+/** Quick Quiz (10 questions) */
+
+function quizUpdateStatus() {
+  const qNum = $("#quiz-question-number");
+  const scoreEl = $("#quiz-score");
+  if (qNum) {
+    qNum.textContent = String(
+      Math.min(quizState.currentQuestion + 1, quizState.totalQuestions)
+    );
+  }
+  if (scoreEl) {
+    scoreEl.textContent = String(quizState.score);
+  }
+}
+
 function generateWrongAnswersSameVerb(formKey, verb) {
   const keys = Object.keys(FORM_CONFIG).filter((k) => k !== formKey);
   const wrongs = [];
@@ -226,15 +366,9 @@ function generateWrongAnswersSameVerb(formKey, verb) {
     const candidate = verb.forms?.[k];
     if (candidate) wrongs.push(candidate);
   }
-  // We only need up to 3
   return wrongs.slice(0, 3);
 }
 
-/**
- * Same form, different verbs:
- * - All options are e.g. て-form across different verbs
- * - Wrong answers: same form key from other verbs
- */
 function generateWrongAnswersSameForm(correctValue, formKey, pool, questionVerb) {
   const wrongs = new Set();
   const shuffled = shuffleArray(pool);
@@ -247,7 +381,7 @@ function generateWrongAnswersSameForm(correctValue, formKey, pool, questionVerb)
     if (wrongs.size >= 3) break;
   }
 
-  // Fallback: if not enough, fill from other forms of the same verb
+  // Fallback: fill with other forms of the same verb
   if (wrongs.size < 3 && questionVerb && questionVerb.forms) {
     for (const key of Object.keys(FORM_CONFIG)) {
       if (key === formKey) continue;
@@ -262,7 +396,15 @@ function generateWrongAnswersSameForm(correctValue, formKey, pool, questionVerb)
   return Array.from(wrongs).slice(0, 3);
 }
 
-function loadNextQuestion() {
+function chooseQuizModeForQuestion() {
+  let mode = settings.quizMode;
+  if (mode === "mixed") {
+    mode = Math.random() < 0.5 ? "sameVerb" : "sameForm";
+  }
+  return mode;
+}
+
+function quizLoadNextQuestion() {
   if (!$("#quiz-answers")) return; // not on quiz page
 
   const feedbackEl = $("#quiz-feedback");
@@ -270,7 +412,7 @@ function loadNextQuestion() {
   const nextBtn = $("#quiz-next-btn");
 
   if (quizState.currentQuestion >= quizState.totalQuestions) {
-    endQuiz();
+    quizEnd();
     return;
   }
 
@@ -300,11 +442,10 @@ function loadNextQuestion() {
   const correctAnswer = verb.forms[formKey];
 
   let wrongAnswers;
-  if (settings.quizMode === "sameForm") {
-    // Same form, different verbs
+  const mode = chooseQuizModeForQuestion();
+  if (mode === "sameForm") {
     wrongAnswers = generateWrongAnswersSameForm(correctAnswer, formKey, pool, verb);
   } else {
-    // Same verb, different forms (default)
     wrongAnswers = generateWrongAnswersSameVerb(formKey, verb);
   }
 
@@ -315,7 +456,7 @@ function loadNextQuestion() {
     const btn = document.createElement("button");
     btn.className = "quiz-answer-btn";
     btn.textContent = value;
-    btn.addEventListener("click", () => handleQuizAnswer(btn, correctAnswer));
+    btn.addEventListener("click", () => quizHandleAnswer(btn, correctAnswer));
     answersContainer.appendChild(btn);
   });
 
@@ -325,10 +466,10 @@ function loadNextQuestion() {
   }
   if (nextBtn) nextBtn.disabled = true;
 
-  updateQuizStatus();
+  quizUpdateStatus();
 }
 
-function handleQuizAnswer(button, correctAnswer) {
+function quizHandleAnswer(button, correctAnswer) {
   if (quizState.answered) return;
   quizState.answered = true;
 
@@ -361,10 +502,10 @@ function handleQuizAnswer(button, correctAnswer) {
 
   if (nextBtn) nextBtn.disabled = false;
   quizState.currentQuestion += 1;
-  updateQuizStatus();
+  quizUpdateStatus();
 }
 
-function startNewQuiz() {
+function quizStartNew() {
   quizState.currentQuestion = 0;
   quizState.score = 0;
   quizState.answered = false;
@@ -380,23 +521,465 @@ function startNewQuiz() {
   }
   if (nextBtn) nextBtn.disabled = true;
 
-  updateQuizStatus();
-  loadNextQuestion();
+  quizUpdateStatus();
+  quizLoadNextQuestion();
 }
 
-function endQuiz() {
+function quizEnd() {
   setHighScore(quizState.score);
+
+  // Update stats
+  stats.quizGames += 1;
+  if (quizState.score > stats.quizBestScore) {
+    stats.quizBestScore = quizState.score;
+  }
+  saveStatsToStorage();
+
+  // XP only at the end, based on score
+  const xpGain = quizState.score * 8; // e.g. 8 XP per correct (max 80)
+  addXp(xpGain);
+
   syncSettingsToUI();
 
   const summaryEl = $("#quiz-summary");
   const summaryTextEl = $("#quiz-summary-text");
+  const summaryXpEl = $("#quiz-summary-xp");
   if (summaryTextEl) {
     summaryTextEl.textContent = `You scored ${quizState.score} / ${quizState.totalQuestions}.`;
+  }
+  if (summaryXpEl) {
+    summaryXpEl.textContent = `You gained ${xpGain} XP.`;
   }
   if (summaryEl) summaryEl.hidden = false;
 }
 
-/** Page-specific setup */
+/** Endless Mode */
+
+function endlessUpdateStatus() {
+  const scoreEl = $("#endless-score");
+  const streakEl = $("#endless-streak");
+  const livesEl = $("#endless-lives");
+  if (scoreEl) scoreEl.textContent = String(endlessState.score);
+  if (streakEl) streakEl.textContent = String(endlessState.streak);
+  if (livesEl) {
+    const fullHearts = "♥".repeat(Math.max(0, endlessState.lives));
+    const emptyHearts = "♡".repeat(Math.max(0, 3 - endlessState.lives));
+    livesEl.textContent = fullHearts + emptyHearts;
+  }
+}
+
+function endlessLoadNext() {
+  if (!$("#endless-answers")) return; // not on endless page
+
+  if (endlessState.lives <= 0) {
+    endlessEnd();
+    return;
+  }
+
+  const feedbackEl = $("#endless-feedback");
+  const answersContainer = $("#endless-answers");
+  const nextBtn = $("#endless-next-btn");
+
+  const pool = getCurrentVerbPool();
+  if (!pool.length) return;
+
+  const verb = pool[Math.floor(Math.random() * pool.length)];
+  const formKey = pickRandomFormKey();
+
+  endlessState.currentVerb = verb;
+  endlessState.currentFormKey = formKey;
+  endlessState.answered = false;
+
+  const furiganaContainer = $("#endless-verb-furigana");
+  if (furiganaContainer) {
+    furiganaContainer.innerHTML = "";
+    furiganaContainer.appendChild(
+      renderFurigana(verb.dictionary, verb.furigana)
+    );
+  }
+
+  const questionText = $("#endless-question-text");
+  if (questionText) {
+    questionText.textContent = `Which option is the ${FORM_CONFIG[formKey]} for this verb?`;
+  }
+
+  const correctAnswer = verb.forms[formKey];
+
+  let wrongAnswers;
+  const mode = chooseQuizModeForQuestion();
+  if (mode === "sameForm") {
+    wrongAnswers = generateWrongAnswersSameForm(correctAnswer, formKey, pool, verb);
+  } else {
+    wrongAnswers = generateWrongAnswersSameVerb(formKey, verb);
+  }
+
+  const allAnswers = shuffleArray([correctAnswer, ...wrongAnswers]);
+
+  answersContainer.innerHTML = "";
+  allAnswers.forEach((value) => {
+    const btn = document.createElement("button");
+    btn.className = "quiz-answer-btn";
+    btn.textContent = value;
+    btn.addEventListener("click", () =>
+      endlessHandleAnswer(btn, correctAnswer)
+    );
+    answersContainer.appendChild(btn);
+  });
+
+  if (feedbackEl) {
+    feedbackEl.textContent = "";
+    feedbackEl.className = "quiz-feedback";
+  }
+  if (nextBtn) nextBtn.disabled = true;
+
+  endlessUpdateStatus();
+}
+
+function endlessHandleAnswer(button, correctAnswer) {
+  if (endlessState.answered) return;
+  endlessState.answered = true;
+
+  const isCorrect = button.textContent === correctAnswer;
+  const feedbackEl = $("#endless-feedback");
+  const nextBtn = $("#endless-next-btn");
+
+  $$("#endless-answers .quiz-answer-btn").forEach((btn) => {
+    btn.disabled = true;
+    if (btn.textContent === correctAnswer) {
+      btn.classList.add("correct");
+    }
+  });
+
+  if (isCorrect) {
+    endlessState.score += 1;
+    endlessState.streak += 1;
+    endlessState.maxStreak = Math.max(endlessState.maxStreak, endlessState.streak);
+    if (feedbackEl) {
+      feedbackEl.textContent = "Correct! ✅";
+      feedbackEl.className = "quiz-feedback correct";
+    }
+  } else {
+    button.classList.add("wrong");
+    endlessState.lives -= 1;
+    endlessState.streak = 0;
+    if (feedbackEl) {
+      feedbackEl.textContent = `Incorrect. Correct answer: ${correctAnswer}`;
+      feedbackEl.className = "quiz-feedback wrong";
+    }
+  }
+
+  endlessUpdateStatus();
+
+  if (endlessState.lives <= 0) {
+    endlessEnd();
+    return;
+  }
+
+  if (nextBtn) nextBtn.disabled = false;
+}
+
+function endlessStart() {
+  endlessState.score = 0;
+  endlessState.streak = 0;
+  endlessState.maxStreak = 0;
+  endlessState.lives = 3;
+  endlessState.answered = false;
+
+  const summaryEl = $("#endless-summary");
+  const feedbackEl = $("#endless-feedback");
+  const nextBtn = $("#endless-next-btn");
+
+  if (summaryEl) summaryEl.hidden = true;
+  if (feedbackEl) {
+    feedbackEl.textContent = "";
+    feedbackEl.className = "quiz-feedback";
+  }
+  if (nextBtn) nextBtn.disabled = true;
+
+  endlessUpdateStatus();
+  endlessLoadNext();
+}
+
+function endlessEnd() {
+  const summaryEl = $("#endless-summary");
+  const summaryTextEl = $("#endless-summary-text");
+  const summaryXpEl = $("#endless-summary-xp");
+
+  // Update stats
+  stats.endlessGames += 1;
+  if (endlessState.score > stats.endlessBestScore) {
+    stats.endlessBestScore = endlessState.score;
+  }
+  if (endlessState.maxStreak > stats.endlessBestStreak) {
+    stats.endlessBestStreak = endlessState.maxStreak;
+  }
+  saveStatsToStorage();
+
+  // XP for Endless at end:
+  // e.g. 5 XP per point + 2 XP per max streak
+  const xpGain = endlessState.score * 5 + endlessState.maxStreak * 2;
+  addXp(xpGain);
+
+  if (summaryTextEl) {
+    summaryTextEl.textContent = `Final score: ${endlessState.score} · Longest streak: ${endlessState.maxStreak}`;
+  }
+  if (summaryXpEl) {
+    summaryXpEl.textContent = `You gained ${xpGain} XP.`;
+  }
+  if (summaryEl) summaryEl.hidden = false;
+}
+
+/** Form Type Recognition Game */
+
+function recognitionStartRound() {
+  const pool = getCurrentVerbPool();
+  if (!pool.length || !$("#recog-form-text")) return;
+
+  const verb = pool[Math.floor(Math.random() * pool.length)];
+
+  // Pick one of dictionary/masu/negative/te/past
+  const formKeys = ["dictionary", ...Object.keys(FORM_CONFIG)];
+  const formKey = formKeys[Math.floor(Math.random() * formKeys.length)];
+
+  recognitionState.currentVerb = verb;
+  recognitionState.currentFormKey = formKey;
+
+  // Dictionary with furigana as context
+  const furiganaContainer = $("#recog-verb-furigana");
+  if (furiganaContainer) {
+    furiganaContainer.innerHTML = "";
+    furiganaContainer.appendChild(
+      renderFurigana(verb.dictionary, verb.furigana)
+    );
+  }
+
+  // Text of the form shown as the "mystery" form
+  const formTextEl = $("#recog-form-text");
+  let displayValue;
+  if (formKey === "dictionary") {
+    displayValue = verb.dictionary;
+  } else {
+    displayValue = verb.forms?.[formKey] || "???";
+  }
+  formTextEl.textContent = displayValue;
+
+  // Reset options UI
+  $$(".recog-option-btn").forEach((btn) => {
+    btn.disabled = false;
+    btn.classList.remove("correct", "wrong");
+  });
+
+  const feedbackEl = $("#recog-feedback");
+  if (feedbackEl) {
+    feedbackEl.textContent = "";
+    feedbackEl.className = "quiz-feedback";
+  }
+}
+
+function recognitionHandleAnswer(button, chosenKey) {
+  const correctKey = recognitionState.currentFormKey;
+  if (!correctKey) return;
+
+  $$(".recog-option-btn").forEach((btn) => {
+    btn.disabled = true;
+    if (btn.dataset.formkey === correctKey) {
+      btn.classList.add("correct");
+    }
+  });
+
+  const feedbackEl = $("#recog-feedback");
+  const isCorrect = chosenKey === correctKey;
+  if (isCorrect) {
+    // Small XP per correct (infinite game)
+    addXp(2);
+    stats.recognitionCorrect += 1;
+    saveStatsToStorage();
+    if (feedbackEl) {
+      feedbackEl.textContent = "Nice! ✅ (+2 XP)";
+      feedbackEl.className = "quiz-feedback correct";
+    }
+  } else {
+    button.classList.add("wrong");
+    if (feedbackEl) {
+      feedbackEl.textContent = `Not quite. Correct answer: ${FORM_LABELS[correctKey]}`;
+      feedbackEl.className = "quiz-feedback wrong";
+    }
+  }
+}
+
+/** Verb Group Game */
+
+function groupStartRound() {
+  const pool = getCurrentVerbPool();
+  if (!pool.length || !$("#group-verb-furigana")) return;
+
+  const verb = pool[Math.floor(Math.random() * pool.length)];
+  groupState.currentVerb = verb;
+
+  const furiganaContainer = $("#group-verb-furigana");
+  if (furiganaContainer) {
+    furiganaContainer.innerHTML = "";
+    furiganaContainer.appendChild(
+      renderFurigana(verb.dictionary, verb.furigana)
+    );
+  }
+
+  const meaningEl = $("#group-verb-meaning");
+  if (meaningEl) {
+    meaningEl.textContent = `Meaning: ${verb.meaning}`;
+  }
+
+  $$(".group-option-btn").forEach((btn) => {
+    btn.disabled = false;
+    btn.classList.remove("correct", "wrong");
+  });
+
+  const feedbackEl = $("#group-feedback");
+  if (feedbackEl) {
+    feedbackEl.textContent = "";
+    feedbackEl.className = "quiz-feedback";
+  }
+}
+
+function groupHandleAnswer(button, chosenGroupStr) {
+  const verb = groupState.currentVerb;
+  if (!verb) return;
+
+  const chosen = parseInt(chosenGroupStr, 10);
+  const correct = verb.group;
+
+  $$(".group-option-btn").forEach((btn) => {
+    btn.disabled = true;
+    if (parseInt(btn.dataset.group, 10) === correct) {
+      btn.classList.add("correct");
+    }
+  });
+
+  const feedbackEl = $("#group-feedback");
+  if (chosen === correct) {
+    // Small XP per correct (also infinite)
+    addXp(3);
+    stats.groupCorrect += 1;
+    saveStatsToStorage();
+    if (feedbackEl) {
+      feedbackEl.textContent = "Correct! ✅ (+3 XP)";
+      feedbackEl.className = "quiz-feedback correct";
+    }
+  } else {
+    button.classList.add("wrong");
+    if (feedbackEl) {
+      feedbackEl.textContent = `Incorrect. This verb is Group ${correct}.`;
+      feedbackEl.className = "quiz-feedback wrong";
+    }
+  }
+}
+
+/** Profile Page */
+
+function syncStatsToProfile() {
+  const xp = settings.xp || 0;
+  const { level } = getLevelInfo(xp);
+
+  const levelEl = $("#profile-level");
+  if (levelEl) {
+    levelEl.textContent = `Lv. ${level}`;
+  }
+
+  const xpEl = $("#profile-total-xp");
+  if (xpEl) {
+    xpEl.textContent = String(xp);
+  }
+
+  const quizGamesEl = $("#profile-quiz-games");
+  if (quizGamesEl) {
+    quizGamesEl.textContent = String(stats.quizGames);
+  }
+
+  const quizBestEl = $("#profile-quiz-best");
+  if (quizBestEl) {
+    quizBestEl.textContent = `${stats.quizBestScore} / 10`;
+  }
+
+  const endlessGamesEl = $("#profile-endless-games");
+  if (endlessGamesEl) {
+    endlessGamesEl.textContent = String(stats.endlessGames);
+  }
+
+  const endlessBestScoreEl = $("#profile-endless-best-score");
+  if (endlessBestScoreEl) {
+    endlessBestScoreEl.textContent = String(stats.endlessBestScore);
+  }
+
+  const endlessBestStreakEl = $("#profile-endless-best-streak");
+  if (endlessBestStreakEl) {
+    endlessBestStreakEl.textContent = String(stats.endlessBestStreak);
+  }
+
+  const recogCorrectEl = $("#profile-recog-correct");
+  if (recogCorrectEl) {
+    recogCorrectEl.textContent = String(stats.recognitionCorrect);
+  }
+
+  const groupCorrectEl = $("#profile-group-correct");
+  if (groupCorrectEl) {
+    groupCorrectEl.textContent = String(stats.groupCorrect);
+  }
+}
+
+function buildShareCardText() {
+  const xp = settings.xp || 0;
+  const { level } = getLevelInfo(xp);
+
+  const lines = [];
+  lines.push("╔══════════════════════════════╗");
+  lines.push("║  Japanese Verb Trainer Card  ║");
+  lines.push("╚══════════════════════════════╝");
+  lines.push("");
+  lines.push(`Level: ${level}`);
+  lines.push(`XP: ${xp}`);
+  lines.push("");
+  lines.push("Quick Quiz:");
+  lines.push(`  Best Score: ${stats.quizBestScore} / 10`);
+  lines.push(`  Games Played: ${stats.quizGames}`);
+  lines.push("");
+  lines.push("Endless Mode:");
+  lines.push(`  Best Score: ${stats.endlessBestScore}`);
+  lines.push(`  Best Streak: ${stats.endlessBestStreak}`);
+  lines.push(`  Games Played: ${stats.endlessGames}`);
+  lines.push("");
+  lines.push("Mini Games:");
+  lines.push(`  Form Game Correct: ${stats.recognitionCorrect}`);
+  lines.push(`  Group Game Correct: ${stats.groupCorrect}`);
+  lines.push("");
+  lines.push("Share your card and compare progress!");
+
+  return lines.join("\n");
+}
+
+function initProfilePage() {
+  syncStatsToProfile();
+
+  const shareBtn = $("#profile-share-btn");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", () => {
+      const text = buildShareCardText();
+      const out = $("#profile-share-output");
+      if (out) {
+        out.value = text;
+        out.focus();
+        out.select();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {
+          // ignore failure, user can copy manually
+        });
+      }
+    });
+  }
+}
+
+/** Page-specific init */
+
 function initStudyPage() {
   $$(".study-form-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -416,19 +999,19 @@ function initStudyPage() {
 function initQuizPage() {
   const nextQuestionBtn = $("#quiz-next-btn");
   if (nextQuestionBtn) {
-    nextQuestionBtn.addEventListener("click", loadNextQuestion);
+    nextQuestionBtn.addEventListener("click", quizLoadNextQuestion);
   }
 
   const restartBtn = $("#quiz-restart-btn");
   if (restartBtn) {
     restartBtn.addEventListener("click", () => {
-      startNewQuiz();
+      quizStartNew();
       const summaryEl = $("#quiz-summary");
       if (summaryEl) summaryEl.hidden = true;
     });
   }
 
-  startNewQuiz();
+  quizStartNew();
 }
 
 function initOptionsPage() {
@@ -465,7 +1048,7 @@ function initOptionsPage() {
     resetBtn.addEventListener("click", () => {
       if (
         !confirm(
-          "This will reset your settings and quiz high score stored in localStorage. Continue?"
+          "This will reset your settings, XP, stats and quiz high score stored in localStorage. Continue?"
         )
       ) {
         return;
@@ -473,8 +1056,23 @@ function initOptionsPage() {
 
       localStorage.removeItem(STORAGE_KEYS.SETTINGS);
       localStorage.removeItem(STORAGE_KEYS.HIGHSCORE);
+      localStorage.removeItem(STORAGE_KEYS.STATS);
 
-      settings = { darkMode: true, difficulty: "N5", quizMode: "sameVerb" };
+      settings = {
+        darkMode: true,
+        difficulty: "N5",
+        quizMode: "sameVerb",
+        xp: 0
+      };
+      stats = {
+        quizGames: 0,
+        quizBestScore: 0,
+        endlessGames: 0,
+        endlessBestScore: 0,
+        endlessBestStreak: 0,
+        recognitionCorrect: 0,
+        groupCorrect: 0
+      };
       applyTheme();
       syncSettingsToUI();
     });
@@ -483,7 +1081,58 @@ function initOptionsPage() {
   syncSettingsToUI();
 }
 
+function initRecognitionPage() {
+  $$(".recog-option-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.getAttribute("data-formkey");
+      recognitionHandleAnswer(btn, key);
+    });
+  });
+
+  const nextBtn = $("#recog-next-btn");
+  if (nextBtn) {
+    nextBtn.addEventListener("click", recognitionStartRound);
+  }
+
+  recognitionStartRound();
+}
+
+function initGroupPage() {
+  $$(".group-option-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const group = btn.getAttribute("data-group");
+      groupHandleAnswer(btn, group);
+    });
+  });
+
+  const nextBtn = $("#group-next-btn");
+  if (nextBtn) {
+    nextBtn.addEventListener("click", groupStartRound);
+  }
+
+  groupStartRound();
+}
+
+function initEndlessPage() {
+  const nextBtn = $("#endless-next-btn");
+  if (nextBtn) {
+    nextBtn.addEventListener("click", endlessLoadNext);
+  }
+
+  const restartBtn = $("#endless-restart-btn");
+  if (restartBtn) {
+    restartBtn.addEventListener("click", () => {
+      endlessStart();
+      const summaryEl = $("#endless-summary");
+      if (summaryEl) summaryEl.hidden = true;
+    });
+  }
+
+  endlessStart();
+}
+
 /** Load verbs from JSON */
+
 function loadVerbs() {
   return fetch("verbs.json")
     .then((res) => {
@@ -505,12 +1154,13 @@ function loadVerbs() {
 }
 
 /** Boot */
+
 document.addEventListener("DOMContentLoaded", async () => {
   loadSettingsFromStorage();
+  loadStatsFromStorage();
   applyTheme();
   syncSettingsToUI();
 
-  // Load verbs (needed for study + quiz; harmless for menu/options)
   await loadVerbs();
 
   const page = document.body.dataset.page;
@@ -521,8 +1171,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     initQuizPage();
   } else if (page === "options") {
     initOptionsPage();
+  } else if (page === "recognition") {
+    initRecognitionPage();
+  } else if (page === "groups") {
+    initGroupPage();
+  } else if (page === "endless") {
+    initEndlessPage();
+  } else if (page === "profile") {
+    initProfilePage();
   } else {
-    // menu: nothing special beyond header meta
+    // menu
     syncSettingsToUI();
   }
 });

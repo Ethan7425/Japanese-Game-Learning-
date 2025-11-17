@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Japanese Verb Trainer - Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="icon.png" />
+</head>
+<body class="dark-theme" data-page="profile">
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Japanese Verb Trainer</h1>
+      <div class="header-meta">
+        <span id="current-difficulty-label">Level: N5</span>
+        <span id="highscore-label">Best Quiz: 0 / 10</span>
+        <span id="xp-label">Lv. 1 · 0/50 XP</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="screen-header">
+          <button class="ghost-btn" onclick="location.href='index.html'">
+            ← Main Menu
+          </button>
+          <h2>Your Profile</h2>
+        </div>
+
+        <!-- Overview -->
+        <div class="card">
+          <h3>Overview</h3>
+          <p>
+            <span class="profile-stat-label">Level:</span>
+            <span id="profile-level">Lv. 1</span>
+          </p>
+          <p>
+            <span class="profile-stat-label">Total XP:</span>
+            <span id="profile-total-xp">0</span>
+          </p>
+          <p class="hint small">
+            XP and levels are shared across all games. Higher levels need more XP.
+          </p>
+        </div>
+
+        <!-- Quick Quiz stats -->
+        <div class="card">
+          <h3>Quick Quiz</h3>
+          <p>
+            <span class="profile-stat-label">Games played:</span>
+            <span id="profile-quiz-games">0</span>
+          </p>
+          <p>
+            <span class="profile-stat-label">Best score:</span>
+            <span id="profile-quiz-best">0 / 10</span>
+          </p>
+          <p class="hint small">
+            10-question runs. Try to beat your own record!
+          </p>
+        </div>
+
+        <!-- Endless stats -->
+        <div class="card">
+          <h3>Endless Mode</h3>
+          <p>
+            <span class="profile-stat-label">Games played:</span>
+            <span id="profile-endless-games">0</span>
+          </p>
+          <p>
+            <span class="profile-stat-label">Best score:</span>
+            <span id="profile-endless-best-score">0</span>
+          </p>
+          <p>
+            <span class="profile-stat-label">Best streak:</span>
+            <span id="profile-endless-best-streak">0</span>
+          </p>
+          <p class="hint small">
+            Survive as long as possible with 3 lives. Streaks give extra XP.
+          </p>
+        </div>
+
+        <!-- Mini game stats -->
+        <div class="card">
+          <h3>Mini Games</h3>
+          <p>
+            <span class="profile-stat-label">Form Type correct:</span>
+            <span id="profile-recog-correct">0</span>
+          </p>
+          <p>
+            <span class="profile-stat-label">Group Game correct:</span>
+            <span id="profile-group-correct">0</span>
+          </p>
+          <p class="hint small">
+            These are fast training modes; XP per correct answer is small but adds up.
+          </p>
+        </div>
+
+        <!-- Share card -->
+        <div class="card">
+          <h3>Share Your Card</h3>
+          <p class="hint small">
+            Generate a simple shareable card with your main stats.  
+            It will be copied to your clipboard (if allowed) so you can paste it to friends.
+          </p>
+          <button id="profile-share-btn" class="secondary-btn">
+            Generate & Copy Share Card
+          </button>
+          <textarea
+            id="profile-share-output"
+            class="profile-share-output"
+            readonly
+            placeholder="Your share card will appear here..."
+          ></textarea>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Runs entirely in your browser · Data stored via <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

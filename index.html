@@ -5,6 +5,7 @@
   <title>Japanese Verb Trainer - Menu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="icon.png" />
 </head>
 <body class="dark-theme" data-page="menu">
   <div class="app-shell">
@@ -13,6 +14,7 @@
       <div class="header-meta">
         <span id="current-difficulty-label">Level: N5</span>
         <span id="highscore-label">Best Quiz: 0 / 10</span>
+        <span id="xp-label">Lv. 1 · 0/50 XP</span>
       </div>
     </header>
 
@@ -20,18 +22,30 @@
       <section>
         <h2>Main Menu</h2>
         <div class="menu-buttons">
-          <button class="primary-btn menu-link" onclick="location.href='study.html'">
+          <button class="primary-btn" onclick="location.href='study.html'">
             Study Mode
           </button>
-          <button class="primary-btn menu-link" onclick="location.href='quiz.html'">
-            Quick Quiz
+          <button class="primary-btn" onclick="location.href='quiz.html'">
+            Quick Quiz (10 questions)
           </button>
-          <button class="secondary-btn menu-link" onclick="location.href='options.html'">
+          <button class="primary-btn" onclick="location.href='forms.html'">
+            Form Type Game
+          </button>
+          <button class="primary-btn" onclick="location.href='groups.html'">
+            Verb Group Game
+          </button>
+          <button class="secondary-btn" onclick="location.href='endless.html'">
+            Endless Mode (3 lives)
+          </button>
+          <button class="secondary-btn" onclick="location.href='profile.html'">
+            Profile & Stats
+          </button>
+          <button class="secondary-btn" onclick="location.href='options.html'">
             Options
           </button>
         </div>
         <p class="hint">
-          Learn Japanese verbs with furigana, a simple study mode, and a quick quiz.
+          Earn XP across all modes. Learn forms, recognize grammar, guess verb groups, and push your streak in Endless Mode.
         </p>
       </section>
     </main>
