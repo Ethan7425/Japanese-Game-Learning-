@@ -1,0 +1,422 @@
+[
+  {
+    "dictionary": "食べる",
+    "furigana": "たべる",
+    "meaning": "to eat",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "食べます",
+      "tai": "食べたい",
+      "negative": "食べない",
+      "past": "食べた",
+      "te": "食べて"
+    }
+  },
+  {
+    "dictionary": "行く",
+    "furigana": "いく",
+    "meaning": "to go",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "行きます",
+      "tai": "行きたい",
+      "negative": "行かない",
+      "past": "行った",
+      "te": "行って"
+    }
+  },
+  {
+    "dictionary": "見る",
+    "furigana": "みる",
+    "meaning": "to see, to watch",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "見ます",
+      "tai": "見たい",
+      "negative": "見ない",
+      "past": "見た",
+      "te": "見て"
+    }
+  },
+  {
+    "dictionary": "する",
+    "furigana": "する",
+    "meaning": "to do",
+    "group": 3,
+    "level": "N5",
+    "forms": {
+      "masu": "します",
+      "tai": "したい",
+      "negative": "しない",
+      "past": "した",
+      "te": "して"
+    }
+  },
+  {
+    "dictionary": "来る",
+    "furigana": "くる",
+    "meaning": "to come",
+    "group": 3,
+    "level": "N5",
+    "forms": {
+      "masu": "来ます",
+      "tai": "来たい",
+      "negative": "来ない",
+      "past": "来た",
+      "te": "来て"
+    }
+  },
+  {
+    "dictionary": "飲む",
+    "furigana": "のむ",
+    "meaning": "to drink",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "飲みます",
+      "tai": "飲みたい",
+      "negative": "飲まない",
+      "past": "飲んだ",
+      "te": "飲んで"
+    }
+  },
+  {
+    "dictionary": "読む",
+    "furigana": "よむ",
+    "meaning": "to read",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "読みます",
+      "tai": "読みたい",
+      "negative": "読まない",
+      "past": "読んだ",
+      "te": "読んで"
+    }
+  },
+  {
+    "dictionary": "書く",
+    "furigana": "かく",
+    "meaning": "to write",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "書きます",
+      "tai": "書きたい",
+      "negative": "書かない",
+      "past": "書いた",
+      "te": "書いて"
+    }
+  },
+  {
+    "dictionary": "買う",
+    "furigana": "かう",
+    "meaning": "to buy",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "買います",
+      "tai": "買いたい",
+      "negative": "買わない",
+      "past": "買った",
+      "te": "買って"
+    }
+  },
+  {
+    "dictionary": "会う",
+    "furigana": "あう",
+    "meaning": "to meet",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "会います",
+      "tai": "会いたい",
+      "negative": "会わない",
+      "past": "会った",
+      "te": "会って"
+    }
+  },
+  {
+    "dictionary": "聞く",
+    "furigana": "きく",
+    "meaning": "to listen, to ask",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "聞きます",
+      "tai": "聞きたい",
+      "negative": "聞かない",
+      "past": "聞いた",
+      "te": "聞いて"
+    }
+  },
+  {
+    "dictionary": "話す",
+    "furigana": "はなす",
+    "meaning": "to speak, to talk",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "話します",
+      "tai": "話したい",
+      "negative": "話さない",
+      "past": "話した",
+      "te": "話して"
+    }
+  },
+  {
+    "dictionary": "入る",
+    "furigana": "はいる",
+    "meaning": "to enter",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "入ります",
+      "tai": "入りたい",
+      "negative": "入らない",
+      "past": "入った",
+      "te": "入って"
+    }
+  },
+  {
+    "dictionary": "出る",
+    "furigana": "でる",
+    "meaning": "to exit, to leave",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "出ます",
+      "tai": "出たい",
+      "negative": "出ない",
+      "past": "出た",
+      "te": "出て"
+    }
+  },
+  {
+    "dictionary": "起きる",
+    "furigana": "おきる",
+    "meaning": "to wake up",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "起きます",
+      "tai": "起きたい",
+      "negative": "起きない",
+      "past": "起きた",
+      "te": "起きて"
+    }
+  },
+  {
+    "dictionary": "寝る",
+    "furigana": "ねる",
+    "meaning": "to sleep, to go to bed",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "寝ます",
+      "tai": "寝たい",
+      "negative": "寝ない",
+      "past": "寝た",
+      "te": "寝て"
+    }
+  },
+  {
+    "dictionary": "使う",
+    "furigana": "つかう",
+    "meaning": "to use",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "使います",
+      "tai": "使いたい",
+      "negative": "使わない",
+      "past": "使った",
+      "te": "使って"
+    }
+  },
+  {
+    "dictionary": "作る",
+    "furigana": "つくる",
+    "meaning": "to make, to create",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "作ります",
+      "tai": "作りたい",
+      "negative": "作らない",
+      "past": "作った",
+      "te": "作って"
+    }
+  },
+  {
+    "dictionary": "待つ",
+    "furigana": "まつ",
+    "meaning": "to wait",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "待ちます",
+      "tai": "待ちたい",
+      "negative": "待たない",
+      "past": "待った",
+      "te": "待って"
+    }
+  },
+  {
+    "dictionary": "死ぬ",
+    "furigana": "しぬ",
+    "meaning": "to die",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "死にます",
+      "tai": "死にたい",
+      "negative": "死なない",
+      "past": "死んだ",
+      "te": "死んで"
+    }
+  },
+  {
+    "dictionary": "歩く",
+    "furigana": "あるく",
+    "meaning": "to walk",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "歩きます",
+      "tai": "歩きたい",
+      "negative": "歩かない",
+      "past": "歩いた",
+      "te": "歩いて"
+    }
+  },
+  {
+    "dictionary": "走る",
+    "furigana": "はしる",
+    "meaning": "to run",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "走ります",
+      "tai": "走りたい",
+      "negative": "走らない",
+      "past": "走った",
+      "te": "走って"
+    }
+  },
+  {
+    "dictionary": "泳ぐ",
+    "furigana": "およぐ",
+    "meaning": "to swim",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "泳ぎます",
+      "tai": "泳ぎたい",
+      "negative": "泳がない",
+      "past": "泳いだ",
+      "te": "泳いで"
+    }
+  },
+  {
+    "dictionary": "立つ",
+    "furigana": "たつ",
+    "meaning": "to stand",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "立ちます",
+      "tai": "立ちたい",
+      "negative": "立たない",
+      "past": "立った",
+      "te": "立って"
+    }
+  },
+  {
+    "dictionary": "座る",
+    "furigana": "すわる",
+    "meaning": "to sit",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "座ります",
+      "tai": "座りたい",
+      "negative": "座らない",
+      "past": "座った",
+      "te": "座って"
+    }
+  },
+  {
+    "dictionary": "乗る",
+    "furigana": "のる",
+    "meaning": "to ride, to get on",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "乗ります",
+      "tai": "乗りたい",
+      "negative": "乗らない",
+      "past": "乗った",
+      "te": "乗って"
+    }
+  },
+  {
+    "dictionary": "降りる",
+    "furigana": "おりる",
+    "meaning": "to get off, to go down",
+    "group": 2,
+    "level": "N5",
+    "forms": {
+      "masu": "降ります",
+      "tai": "降りたい",
+      "negative": "降りない",
+      "past": "降りた",
+      "te": "降りて"
+    }
+  },
+  {
+    "dictionary": "歌う",
+    "furigana": "うたう",
+    "meaning": "to sing",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "歌います",
+      "tai": "歌いたい",
+      "negative": "歌わない",
+      "past": "歌った",
+      "te": "歌って"
+    }
+  },
+  {
+    "dictionary": "思う",
+    "furigana": "おもう",
+    "meaning": "to think",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "思います",
+      "tai": "思いたい",
+      "negative": "思わない",
+      "past": "思った",
+      "te": "思って"
+    }
+  },
+  {
+    "dictionary": "分かる",
+    "furigana": "わかる",
+    "meaning": "to understand",
+    "group": 1,
+    "level": "N5",
+    "forms": {
+      "masu": "分かります",
+      "tai": "分かりたい",
+      "negative": "分からない",
+      "past": "分かった",
+      "te": "分かって"
+    }
+  }
+]

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Japanese Verb Trainer - Options</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark-theme" data-page="options">
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Japanese Verb Trainer</h1>
+      <div class="header-meta">
+        <span id="current-difficulty-label">Level: N5</span>
+        <span id="highscore-label">Best Quiz: 0 / 10</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="screen-header">
+          <button class="ghost-btn" onclick="location.href='index.html'">← Main Menu</button>
+          <h2>Options</h2>
+        </div>
+
+        <!-- Appearance -->
+        <div class="card">
+          <h3>Appearance</h3>
+          <div class="option-row">
+            <label class="toggle">
+              <input type="checkbox" id="dark-mode-toggle" checked />
+              <span class="toggle-label">Dark mode</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Quiz style -->
+        <div class="card">
+          <h3>Quiz Style</h3>
+          <p class="hint small">
+            Change how answer options are generated in the Quick Quiz.
+          </p>
+          <div class="option-row">
+            <label class="pill">
+              <input type="radio" name="quizMode" value="sameVerb" checked />
+              <span>Same verb, different forms</span>
+            </label>
+          </div>
+          <p class="hint small">
+            Example for 食べる: 食べます / 食べない / 食べて / 食べた.
+            Tests if you know which form (ます・ない・て・た) matches the question.
+          </p>
+          <div class="option-row">
+            <label class="pill">
+              <input type="radio" name="quizMode" value="sameForm" />
+              <span>Same form, different verbs</span>
+            </label>
+          </div>
+          <p class="hint small">
+            Example (て-form): 食べて / 飲んで / 行って / 読んで.
+            All look legit, tests if you pick the right kanji for the verb.
+          </p>
+        </div>
+
+        <!-- Difficulty (N5 / N4) -->
+        <div class="card">
+          <h3>Difficulty</h3>
+          <p class="hint small">
+            N4 will use the same verbs until you add N4-only verbs in <code>verbs.json</code>.
+          </p>
+          <div class="option-row">
+            <label class="pill">
+              <input type="radio" name="difficulty" value="N5" checked />
+              <span>N5</span>
+            </label>
+            <label class="pill">
+              <input type="radio" name="difficulty" value="N4" />
+              <span>N4</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="card">
+          <h3>Progress</h3>
+          <p>High score: <span id="options-highscore-label">0 / 10</span></p>
+          <button id="reset-progress-btn" class="danger-btn">
+            Reset Progress (localStorage)
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Runs entirely in your browser · Data stored via <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

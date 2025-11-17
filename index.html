@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Japanese Verb Trainer - Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark-theme" data-page="menu">
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Japanese Verb Trainer</h1>
+      <div class="header-meta">
+        <span id="current-difficulty-label">Level: N5</span>
+        <span id="highscore-label">Best Quiz: 0 / 10</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <h2>Main Menu</h2>
+        <div class="menu-buttons">
+          <button class="primary-btn menu-link" onclick="location.href='study.html'">
+            Study Mode
+          </button>
+          <button class="primary-btn menu-link" onclick="location.href='quiz.html'">
+            Quick Quiz
+          </button>
+          <button class="secondary-btn menu-link" onclick="location.href='options.html'">
+            Options
+          </button>
+        </div>
+        <p class="hint">
+          Learn Japanese verbs with furigana, a simple study mode, and a quick quiz.
+        </p>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Runs entirely in your browser · Data stored via <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

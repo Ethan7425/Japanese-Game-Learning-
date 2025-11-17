@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Japanese Verb Trainer - Study Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark-theme" data-page="study">
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Japanese Verb Trainer</h1>
+      <div class="header-meta">
+        <span id="current-difficulty-label">Level: N5</span>
+        <span id="highscore-label">Best Quiz: 0 / 10</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="screen-header">
+        <button class="ghost-btn" onclick="location.href='index.html'">← Main Menu</button>
+        <h2>Study Mode</h2>
+        </div>
+
+        <div class="card">
+          <div class="verb-main">
+            <div id="study-verb-furigana" class="verb-furigana">
+              <!-- Furigana injected here -->
+            </div>
+            <div id="study-verb-info" class="verb-info">
+              <!-- Meaning + group -->
+            </div>
+          </div>
+
+          <div class="study-forms">
+            <div class="study-form-row">
+              <button class="chip-btn study-form-btn" data-form="masu">Show ます</button>
+              <span id="study-form-masu" class="study-form-value">？？？</span>
+            </div>
+            <div class="study-form-row">
+              <button class="chip-btn study-form-btn" data-form="negative">Show ない</button>
+              <span id="study-form-negative" class="study-form-value">？？？</span>
+            </div>
+            <div class="study-form-row">
+              <button class="chip-btn study-form-btn" data-form="te">Show て</button>
+              <span id="study-form-te" class="study-form-value">？？？</span>
+            </div>
+            <div class="study-form-row">
+              <button class="chip-btn study-form-btn" data-form="past">Show た</button>
+              <span id="study-form-past" class="study-form-value">？？？</span>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button id="study-next-verb" class="primary-btn">
+              New Random Verb
+            </button>
+          </div>
+        </div>
+
+        <p class="hint">
+          Tap a form button to reveal that conjugation. Use “New Random Verb” to explore more.
+        </p>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Runs entirely in your browser · Data stored via <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
