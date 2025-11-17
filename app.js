@@ -1,16 +1,16 @@
 // =====================================
 // Japanese Verb Trainer - app.js
-// Multi-page + quiz modes + XP + stats + profile
+// Multi-page + quiz modes + XP + stats + profile + themes
 // =====================================
 
 let allVerbs = [];
 
 // Global settings stored in localStorage
 let settings = {
-  darkMode: true,
-  difficulty: "N5",      // N5 or N4
-  quizMode: "sameVerb",  // "sameVerb" | "sameForm" | "mixed"
-  xp: 0                  // total XP across the whole site
+  theme: "neon-dark",      // "neon-dark" | "cool-light" | "warm-light" | "violet-dark"
+  difficulty: "N5",        // N5 or N4
+  quizMode: "sameVerb",    // "sameVerb" | "sameForm" | "mixed"
+  xp: 0                    // total XP across the whole site
 };
 
 // Stats stored separately
@@ -99,10 +99,19 @@ function loadSettingsFromStorage() {
   if (!raw) return;
   try {
     const parsed = JSON.parse(raw);
-    if (typeof parsed.darkMode === "boolean") settings.darkMode = parsed.darkMode;
+
+    // Theme (new system)
+    if (typeof parsed.theme === "string") {
+      settings.theme = parsed.theme;
+    } else if (typeof parsed.darkMode === "boolean") {
+      // Backwards compatibility with old boolean darkMode
+      settings.theme = parsed.darkMode ? "neon-dark" : "cool-light";
+    }
+
     if (parsed.difficulty === "N4" || parsed.difficulty === "N5") {
       settings.difficulty = parsed.difficulty;
     }
+
     if (
       parsed.quizMode === "sameVerb" ||
       parsed.quizMode === "sameForm" ||
@@ -110,6 +119,7 @@ function loadSettingsFromStorage() {
     ) {
       settings.quizMode = parsed.quizMode;
     }
+
     if (typeof parsed.xp === "number" && parsed.xp >= 0) {
       settings.xp = parsed.xp;
     }
@@ -174,12 +184,9 @@ function setHighScore(score) {
 
 function applyTheme() {
   const body = document.body;
-  body.classList.remove("light-theme", "dark-theme");
-  if (settings.darkMode) {
-    body.classList.add("dark-theme");
-  } else {
-    body.classList.add("light-theme");
-  }
+  body.classList.remove("light-theme", "dark-theme"); // cleanup old classes
+  const theme = settings.theme || "neon-dark";
+  body.setAttribute("data-theme", theme);
 }
 
 /**
@@ -242,10 +249,10 @@ function syncSettingsToUI() {
     highscoreOptions.textContent = `${highscore} / 10`;
   }
 
-  const darkToggle = $("#dark-mode-toggle");
-  if (darkToggle) {
-    darkToggle.checked = settings.darkMode;
-  }
+  // Theme radios
+  $$('input[name="theme"]').forEach((input) => {
+    input.checked = input.value === settings.theme;
+  });
 
   // Difficulty radios
   $$('input[name="difficulty"]').forEach((input) => {
@@ -1015,16 +1022,18 @@ function initQuizPage() {
 }
 
 function initOptionsPage() {
-  const darkToggle = $("#dark-mode-toggle");
-  if (darkToggle) {
-    darkToggle.addEventListener("change", (e) => {
-      settings.darkMode = e.target.checked;
+  // Theme radios
+  $$('input[name="theme"]').forEach((input) => {
+    input.addEventListener("change", (e) => {
+      if (!e.target.checked) return;
+      settings.theme = e.target.value;
       saveSettingsToStorage();
       applyTheme();
       syncSettingsToUI();
     });
-  }
+  });
 
+  // Difficulty radios
   $$('input[name="difficulty"]').forEach((input) => {
     input.addEventListener("change", (e) => {
       if (!e.target.checked) return;
@@ -1034,6 +1043,7 @@ function initOptionsPage() {
     });
   });
 
+  // Quiz mode radios
   $$('input[name="quizMode"]').forEach((input) => {
     input.addEventListener("change", (e) => {
       if (!e.target.checked) return;
@@ -1059,7 +1069,7 @@ function initOptionsPage() {
       localStorage.removeItem(STORAGE_KEYS.STATS);
 
       settings = {
-        darkMode: true,
+        theme: "neon-dark",
         difficulty: "N5",
         quizMode: "sameVerb",
         xp: 0
@@ -1180,7 +1190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   } else if (page === "profile") {
     initProfilePage();
   } else {
-    // menu
+    // menu or other
     syncSettingsToUI();
   }
 });

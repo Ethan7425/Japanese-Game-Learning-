@@ -5,101 +5,138 @@
   <title>Japanese Verb Trainer - Options</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="icon" type="image/png" href="icon.png" />
 </head>
-<body class="dark-theme" data-page="options">
+<body data-page="options">
   <div class="app-shell">
     <header class="app-header">
-      <h1>Japanese Verb Trainer</h1>
-      <div class="header-meta">
-        <span id="current-difficulty-label">Level: N5</span>
-        <span id="highscore-label">Best Quiz: 0 / 10</span>
-        <span id="xp-label">Lv. 1 · 0/50 XP</span>
+      <div class="header-main">
+        <h1>Japanese Verb Trainer</h1>
+        <div class="header-meta">
+          <span id="current-difficulty-label">Level: N5</span>
+          <span id="highscore-label">Best Quiz: 0 / 10</span>
+          <span id="xp-label">Lv. 1 · 0/50 XP</span>
+        </div>
       </div>
     </header>
 
     <main>
       <section>
         <div class="screen-header">
-          <button class="ghost-btn" onclick="location.href='index.html'">← Main Menu</button>
+          <button class="ghost-btn" onclick="location.href='index.html'">
+            ← Main Menu
+          </button>
           <h2>Options</h2>
         </div>
 
-        <!-- Appearance -->
+        <!-- Appearance & Theme -->
         <div class="card">
-          <h3>Appearance</h3>
-          <div class="option-row">
-            <label class="toggle">
-              <input type="checkbox" id="dark-mode-toggle" checked />
-              <span class="toggle-label">Dark mode</span>
+          <h3>Appearance & Theme</h3>
+
+          <p class="hint small">
+            Choose a theme. Two dark palettes and two light palettes that all share the same layout.
+          </p>
+
+          <div class="option-row theme-row">
+            <label class="pill">
+              <input type="radio" name="theme" value="neon-dark" />
+              <span>
+                <span class="theme-dot theme-dot--neon"></span>
+                Neon Dark
+              </span>
+            </label>
+
+            <label class="pill">
+              <input type="radio" name="theme" value="cool-light" />
+              <span>
+                <span class="theme-dot theme-dot--cool"></span>
+                Cool Light
+              </span>
+            </label>
+
+            <label class="pill">
+              <input type="radio" name="theme" value="warm-light" />
+              <span>
+                <span class="theme-dot theme-dot--warm"></span>
+                Warm Light
+              </span>
+            </label>
+
+            <label class="pill">
+              <input type="radio" name="theme" value="violet-dark" />
+              <span>
+                <span class="theme-dot theme-dot--violet"></span>
+                Violet Dark
+              </span>
             </label>
           </div>
         </div>
 
-        <!-- Quiz style -->
+        <!-- Difficulty & Quiz Style -->
         <div class="card">
-          <h3>Quiz Style (Quick & Endless)</h3>
-          <p class="hint small">
-            Change how answer options are generated in quizzes.
-          </p>
-          <div class="option-row">
-            <label class="pill">
-              <input type="radio" name="quizMode" value="sameVerb" checked />
-              <span>Same verb, different forms</span>
-            </label>
-          </div>
-          <p class="hint small">
-            Example for 食べる: 食べます / 食べない / 食べて / 食べた.
-            Tests if you know which form matches the question.
-          </p>
-          <div class="option-row">
-            <label class="pill">
-              <input type="radio" name="quizMode" value="sameForm" />
-              <span>Same form, different verbs</span>
-            </label>
-          </div>
-          <p class="hint small">
-            Example (て-form): 食べて / 飲んで / 行って / 読んで.
-            All look legit, you must pick the right kanji.
-          </p>
+          <h3>Difficulty & Quiz Style</h3>
+
+          <p class="hint small">Difficulty affects which verbs are picked from the JSON pool.</p>
 
           <div class="option-row">
+            <span class="toggle-label">Difficulty:</span>
             <label class="pill">
-                <input type="radio" name="quizMode" value="mixed" />
-                <span>Mixed (Random)</span>
-            </label>
-            </div>
-            <p class="hint small">
-            Randomly switches between the two quiz styles every question.
-            </p>
-        </div>
-
-        <!-- Difficulty (N5 / N4) -->
-        <div class="card">
-          <h3>Difficulty</h3>
-          <p class="hint small">
-            N4 will use the same verbs until you add N4-only verbs in <code>verbs.json</code>.
-          </p>
-          <div class="option-row">
-            <label class="pill">
-              <input type="radio" name="difficulty" value="N5" checked />
-              <span>N5</span>
+              <input type="radio" name="difficulty" value="N5" />
+              <span>N5 (basic)</span>
             </label>
             <label class="pill">
               <input type="radio" name="difficulty" value="N4" />
-              <span>N4</span>
+              <span>N4 (intermediate)</span>
             </label>
           </div>
+
+          <hr style="border: none; border-top: 1px dashed var(--border-subtle); margin: 12px 0;" />
+
+          <p class="hint small">Quiz style controls how wrong answers are generated:</p>
+
+          <div class="option-row">
+            <label class="pill">
+              <input type="radio" name="quizMode" value="sameVerb" />
+              <span>Same Verb (different forms)</span>
+            </label>
+          </div>
+          <div class="option-row">
+            <label class="pill">
+              <input type="radio" name="quizMode" value="sameForm" />
+              <span>Same Form (different verbs)</span>
+            </label>
+          </div>
+          <div class="option-row">
+            <label class="pill">
+              <input type="radio" name="quizMode" value="mixed" />
+              <span>Mixed (Random)</span>
+            </label>
+          </div>
+          <p class="hint small">
+            Mixed randomly swaps between the two quiz types every question for both Quick Quiz and Endless Mode.
+          </p>
         </div>
 
-        <!-- Progress -->
+        <!-- Progress & Reset -->
         <div class="card">
-          <h3>Progress</h3>
-          <p>High score (Quick Quiz): <span id="options-highscore-label">0 / 10</span></p>
-          <p>Total XP: <span id="options-xp-label">0</span></p>
-          <button id="reset-progress-btn" class="danger-btn">
-            Reset Progress (localStorage)
-          </button>
+          <h3>Progress & Reset</h3>
+          <p>
+            <span class="profile-stat-label">Best Quiz Score:</span>
+            <span id="options-highscore-label">0 / 10</span>
+          </p>
+          <p>
+            <span class="profile-stat-label">Total XP:</span>
+            <span id="options-xp-label">0</span>
+          </p>
+          <p class="hint small">
+            Progress is stored locally in your browser. You can safely close the tab and come back later.
+          </p>
+
+          <div class="card-footer">
+            <button id="reset-progress-btn" class="danger-btn" type="button">
+              Reset All Progress
+            </button>
+          </div>
         </div>
       </section>
     </main>
