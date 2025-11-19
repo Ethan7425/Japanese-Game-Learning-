@@ -54,10 +54,32 @@
   const $$ = (selector) => document.querySelectorAll(selector);
 
   // -----------------------------
+  // Motivational lines for level ups
+  // -----------------------------
+
+  const LEVEL_UP_QUOTES = [
+    "Nice! One step closer to Japanese mastery ✨",
+    "Your verbs are getting stronger 💪",
+    "Tiny reps, big progress. Keep going!",
+    "Future you says: ありがとう。",
+    "More XP, less confusion. Great job!",
+    "You’re building real muscle memory here.",
+    "Another level unlocked. Don’t stop now.",
+    "One more step on your JLPT journey.",
+    "Consistency beats intensity. Proud of you.",
+    "You’re making your future Japan trip easier already."
+  ];
+
+  function getRandomLevelQuote() {
+    const idx = Math.floor(Math.random() * LEVEL_UP_QUOTES.length);
+    return LEVEL_UP_QUOTES[idx];
+  }
+
+  // -----------------------------
   // Furigana
   // -----------------------------
 
-  /** Furigana renderer: <ruby>食べる<rt> たべる </rt></ruby> */
+  /** Furigana renderer: <ruby>食べる<rt>たべる</rt></ruby> */
   function renderFurigana(kanji, reading) {
     const ruby = document.createElement("ruby");
     const rt = document.createElement("rt");
@@ -204,11 +226,78 @@
     }
   }
 
+  // -----------------------------
+  // Level-up overlay / animation
+  // -----------------------------
+
+  function ensureLevelUpOverlay() {
+    if (document.getElementById("levelup-overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "levelup-overlay";
+    overlay.className = "levelup-overlay";
+
+    overlay.innerHTML = `
+      <div class="levelup-backdrop"></div>
+      <div class="levelup-card">
+        <div class="levelup-icon">✨</div>
+        <h2 class="levelup-title">Level Up!</h2>
+        <p id="levelup-level-text" class="levelup-level"></p>
+        <p id="levelup-quote-text" class="levelup-quote"></p>
+        <button id="levelup-close-btn" class="primary-btn levelup-close-btn">
+          Nice!
+        </button>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const close = () => {
+      overlay.classList.remove("is-visible");
+    };
+
+    const backdrop = overlay.querySelector(".levelup-backdrop");
+    const closeBtn = overlay.querySelector("#levelup-close-btn");
+
+    if (backdrop) backdrop.addEventListener("click", close);
+    if (closeBtn) closeBtn.addEventListener("click", close);
+  }
+
+  function showLevelUp(level) {
+    ensureLevelUpOverlay();
+
+    const overlay = document.getElementById("levelup-overlay");
+    if (!overlay) return;
+
+    const levelTextEl = document.getElementById("levelup-level-text");
+    const quoteTextEl = document.getElementById("levelup-quote-text");
+
+    if (levelTextEl) {
+      levelTextEl.textContent = `You reached level ${level}!`;
+    }
+    if (quoteTextEl) {
+      quoteTextEl.textContent = getRandomLevelQuote();
+    }
+
+    overlay.classList.add("is-visible");
+  }
+
   function addXp(amount) {
     if (!Number.isFinite(amount) || amount <= 0) return;
-    settings.xp = (settings.xp || 0) + amount;
+
+    const beforeXp = settings.xp || 0;
+    const beforeInfo = getLevelInfo(beforeXp);
+
+    settings.xp = beforeXp + amount;
     saveSettingsToStorage();
     updateXpLabel();
+
+    const afterInfo = getLevelInfo(settings.xp || 0);
+
+    // Level up check
+    if (afterInfo.level > beforeInfo.level) {
+      showLevelUp(afterInfo.level);
+    }
   }
 
   function syncSettingsToUI() {
@@ -305,6 +394,7 @@
   //  - waits for DOMContentLoaded
   //  - loads settings & stats
   //  - applies theme & syncs header
+  //  - creates level-up overlay
   //  - loads verbs.json
   //  - then calls initFn()
 
@@ -314,6 +404,10 @@
       loadStatsFromStorage();
       applyTheme();
       syncSettingsToUI();
+
+      // Make sure level-up overlay exists on every page
+      ensureLevelUpOverlay();
+
       await loadVerbs();
       if (typeof pageInit === "function") {
         pageInit();

@@ -947,3 +947,372 @@ body[data-theme="warm-light"] .profile-share-output {
     justify-content: flex-end;
   }
 }
+
+
+/* =======================================
+   Category Tabs / Hub (index.html)
+   ======================================= */
+
+/* Grid that holds the category cards (Verbs / Study / Mini-games / etc.) */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+/* Base card style for category buttons */
+.category-card {
+  border: 1px solid rgba(0, 224, 255, 0.35);
+  border-radius: 1.25rem;
+  padding: 0.9rem 1rem;
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  background: radial-gradient(circle at top left,
+    rgba(0, 224, 255, 0.12),
+    rgba(0, 0, 0, 0.65)
+  );
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    background 0.15s ease;
+}
+
+/* Remove default button look */
+.category-card:focus {
+  outline: none;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 224, 255, 0.7);
+}
+
+/* Active (selected) category */
+.category-card.is-active {
+  border-color: #00e0ff;
+  box-shadow: 0 0 18px rgba(0, 224, 255, 0.45);
+  transform: translateY(-2px);
+  background: radial-gradient(circle at top left,
+    rgba(0, 224, 255, 0.2),
+    rgba(0, 0, 0, 0.75)
+  );
+}
+
+/* Icon circle on the left of each category card */
+.category-icon {
+  flex: 0 0 auto;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(0, 224, 255, 0.35);
+}
+
+/* Text content inside category card */
+.category-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.category-content h3 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.category-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* Panel under the category row (where the mode cards live) */
+.category-panel {
+  margin-top: 0.5rem;
+  padding: 1.25rem 1.25rem 1.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(
+    145deg,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 40, 60, 0.7)
+  );
+  backdrop-filter: blur(12px);
+}
+
+.category-panel h2 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+
+.category-description {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Disabled “coming soon” cards */
+.menu-card--disabled {
+  opacity: 0.55;
+  filter: grayscale(0.2);
+}
+
+.menu-card--disabled .card-btn {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Small screen tweaks */
+@media (max-width: 640px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-card {
+    padding: 0.8rem 0.9rem;
+  }
+
+  .category-panel {
+    padding: 1rem 0.9rem 1.2rem;
+  }
+}
+
+/* =======================================
+   Flashcards (Better styling, centered)
+   ======================================= */
+
+.flashcard-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.flashcard {
+  width: 100%;
+  max-width: 420px;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+
+  /* Matching your "card" style from groups/forms */
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(0, 224, 255, 0.35);
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 0 18px rgba(0, 224, 255, 0.12),
+    inset 0 0 12px rgba(0, 224, 255, 0.15);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+
+  transition: transform 0.18s ease, box-shadow 0.25s ease;
+}
+
+.flashcard:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 24px rgba(0, 224, 255, 0.35),
+    inset 0 0 12px rgba(0, 224, 255, 0.25);
+}
+
+/* Labels: "Verb", "Meaning" */
+.flashcard-label {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-bottom: -0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Front (verb) */
+.flashcard-front {
+  font-size: 1.9rem;
+  line-height: 2.2rem;
+  min-height: 2.1rem;
+}
+
+/* Divider line */
+.flashcard-divider {
+  width: 70%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0.4rem 0 0.2rem;
+}
+
+/* Meaning (hidden first) */
+.flashcard-back {
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+  min-height: 1.6rem;
+
+  /* smooth transition */
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+
+/* Hint (group) */
+.flashcard-hint {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  transition: opacity 0.25s ease, filter 0.25s ease;
+  margin-top: -0.2rem;
+}
+
+/* --- Reveal System --- */
+
+.flashcard.flashcard-hidden #flashcard-back,
+.flashcard.flashcard-hidden #flashcard-hint {
+  opacity: 0;
+  filter: blur(8px);
+}
+
+.flashcard.flashcard-revealed #flashcard-back,
+.flashcard.flashcard-revealed #flashcard-hint {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Center footer button */
+.flashcard-center-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .flashcard {
+    padding: 1.2rem;
+    max-width: 90%;
+  }
+  .flashcard-front {
+    font-size: 1.6rem;
+  }
+  .flashcard-back {
+    font-size: 1.2rem;
+  }
+}
+
+/* =======================================
+   Level Up Overlay
+   ======================================= */
+
+.levelup-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 999;
+}
+
+.levelup-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.levelup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95));
+}
+
+.levelup-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  max-width: 360px;
+  width: 90%;
+  padding: 1.6rem 1.4rem 1.3rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(0, 224, 255, 0.7);
+  background: radial-gradient(circle at top left,
+    rgba(0, 224, 255, 0.25),
+    rgba(0, 0, 0, 0.9)
+  );
+  box-shadow:
+    0 0 26px rgba(0, 224, 255, 0.6),
+    0 18px 40px rgba(0, 0, 0, 0.9);
+  text-align: center;
+  color: #fff;
+  animation: levelup-pop 0.28s ease-out forwards;
+}
+
+.levelup-icon {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+}
+
+.levelup-title {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.levelup-level {
+  margin: 0.45rem 0 0.3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.levelup-quote {
+  margin: 0 0 0.9rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.levelup-close-btn {
+  min-width: 120px;
+}
+
+/* Simple pop animation */
+@keyframes levelup-pop {
+  from {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .levelup-card {
+    padding: 1.3rem 1.1rem 1.1rem;
+  }
+
+  .levelup-title {
+    font-size: 1.05rem;
+  }
+
+  .levelup-level {
+    font-size: 1rem;
+  }
+
+  .levelup-quote {
+    font-size: 0.85rem;
+  }
+}
+

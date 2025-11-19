@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Japanese Verb Trainer – Flashcards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+</head>
+
+<body class="dark-theme" data-page="flashcards">
+  <div class="app-shell">
+    <!-- Header -->
+    <header class="app-header">
+      <h1>Japanese Verb Trainer</h1>
+      <div class="header-meta">
+        <span id="current-difficulty-label">Level: N5</span>
+        <span id="xp-label">Lv. 1 · 0/50 XP</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="screen-header">
+          <button class="ghost-btn" onclick="location.href='index.html'">
+            ← Main Menu
+          </button>
+          <h2>Flashcards</h2>
+        </div>
+
+        <div class="card">
+          <div class="game-status">
+            Tap the card to reveal the meaning.
+          </div>
+
+          <div class="flashcard-wrapper">
+            <div id="flashcard-card" class="flashcard flashcard-hidden">
+              <div class="flashcard-label">Verb</div>
+              <div id="flashcard-front" class="flashcard-front"></div>
+
+              <div class="flashcard-divider"></div>
+
+              <div class="flashcard-label">Meaning</div>
+              <div id="flashcard-back" class="flashcard-back"></div>
+
+              <div id="flashcard-hint" class="flashcard-hint"></div>
+            </div>
+          </div>
+
+          <div class="card-footer flashcard-center-footer">
+            <button id="flashcard-next-btn" class="primary-btn">
+              Next Card
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Runs entirely in your browser · Data stored via <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="/js/core.js"></script>
+  <script src="/js/flashcards.js"></script>
+</body>
+</html>
