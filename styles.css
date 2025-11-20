@@ -1316,3 +1316,234 @@ body[data-theme="warm-light"] .profile-share-output {
   }
 }
 
+
+/* =======================================
+   Counting Quiz - Number + Counter bars
+   ======================================= */
+
+.count-two-columns {
+  display: flex;
+  gap: 1.25rem;
+  margin: 1rem 0 0.75rem;
+  flex-wrap: wrap;
+}
+
+.count-column {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.count-column-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+  margin-bottom: 0.35rem;
+}
+
+/* Dropzones (bars where chosen tiles appear) */
+
+.count-dropzone {
+  min-height: 3rem;
+  border-radius: 0.9rem;
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+}
+
+/* Theme-aware dropzones */
+
+body[data-theme="neon-dark"] .count-dropzone {
+  border: 1px dashed rgba(0, 224, 255, 0.55);
+  background: rgba(0, 0, 0, 0.4);
+  color: #cdeeff;
+}
+
+body[data-theme="cool-light"] .count-dropzone {
+  border: 1px dashed rgba(0, 120, 170, 0.45);
+  background: #f3fbff;
+  color: #003244;
+}
+
+body[data-theme="warm-light"] .count-dropzone {
+  border: 1px dashed rgba(210, 140, 60, 0.5);
+  background: #fff7ec;
+  color: #573400;
+}
+
+body[data-theme="violet-dark"] .count-dropzone {
+  border: 1px dashed rgba(180, 120, 255, 0.5);
+  background: rgba(10, 0, 25, 0.7);
+  color: #f6e8ff;
+}
+
+/* Chosen value inside the dropzone */
+
+.count-drop-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Banks of tiles */
+
+.count-tiles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Base tile appearance */
+
+.count-tile {
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease,
+    background 0.12s ease,
+    color 0.12s ease;
+}
+
+/* Theme-dependent tile colors */
+
+body[data-theme="neon-dark"] .count-tile {
+  background: rgba(0, 224, 255, 0.12);
+  border: 1px solid rgba(0, 224, 255, 0.55);
+  color: #eaffff;
+  box-shadow: 0 0 6px rgba(0, 224, 255, 0.28);
+}
+
+body[data-theme="neon-dark"] .count-tile:hover {
+  transform: translateY(-1px);
+  background: rgba(0, 224, 255, 0.25);
+  border-color: rgba(0, 224, 255, 0.9);
+}
+
+/* Cool Light */
+
+body[data-theme="cool-light"] .count-tile {
+  background: #e8faff;
+  border: 1px solid #b7eaff;
+  color: #003244;
+  box-shadow: 0 0 5px rgba(0, 120, 170, 0.18);
+}
+
+body[data-theme="cool-light"] .count-tile:hover {
+  transform: translateY(-1px);
+  background: #d9f3ff;
+}
+
+/* Warm Light */
+
+body[data-theme="warm-light"] .count-tile {
+  background: #fff4e8;
+  border: 1px solid #ffdfc2;
+  color: #573400;
+  box-shadow: 0 0 5px rgba(255, 150, 60, 0.18);
+}
+
+body[data-theme="warm-light"] .count-tile:hover {
+  transform: translateY(-1px);
+  background: #ffe8d1;
+}
+
+/* Violet Dark */
+
+body[data-theme="violet-dark"] .count-tile {
+  background: rgba(180, 120, 255, 0.16);
+  border: 1px solid rgba(180, 120, 255, 0.6);
+  color: #f6e8ff;
+  box-shadow: 0 0 6px rgba(180, 120, 255, 0.3);
+}
+
+body[data-theme="violet-dark"] .count-tile:hover {
+  transform: translateY(-1px);
+  background: rgba(180, 120, 255, 0.27);
+}
+
+/* Selected tile state */
+
+.count-tile.selected {
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Feedback */
+
+#count-feedback {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+/* Bigger, less cramped answer line */
+
+.count-feedback-answer {
+  margin-top: 0.6rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.count-feedback-answer ruby {
+  font-size: 1.35rem;
+}
+
+/* Counter info under the result */
+
+.count-feedback-counter {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  opacity: 0.85;
+  text-align: center;
+}
+
+/* Footer buttons */
+
+.count-footer {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* =======================================
+   Counting Quiz - Question Display
+   ======================================= */
+
+.count-question-big {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.02em;
+}
+
+/* Theme-specific colors */
+
+body[data-theme="neon-dark"] .count-question-big {
+  color: #aff8ff;
+  text-shadow: 0 0 6px rgba(0, 224, 255, 0.65);
+}
+
+body[data-theme="cool-light"] .count-question-big {
+  color: #00465e;
+}
+
+body[data-theme="warm-light"] .count-question-big {
+  color: #7a4b00;
+}
+
+body[data-theme="violet-dark"] .count-question-big {
+  color: #e6d3ff;
+  text-shadow: 0 0 6px rgba(180, 120, 255, 0.55);
+}

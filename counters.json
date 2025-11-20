@@ -1,0 +1,116 @@
+[
+  {
+    "id": "nin",
+    "counter": "人",
+    "counterReading": "にん",
+    "meaning": "people",
+    "examples": [
+      { "number": 1, "kanji": "一人", "reading": "ひとり" },
+      { "number": 2, "kanji": "二人", "reading": "ふたり" },
+      { "number": 3, "kanji": "三人", "reading": "さんにん" },
+      { "number": 4, "kanji": "四人", "reading": "よにん" },
+      { "number": 5, "kanji": "五人", "reading": "ごにん" },
+      { "number": 6, "kanji": "六人", "reading": "ろくにん" },
+      { "number": 7, "kanji": "七人", "reading": "ななにん" },
+      { "number": 8, "kanji": "八人", "reading": "はちにん" },
+      { "number": 9, "kanji": "九人", "reading": "きゅうにん" },
+      { "number": 10, "kanji": "十人", "reading": "じゅうにん" },
+      { "number": 20, "kanji": "二十人", "reading": "にじゅうにん" }
+    ]
+  },
+  {
+    "id": "hon",
+    "counter": "本",
+    "counterReading": "ほん",
+    "meaning": "long objects",
+    "examples": [
+      { "number": 1, "kanji": "一本", "reading": "いっぽん" },
+      { "number": 2, "kanji": "二本", "reading": "にほん" },
+      { "number": 3, "kanji": "三本", "reading": "さんぼん" },
+      { "number": 4, "kanji": "四本", "reading": "よんほん" },
+      { "number": 5, "kanji": "五本", "reading": "ごほん" },
+      { "number": 6, "kanji": "六本", "reading": "ろっぽん" },
+      { "number": 7, "kanji": "七本", "reading": "ななほん" },
+      { "number": 8, "kanji": "八本", "reading": "はっぽん" },
+      { "number": 9, "kanji": "九本", "reading": "きゅうほん" },
+      { "number": 10, "kanji": "十本", "reading": "じゅっぽん" },
+      { "number": 20, "kanji": "二十本", "reading": "にじゅっぽん" }
+    ]
+  },
+  {
+    "id": "mai",
+    "counter": "枚",
+    "counterReading": "まい",
+    "meaning": "flat objects",
+    "examples": [
+      { "number": 1, "kanji": "一枚", "reading": "いちまい" },
+      { "number": 2, "kanji": "二枚", "reading": "にまい" },
+      { "number": 3, "kanji": "三枚", "reading": "さんまい" },
+      { "number": 4, "kanji": "四枚", "reading": "よんまい" },
+      { "number": 5, "kanji": "五枚", "reading": "ごまい" },
+      { "number": 6, "kanji": "六枚", "reading": "ろくまい" },
+      { "number": 7, "kanji": "七枚", "reading": "ななまい" },
+      { "number": 8, "kanji": "八枚", "reading": "はちまい" },
+      { "number": 9, "kanji": "九枚", "reading": "きゅうまい" },
+      { "number": 10, "kanji": "十枚", "reading": "じゅうまい" },
+      { "number": 20, "kanji": "二十枚", "reading": "にじゅうまい" }
+    ]
+  },
+  {
+    "id": "hiki",
+    "counter": "匹",
+    "counterReading": "ひき",
+    "meaning": "small animals",
+    "examples": [
+      { "number": 1, "kanji": "一匹", "reading": "いっぴき" },
+      { "number": 2, "kanji": "二匹", "reading": "にひき" },
+      { "number": 3, "kanji": "三匹", "reading": "さんびき" },
+      { "number": 4, "kanji": "四匹", "reading": "よんひき" },
+      { "number": 5, "kanji": "五匹", "reading": "ごひき" },
+      { "number": 6, "kanji": "六匹", "reading": "ろっぴき" },
+      { "number": 7, "kanji": "七匹", "reading": "ななひき" },
+      { "number": 8, "kanji": "八匹", "reading": "はっぴき" },
+      { "number": 9, "kanji": "九匹", "reading": "きゅうひき" },
+      { "number": 10, "kanji": "十匹", "reading": "じゅっぴき" },
+      { "number": 20, "kanji": "二十匹", "reading": "にじゅっぴき" }
+    ]
+  },
+  {
+    "id": "satsu",
+    "counter": "冊",
+    "counterReading": "さつ",
+    "meaning": "books",
+    "examples": [
+      { "number": 1, "kanji": "一冊", "reading": "いっさつ" },
+      { "number": 2, "kanji": "二冊", "reading": "にさつ" },
+      { "number": 3, "kanji": "三冊", "reading": "さんさつ" },
+      { "number": 4, "kanji": "四冊", "reading": "よんさつ" },
+      { "number": 5, "kanji": "五冊", "reading": "ごさつ" },
+      { "number": 6, "kanji": "六冊", "reading": "ろくさつ" },
+      { "number": 7, "kanji": "七冊", "reading": "ななさつ" },
+      { "number": 8, "kanji": "八冊", "reading": "はっさつ" },
+      { "number": 9, "kanji": "九冊", "reading": "きゅうさつ" },
+      { "number": 10, "kanji": "十冊", "reading": "じゅっさつ" },
+      { "number": 20, "kanji": "二十冊", "reading": "にじゅっさつ" }
+    ]
+  },
+  {
+    "id": "dai",
+    "counter": "台",
+    "counterReading": "だい",
+    "meaning": "machines / vehicles",
+    "examples": [
+      { "number": 1, "kanji": "一台", "reading": "いちだい" },
+      { "number": 2, "kanji": "二台", "reading": "にだい" },
+      { "number": 3, "kanji": "三台", "reading": "さんだい" },
+      { "number": 4, "kanji": "四台", "reading": "よんだい" },
+      { "number": 5, "kanji": "五台", "reading": "ごだい" },
+      { "number": 6, "kanji": "六台", "reading": "ろくだい" },
+      { "number": 7, "kanji": "七台", "reading": "ななだい" },
+      { "number": 8, "kanji": "八台", "reading": "はちだい" },
+      { "number": 9, "kanji": "九台", "reading": "きゅうだい" },
+      { "number": 10, "kanji": "十台", "reading": "じゅうだい" },
+      { "number": 20, "kanji": "二十台", "reading": "にじゅうだい" }
+    ]
+  }
+]
