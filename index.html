@@ -61,7 +61,7 @@
             <div class="category-icon">🎮</div>
             <div class="category-content">
               <h3>Mini Games</h3>
-              <p>Quick challenges to test your intuition and form recognition.</p>
+              <p>Quick challenges to test your intuition and recognition.</p>
             </div>
           </button>
 
@@ -81,12 +81,20 @@
             </div>
           </button>
 
-          <!-- NEW CATEGORY ADDED HERE -->
           <button class="category-card" data-category="dictionary" type="button">
             <div class="category-icon">📚</div>
             <div class="category-content">
               <h3>Dictionary</h3>
               <p>Search all verbs with furigana, meanings and forms.</p>
+            </div>
+          </button>
+
+          <!-- NEW Alphabet category (last) -->
+          <button class="category-card" data-category="alphabet" type="button">
+            <div class="category-icon">🔡</div>
+            <div class="category-content">
+              <h3>Alphabet</h3>
+              <p>Practice hiragana and katakana with focused games.</p>
             </div>
           </button>
         </div>
@@ -120,7 +128,7 @@
             <article class="menu-card">
               <div class="menu-card-header"><div class="menu-card-tag">Study</div></div>
               <h3>Study Mode</h3>
-              <p class="menu-card-text">Browse verbs and reveal forms.</p>
+              <p class="menu-card-text">Browse verbs and reveal forms and meanings.</p>
               <div class="menu-card-footer">
                 <button class="card-btn" onclick="location.href='study.html'">Open</button>
               </div>
@@ -193,7 +201,7 @@
           </div>
         </section>
 
-        <!-- ✅ NEW DICTIONARY CATEGORY -->
+        <!-- DICTIONARY -->
         <section class="category-panel" data-category-panel="dictionary" hidden>
           <h2>Dictionary</h2>
           <p class="category-description">
@@ -212,6 +220,31 @@
               <div class="menu-card-footer">
                 <button class="card-btn" onclick="location.href='dictionary.html'">
                   Open
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ALPHABET (NEW) -->
+        <section class="category-panel" data-category-panel="alphabet" hidden>
+          <h2>Alphabet</h2>
+          <p class="category-description">
+            Practice hiragana and katakana through visual memory games.
+          </p>
+
+          <div class="menu-grid">
+            <article class="menu-card">
+              <div class="menu-card-header">
+                <div class="menu-card-tag">Memory</div>
+              </div>
+              <h3>Kana Flip Cards</h3>
+              <p class="menu-card-text">
+                Match kana with their romaji. Choose hiragana, katakana or a mixed deck.
+              </p>
+              <div class="menu-card-footer">
+                <button class="card-btn" onclick="location.href='kana-flip.html'">
+                  Play
                 </button>
               </div>
             </article>

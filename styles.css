@@ -1736,3 +1736,212 @@ body[data-theme="warm-light"] .dict-forms {
   color: var(--text);
   word-break: break-word;
 }
+
+/* =======================================
+   Kana Flip Cards — Improved Styling
+   ======================================= */
+
+/* --- Option Panels (Script + Difficulty) --- */
+
+.kana-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 0.9rem;
+  align-items: flex-end;
+}
+
+.kana-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.kana-option-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --------- Radio Pills --------- */
+
+.radio-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  user-select: none;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+
+.radio-pill input {
+  display: none;
+}
+
+/* DARK THEME */
+body[data-theme="neon-dark"] .radio-pill {
+  background: rgba(0, 224, 255, 0.08);
+  border: 1px solid rgba(0, 224, 255, 0.35);
+  color: #dafbff;
+}
+
+body[data-theme="neon-dark"] .radio-pill:hover {
+  background: rgba(0, 224, 255, 0.18);
+}
+
+body[data-theme="neon-dark"] .radio-pill input:checked + span,
+body[data-theme="neon-dark"] .radio-pill input:checked ~ span {
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(0, 224, 255, 0.7);
+}
+
+/* LIGHT THEMES */
+body[data-theme="cool-light"] .radio-pill,
+body[data-theme="warm-light"] .radio-pill {
+  background: #f2f8ff;
+  border: 1px solid #b7eaff;
+  color: #003244;
+}
+
+body[data-theme="cool-light"] .radio-pill:hover,
+body[data-theme="warm-light"] .radio-pill:hover {
+  background: #e4f3ff;
+}
+
+body[data-theme="cool-light"] .radio-pill input:checked + span,
+body[data-theme="warm-light"] .radio-pill input:checked + span {
+  font-weight: 700;
+  color: #002a38;
+}
+
+/* --- Difficulty Dropdown --- */
+
+#kana-difficulty {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+}
+
+.kana-option-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* =======================================
+   STATS TEXT
+   ======================================= */
+
+.kana-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-bottom: 0.8rem;
+}
+
+/* =======================================
+   KANA CARD GRID + FLIP EFFECT
+   ======================================= */
+
+.kana-grid {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: stretch;
+}
+
+/* CARD BASE */
+
+.kana-card {
+  position: relative;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.kana-card-inner {
+  position: relative;
+  width: 100%;
+  padding-top: 120%;
+  transform-style: preserve-3d;
+  transition: transform 0.28s ease;
+}
+
+/* CARD FACES */
+
+.kana-card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  backface-visibility: hidden;
+}
+
+/* FRONT (Hidden Side) */
+
+body[data-theme="neon-dark"] .kana-card-front {
+  background: rgba(0, 224, 255, 0.12);
+  border: 1px solid rgba(0, 224, 255, 0.45);
+  color: #daffff;
+}
+
+/* BACK (Revealed Content — KANA/ROMAJI) */
+
+body[data-theme="neon-dark"] .kana-card-back {
+  background: rgba(0, 224, 255, 0.25);
+  border: 1px solid rgba(0, 224, 255, 0.85);
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(0, 224, 255, 0.65);
+  transform: rotateY(180deg);
+}
+
+/* Light themes */
+
+body[data-theme="cool-light"] .kana-card-front,
+body[data-theme="warm-light"] .kana-card-front {
+  background: #eef6ff;
+  border: 1px solid #bcdfff;
+  color: #002a38;
+}
+
+body[data-theme="cool-light"] .kana-card-back,
+body[data-theme="warm-light"] .kana-card-back {
+  background: #ffffff;
+  border: 1px solid #7cc8ff;
+  color: #003244;
+  transform: rotateY(180deg);
+}
+
+/* Flip Animation */
+.kana-card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* MATCHED STATE */
+
+.kana-card.matched .kana-card-inner {
+  transform: rotateY(180deg) scale(0.93);
+  opacity: 0.6;
+}
+
+.kana-card.matched .kana-card-back {
+  box-shadow: none;
+  color: #ffffff;
+}
+
