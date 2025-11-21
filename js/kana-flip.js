@@ -27,7 +27,7 @@
   // -----------------------------
   async function loadAlphabet() {
     try {
-      const res = await fetch("alphabet.json");
+      const res = await fetch("../data/alphabet.json");
       if (!res.ok) throw new Error("Failed to load alphabet.json");
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("alphabet.json must be an array");

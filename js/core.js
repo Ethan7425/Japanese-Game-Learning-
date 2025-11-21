@@ -367,7 +367,7 @@
   // -----------------------------
 
   function loadVerbs() {
-    return fetch("verbs.json")
+    return fetch("../data/verbs.json")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load verbs.json");
         return res.json();

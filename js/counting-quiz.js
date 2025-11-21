@@ -24,7 +24,7 @@
   function loadCounters() {
     if (counterData) return Promise.resolve(counterData);
 
-    return fetch("counters.json")
+    return fetch("../data/counters.json")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load counters.json");
         return res.json();
