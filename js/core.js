@@ -366,25 +366,40 @@
   // Load verbs
   // -----------------------------
 
-  function loadVerbs() {
-    return fetch("../data/verbs.json")
-      .then((res) => {
+    function resolveDataUrl(fileName) {
+    const path = window.location.pathname;
+
+    // If HTML is inside /pages/, we need ../data/...
+    if (path.includes("/pages/")) {
+        return `../data/${fileName}`;
+    }
+
+    // If we're at the project root (index.html), just use data/...
+    return `data/${fileName}`;
+    }
+
+    function loadVerbs() {
+    const url = resolveDataUrl("verbs.json");
+
+    return fetch(url)
+        .then((res) => {
         if (!res.ok) throw new Error("Failed to load verbs.json");
         return res.json();
-      })
-      .then((data) => {
+        })
+        .then((data) => {
         if (!Array.isArray(data)) {
-          throw new Error("verbs.json must contain an array of verbs");
+            throw new Error("verbs.json must contain an array of verbs");
         }
         allVerbs = data;
-      })
-      .catch((err) => {
+        })
+        .catch((err) => {
         console.error(err);
         alert(
-          "Could not load verbs.json.\nTip: If your browser blocks fetch() for local files, try serving this folder with a simple local server (e.g. `npx serve`)."
+            "Could not load verbs.json.\nTip: If your browser blocks fetch() for local files, try serving this folder with a simple local server (e.g. `npx serve`)."
         );
-      });
-  }
+        });
+    }
+
 
   // -----------------------------
   // Bootstrap helper
