@@ -525,66 +525,101 @@ body[data-theme="warm-light"] .card-btn {
   box-shadow: 0 0 18px var(--accent-soft);
 }
 
-/* Study mode */
+/* =======================================
+   Study Mode (updated + centered + bigger)
+   ======================================= */
 
 .verb-main {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-bottom: 12px;
+  align-items: center;      /* center horizontally */
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
+/* Bigger verb with centered furigana */
 .verb-furigana {
-  font-size: 1.7rem;
-  letter-spacing: 0.05em;
+  font-size: 2.15rem;
+  letter-spacing: 0.045em;
+  text-align: center;
+  line-height: 1.3;
 }
 
 .verb-furigana.small-verb {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
+/* Furigana size */
 ruby rt {
   color: var(--accent);
-  font-size: 0.7em;
+  font-size: 1rem;
+  opacity: 0.85;
 }
 
+/* Meaning + Group */
 .verb-info {
-  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* center text */
+  justify-content: center;
+  font-size: 1.15rem;
   color: var(--text-muted);
+  gap: 4px;
+  margin-top: 6px;
 }
 
 .verb-info strong {
   color: var(--text);
+  font-weight: 600;
 }
 
+/* Meaning reveal row */
+.study-meaning-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 10px;
+}
+
+.study-meaning-value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 3.8rem;
+}
+
+/* Forms */
 .study-forms {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .study-form-row {
   display: flex;
   align-items: center;
-  gap: 10px;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .study-form-value {
-  min-height: 1.3em;
-  font-size: 1rem;
+  min-height: 1.4em;
+  font-size: 1.05rem;
   font-feature-settings: "palt" 1;
 }
 
-/* Chips / small buttons */
-
+/* Chips / reveal buttons */
 .chip-btn {
   border-radius: var(--radius-pill);
   border: 1px solid var(--accent-soft);
   background: rgba(0, 0, 0, 0.12);
   color: var(--accent);
   padding: 4px 12px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  transition: 0.15s ease background;
 }
 
 .chip-btn:hover {
@@ -595,6 +630,7 @@ body[data-theme="cool-light"] .chip-btn,
 body[data-theme="warm-light"] .chip-btn {
   background: rgba(0, 0, 0, 0.03);
 }
+
 
 /* Quiz & game shared text color */
 

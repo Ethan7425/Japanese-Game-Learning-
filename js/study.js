@@ -1,5 +1,5 @@
 // =====================================
-// Study Mode - study.js
+// Study Mode - study.js (merged flashcards)
 // =====================================
 
 (function () {
@@ -11,74 +11,81 @@
     bootstrap
   } = JVT;
 
-  let currentStudyVerb = null;
+  let currentVerb = null;
 
-  function loadRandomStudyVerb() {
+  // ----------------------
+  // Load random verb
+  // ----------------------
+  function loadRandomVerb() {
     const pool = getCurrentVerbPool();
     if (!pool.length) return;
 
-    const randomIndex = Math.floor(Math.random() * pool.length);
-    currentStudyVerb = pool[randomIndex];
+    currentVerb = pool[Math.floor(Math.random() * pool.length)];
 
-    const furiganaContainer = $("#study-verb-furigana");
-    const infoContainer = $("#study-verb-info");
+    // Insert dictionary w/ furigana
+    const furi = $("#study-verb-furigana");
+    furi.innerHTML = "";
+    furi.appendChild(renderFurigana(currentVerb.dictionary, currentVerb.furigana));
 
-    if (furiganaContainer) {
-      furiganaContainer.innerHTML = "";
-      furiganaContainer.appendChild(
-        renderFurigana(currentStudyVerb.dictionary, currentStudyVerb.furigana)
-      );
-    }
+    // Reset meaning
+    $("#study-meaning-value").textContent = "？？？";
 
-    if (infoContainer) {
-      infoContainer.innerHTML = `
-        <div><strong>Meaning:</strong> ${currentStudyVerb.meaning}</div>
-        <div><strong>Group:</strong> ${currentStudyVerb.group}</div>
-      `;
-    }
+    // Show group directly
+    $("#study-group-value").textContent = `Group: ${currentVerb.group}`;
 
-    if ($("#study-form-masu")) $("#study-form-masu").textContent = "？？？";
-    if ($("#study-form-negative")) $("#study-form-negative").textContent = "？？？";
-    if ($("#study-form-te")) $("#study-form-te").textContent = "？？？";
-    if ($("#study-form-past")) $("#study-form-past").textContent = "？？？";
+    // Reset all forms
+    $("#study-form-masu").textContent = "？？？";
+    $("#study-form-negative").textContent = "？？？";
+    $("#study-form-te").textContent = "？？？";
+    $("#study-form-past").textContent = "？？？";
   }
 
-  function revealStudyForm(formKey) {
-    if (!currentStudyVerb) return;
-    const value = currentStudyVerb.forms?.[formKey];
+  // ----------------------
+  // Reveal meaning
+  // ----------------------
+  function revealMeaning() {
+    if (!currentVerb) return;
+    $("#study-meaning-value").textContent = currentVerb.meaning;
+  }
+
+  // ----------------------
+  // Reveal specific form
+  // ----------------------
+  function revealForm(formKey) {
+    if (!currentVerb) return;
+
+    const value = currentVerb.forms?.[formKey];
     if (!value) return;
 
-    switch (formKey) {
-      case "masu":
-        if ($("#study-form-masu")) $("#study-form-masu").textContent = value;
-        break;
-      case "negative":
-        if ($("#study-form-negative"))
-          $("#study-form-negative").textContent = value;
-        break;
-      case "te":
-        if ($("#study-form-te")) $("#study-form-te").textContent = value;
-        break;
-      case "past":
-        if ($("#study-form-past")) $("#study-form-past").textContent = value;
-        break;
-    }
+    const map = {
+      masu: "study-form-masu",
+      negative: "study-form-negative",
+      te: "study-form-te",
+      past: "study-form-past"
+    };
+
+    const el = $("#" + map[formKey]);
+    if (el) el.textContent = value;
   }
 
+  // ----------------------
+  // Init
+  // ----------------------
   function initStudyPage() {
+    // Reveal meaning
+    $("#study-meaning-btn").addEventListener("click", revealMeaning);
+
+    // Reveal forms
     $$(".study-form-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const formKey = btn.getAttribute("data-form");
-        revealStudyForm(formKey);
+        revealForm(btn.dataset.form);
       });
     });
 
-    const nextVerbBtn = $("#study-next-verb");
-    if (nextVerbBtn) {
-      nextVerbBtn.addEventListener("click", loadRandomStudyVerb);
-    }
+    // New verb
+    $("#study-next-verb").addEventListener("click", loadRandomVerb);
 
-    loadRandomStudyVerb();
+    loadRandomVerb();
   }
 
   JVT.initStudyPage = initStudyPage;
