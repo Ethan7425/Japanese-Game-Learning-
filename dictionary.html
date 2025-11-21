@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Japanese Verb Trainer - Dictionary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+</head>
+<body class="dark-theme" data-page="dictionary">
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Japanese Verb Trainer</h1>
+      <div class="header-meta">
+        <span id="current-difficulty-label">Level: N5</span>
+        <span id="xp-label">Lv. 1 · 0/50 XP</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="screen-header">
+          <button class="ghost-btn" onclick="location.href='index.html'">
+            ← Main Menu
+          </button>
+          <h2>Dictionary</h2>
+        </div>
+
+        <div class="card">
+          <div class="dict-search-row">
+            <input
+              id="dict-search"
+              type="search"
+              class="input"
+              placeholder="Search by kanji, reading or English meaning..."
+              autocomplete="off"
+            />
+          </div>
+
+          <p id="dict-count" class="hint">
+            Loading verbs…
+          </p>
+
+          <div id="dict-results" class="dict-results">
+            <!-- Cards injected here -->
+          </div>
+        </div>
+
+        <p class="hint">
+          This page shows all verbs for your current difficulty.  
+          Later we can plug adjectives, counters and more into the same view.
+        </p>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Runs entirely in your browser · Data stored via
+        <code>localStorage</code></span>
+    </footer>
+  </div>
+
+  <script src="js/core.js"></script>
+  <script src="js/dictionary.js"></script>
+</body>
+</html>

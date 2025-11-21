@@ -47,13 +47,9 @@
       <section>
         <h2>Choose a category</h2>
 
-        <!-- Category "tabs" as cards -->
+        <!-- Category "tabs" -->
         <div class="category-grid">
-          <button
-            class="category-card is-active"
-            type="button"
-            data-category="verbs"
-          >
+          <button class="category-card is-active" data-category="verbs" type="button">
             <div class="category-icon">📘</div>
             <div class="category-content">
               <h3>Verbs</h3>
@@ -61,23 +57,7 @@
             </div>
           </button>
 
-          <!-- <button
-            class="category-card"
-            type="button"
-            data-category="study"
-          >
-            <div class="category-icon">📘</div>
-            <div class="category-content">
-              <h3>Study Tools</h3>
-              <p>Slower modes: study lists and flashcards for calm practice.</p>
-            </div>
-          </button> -->
-
-          <button
-            class="category-card"
-            type="button"
-            data-category="minigames"
-          >
+          <button class="category-card" data-category="minigames" type="button">
             <div class="category-icon">🎮</div>
             <div class="category-content">
               <h3>Mini Games</h3>
@@ -85,277 +65,153 @@
             </div>
           </button>
 
-          <button
-            class="category-card"
-            type="button"
-            data-category="counting"
-          >
+          <button class="category-card" data-category="counting" type="button">
             <div class="category-icon">🔢</div>
             <div class="category-content">
               <h3>Counting</h3>
-              <p>Numbers and counters practice. (Coming soon)</p>
+              <p>Numbers and counters practice.</p>
             </div>
           </button>
 
-          <button
-            class="category-card"
-            type="button"
-            data-category="adjectives"
-          >
+          <button class="category-card" data-category="adjectives" type="button">
             <div class="category-icon">✨</div>
             <div class="category-content">
               <h3>Adjectives</h3>
               <p>Adjective forms and meanings. (Coming soon)</p>
             </div>
           </button>
+
+          <!-- NEW CATEGORY ADDED HERE -->
+          <button class="category-card" data-category="dictionary" type="button">
+            <div class="category-icon">📚</div>
+            <div class="category-content">
+              <h3>Dictionary</h3>
+              <p>Search all verbs with furigana, meanings and forms.</p>
+            </div>
+          </button>
         </div>
 
-        <!-- VERBS CATEGORY PANEL -->
-        <section
-          class="category-panel"
-          data-category-panel="verbs"
-        >
+        <!-- VERBS CATEGORY -->
+        <section class="category-panel" data-category-panel="verbs">
           <h2>Verbs</h2>
           <p class="category-description">
-            Core verb training modes. Good when you want active practice.
+            Core training modes for verb conjugation and recognition.
           </p>
 
           <div class="menu-grid">
             <article class="menu-card">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Quiz</div>
-              </div>
+              <div class="menu-card-header"><div class="menu-card-tag">Quiz</div></div>
               <h3>Quick Quiz</h3>
-              <p class="menu-card-text">
-                10-question run. Same verb, same form or mixed. Track your high score.
-              </p>
+              <p class="menu-card-text">10 questions. Same verb, same form or mixed.</p>
               <div class="menu-card-footer">
-                <button
-                  class="card-btn"
-                  type="button"
-                  onclick="location.href='quiz.html'"
-                >
-                  Play
-                </button>
+                <button class="card-btn" onclick="location.href='quiz.html'">Play</button>
               </div>
             </article>
 
             <article class="menu-card">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Endless</div>
-              </div>
+              <div class="menu-card-header"><div class="menu-card-tag">Endless</div></div>
               <h3>Endless Mode</h3>
-              <p class="menu-card-text">
-                3 lives, infinite questions. Build streaks and chase your best scores.
-              </p>
+              <p class="menu-card-text">3 lives. Infinite practice. Build streaks.</p>
               <div class="menu-card-footer">
-                <button
-                  class="card-btn"
-                  type="button"
-                  onclick="location.href='endless.html'"
-                >
-                  Start
-                </button>
+                <button class="card-btn" onclick="location.href='endless.html'">Start</button>
               </div>
             </article>
 
             <article class="menu-card">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Study</div>
-              </div>
+              <div class="menu-card-header"><div class="menu-card-tag">Study</div></div>
               <h3>Study Mode</h3>
-              <p class="menu-card-text">
-                Browse verbs one by one with furigana, group and core forms. Reveal ます・ない・て・た when you're ready.
-              </p>
+              <p class="menu-card-text">Browse verbs and reveal forms.</p>
               <div class="menu-card-footer">
-                <button
-                  class="card-btn"
-                  type="button"
-                  onclick="location.href='study.html'"
-                >
-                  Open
-                </button>
+                <button class="card-btn" onclick="location.href='study.html'">Open</button>
               </div>
             </article>
 
-            <!-- <article class="menu-card">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Cards</div>
-              </div>
-              <h3>Verb Flashcards</h3>
-              <p class="menu-card-text">
-                See a verb with furigana, recall the meaning, then reveal the answer like a physical flashcard.
-              </p>
-              <div class="menu-card-footer">
-                <button
-                  class="card-btn"
-                  type="button"
-                  onclick="location.href='flashcards.html'"
-                >
-                  Practice
-                </button>
-              </div>
-            </article> -->
-
             <article class="menu-card">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Forms</div>
-              </div>
+              <div class="menu-card-header"><div class="menu-card-tag">Forms</div></div>
               <h3>Form Type Game</h3>
-              <p class="menu-card-text">
-                Get a conjugated form like 書いて and decide if it’s dictionary, polite, negative, て or た.
-              </p>
+              <p class="menu-card-text">Given 書いて → choose its form.</p>
               <div class="menu-card-footer">
-                <button
-                  class="card-btn"
-                  type="button"
-                  onclick="location.href='forms.html'"
-                >
-                  Train
-                </button>
+                <button class="card-btn" onclick="location.href='forms.html'">Train</button>
               </div>
             </article>
 
             <article class="menu-card">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Groups</div>
-              </div>
+              <div class="menu-card-header"><div class="menu-card-tag">Groups</div></div>
               <h3>Verb Group Game</h3>
-              <p class="menu-card-text">
-                See a verb and guess its group: 1, 2 or irregular. Build your conjugation intuition.
-              </p>
+              <p class="menu-card-text">Guess whether a verb is Group 1, 2 or irregular.</p>
               <div class="menu-card-footer">
-                <button
-                  class="card-btn"
-                  type="button"
-                  onclick="location.href='groups.html'"
-                >
-                  Guess
-                </button>
+                <button class="card-btn" onclick="location.href='groups.html'">Guess</button>
               </div>
             </article>
           </div>
         </section>
 
-        <!-- STUDY TOOLS CATEGORY PANEL -->
-        <!-- <section
-          class="category-panel"
-          data-category-panel="study"
-          hidden
-        >
-          <h2>Study Tools</h2>
-          <p class="category-description">
-            Calmer modes focused on understanding and memorisation rather than speed.
-          </p>
-
-          <div class="menu-grid">
-          
-
-            
-          </div>
-        </section> -->
-
-        <!-- MINI GAMES CATEGORY PANEL -->
-        <section
-          class="category-panel"
-          data-category-panel="minigames"
-          hidden
-        >
+        <!-- MINI GAMES -->
+        <section class="category-panel" data-category-panel="minigames" hidden>
           <h2>Mini Games</h2>
-          <p class="category-description">
-            Fast, focused games to sharpen specific skills like form recognition and verb groups.
-          </p>
+          <p class="category-description">Small focused challenges.</p>
 
           <div class="menu-grid">
             <article class="menu-card menu-card--disabled">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Coming soon</div>
-              </div>
+              <div class="menu-card-header"><div class="menu-card-tag">Coming soon</div></div>
               <h3>Boss Game</h3>
-              <p class="menu-card-text">
-                Learn how to count people, animals and objects with the right counters.
-              </p>
-              <div class="menu-card-footer">
-                <button class="card-btn" type="button" disabled>
-                  Locked
-                </button>
-              </div>
+              <p class="menu-card-text">A fast-paced extreme challenge.</p>
+              <div class="menu-card-footer"><button class="card-btn" disabled>Locked</button></div>
             </article>
-
           </div>
         </section>
 
-        <!-- COUNTING CATEGORY PANEL (placeholder) -->
-        <section
-          class="category-panel"
-          data-category-panel="counting"
-          hidden
-        >
+        <!-- COUNTING -->
+        <section class="category-panel" data-category-panel="counting" hidden>
           <h2>Counting</h2>
-          <p class="category-description">
-            Numbers and counters practice (本, 枚, 匹, 人...). This category is planned for later.
-          </p>
+          <p class="category-description">Counters (本, 枚, 匹...). Practice them here.</p>
 
           <div class="menu-grid">
-            <article class="menu-card menu-card">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Puzzle</div>
-              </div>
-              <h3>Puzzle Quiz Counting</h3>
-              <p class="menu-card-text">
-                Assemble the tiles to build the correct Japanese counter word.
-              </p>
+            <article class="menu-card">
+              <div class="menu-card-header"><div class="menu-card-tag">Puzzle</div></div>
+              <h3>Puzzle Counting</h3>
+              <p class="menu-card-text">Assemble the correct counter phrase.</p>
               <div class="menu-card-footer">
-                <button
-                  class="card-btn"
-                  type="button"
-                  onclick="location.href='counting-quiz.html'"
-                >
-                  Play
-                </button>
-              </div>
-            </article>
-
-            <article class="menu-card menu-card--disabled">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Coming soon</div>
-              </div>
-              <h3>Counters Quiz</h3>
-              <p class="menu-card-text">
-                Learn how to count people, animals and objects with the right counters.
-              </p>
-              <div class="menu-card-footer">
-                <button class="card-btn" type="button" disabled>
-                  Locked
-                </button>
+                <button class="card-btn" onclick="location.href='counting-quiz.html'">Play</button>
               </div>
             </article>
           </div>
         </section>
 
-        <!-- ADJECTIVES CATEGORY PANEL (placeholder) -->
-        <section
-          class="category-panel"
-          data-category-panel="adjectives"
-          hidden
-        >
+        <!-- ADJECTIVES -->
+        <section class="category-panel" data-category-panel="adjectives" hidden>
           <h2>Adjectives</h2>
-          <p class="category-description">
-            Dedicated tools for い and な adjectives will live here. For now, this category is empty.
-          </p>
+          <p class="category-description">い & な adjectives coming soon.</p>
 
           <div class="menu-grid">
             <article class="menu-card menu-card--disabled">
-              <div class="menu-card-header">
-                <div class="menu-card-tag">Planned</div>
-              </div>
+              <div class="menu-card-header"><div class="menu-card-tag">Planned</div></div>
               <h3>Adjective Flashcards</h3>
+              <p class="menu-card-text">Practice forms and meanings.</p>
+              <div class="menu-card-footer"><button class="card-btn" disabled>Locked</button></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ✅ NEW DICTIONARY CATEGORY -->
+        <section class="category-panel" data-category-panel="dictionary" hidden>
+          <h2>Dictionary</h2>
+          <p class="category-description">
+            Browse all verbs for your level. Search kanji, reading or meanings.
+          </p>
+
+          <div class="menu-grid">
+            <article class="menu-card">
+              <div class="menu-card-header">
+                <div class="menu-card-tag">Search</div>
+              </div>
+              <h3>Dictionary</h3>
               <p class="menu-card-text">
-                Practice adjective meanings and forms in a focused way.
+                Explore all verbs with forms, furigana and meanings.
               </p>
               <div class="menu-card-footer">
-                <button class="card-btn" type="button" disabled>
-                  Locked
+                <button class="card-btn" onclick="location.href='dictionary.html'">
+                  Open
                 </button>
               </div>
             </article>
@@ -363,13 +219,13 @@
         </section>
 
         <p class="hint">
-          XP and level are shared across all modes. As you add new categories (adjectives, counting, etc.), this hub will grow with you.
+          XP and level are shared across all modes. New categories will appear here as the app grows.
         </p>
       </section>
     </main>
 
     <footer class="app-footer">
-      <span>Runs entirely in your browser · Data stored via <code>localStorage</code></span>
+      <span>Runs in your browser · Data stored in <code>localStorage</code></span>
     </footer>
   </div>
 

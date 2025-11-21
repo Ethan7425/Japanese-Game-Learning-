@@ -1583,3 +1583,156 @@ body[data-theme="violet-dark"] .count-question-big {
   color: #e6d3ff;
   text-shadow: 0 0 6px rgba(180, 120, 255, 0.55);
 }
+
+/* =======================================
+   Dictionary page
+   ======================================= */
+
+/* Search row */
+
+.dict-search-row {
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.dict-search-row .input,
+#dict-search {
+  width: 100%;
+  max-width: 420px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+/* Placeholder */
+#dict-search::placeholder {
+  color: var(--text-muted);
+}
+
+/* Focus state */
+#dict-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-soft);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Adjust for light themes */
+body[data-theme="cool-light"] #dict-search,
+body[data-theme="warm-light"] #dict-search {
+  background: #f7fbff;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+body[data-theme="cool-light"] #dict-search:focus,
+body[data-theme="warm-light"] #dict-search:focus {
+  background: #ffffff;
+}
+
+/* Result list container */
+
+.dict-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Cards */
+
+.dict-card {
+  padding: 0.9rem 1rem;
+}
+
+/* Make dictionary cards slightly denser on large screens */
+@media (min-width: 768px) {
+  .dict-card {
+    padding: 1rem 1.2rem;
+  }
+}
+
+/* Header verb (reuse Study styling but ensure center) */
+
+.dict-card .verb-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.dict-card .verb-furigana {
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+/* Info under verb: meaning + group/level */
+
+.dict-card .verb-info {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+  text-align: center;
+}
+
+.dict-card .verb-info strong {
+  color: var(--text);
+}
+
+/* Forms block */
+
+.dict-forms {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Theme-aware border for light */
+body[data-theme="cool-light"] .dict-forms,
+body[data-theme="warm-light"] .dict-forms {
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Individual form row: "Dictionary: 行く" etc. */
+
+.dict-form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+/* Align nicely on narrow screens */
+@media (max-width: 480px) {
+  .dict-form-row {
+    flex-wrap: wrap;
+  }
+}
+
+/* Label on the left */
+.dict-form-label {
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 5.5rem;
+}
+
+/* Value on the right */
+.dict-form-value {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  text-align: right;
+  flex: 1;
+  color: var(--text);
+  word-break: break-word;
+}
