@@ -1851,17 +1851,17 @@ body[data-theme="warm-light"] .radio-pill input:checked + span {
 }
 
 /* =======================================
-   KANA CARD GRID + FLIP EFFECT
+   Kana Flip Cards — Mobile-safe
    ======================================= */
 
+/* Grid container for cards */
 .kana-grid {
   display: grid;
   gap: 0.7rem;
   justify-items: stretch;
 }
 
-/* CARD BASE */
-
+/* Each card wrapper */
 .kana-card {
   position: relative;
   border: none;
@@ -1869,18 +1869,19 @@ body[data-theme="warm-light"] .radio-pill input:checked + span {
   background: none;
   cursor: pointer;
   perspective: 1000px;
+  overflow: hidden; /* important on mobile */
 }
 
+/* Inner element that actually flips */
 .kana-card-inner {
   position: relative;
   width: 100%;
-  padding-top: 120%;
+  padding-top: 120%; /* keep square-ish ratio */
   transform-style: preserve-3d;
   transition: transform 0.28s ease;
 }
 
-/* CARD FACES */
-
+/* Faces base styling */
 .kana-card-face {
   position: absolute;
   inset: 0;
@@ -1890,34 +1891,34 @@ body[data-theme="warm-light"] .radio-pill input:checked + span {
   align-items: center;
   font-size: 1.7rem;
   font-weight: 600;
+
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* iOS fix */
 }
 
-/* FRONT (Hidden Side) */
-
+/* FRONT (hidden content / back of the card visually) */
 body[data-theme="neon-dark"] .kana-card-front {
   background: rgba(0, 224, 255, 0.12);
   border: 1px solid rgba(0, 224, 255, 0.45);
   color: #daffff;
+  transform: rotateY(0deg);
 }
-
-/* BACK (Revealed Content — KANA/ROMAJI) */
-
-body[data-theme="neon-dark"] .kana-card-back {
-  background: rgba(0, 224, 255, 0.25);
-  border: 1px solid rgba(0, 224, 255, 0.85);
-  color: #ffffff;
-  text-shadow: 0 0 6px rgba(0, 224, 255, 0.65);
-  transform: rotateY(180deg);
-}
-
-/* Light themes */
 
 body[data-theme="cool-light"] .kana-card-front,
 body[data-theme="warm-light"] .kana-card-front {
   background: #eef6ff;
   border: 1px solid #bcdfff;
   color: #002a38;
+  transform: rotateY(0deg);
+}
+
+/* BACK (visible face when matched / flipped) */
+body[data-theme="neon-dark"] .kana-card-back {
+  background: rgba(0, 224, 255, 0.25);
+  border: 1px solid rgba(0, 224, 255, 0.85);
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(0, 224, 255, 0.65);
+  transform: rotateY(180deg);
 }
 
 body[data-theme="cool-light"] .kana-card-back,
@@ -1928,20 +1929,29 @@ body[data-theme="warm-light"] .kana-card-back {
   transform: rotateY(180deg);
 }
 
-/* Flip Animation */
+/* Violet theme support */
+body[data-theme="violet-dark"] .kana-card-front {
+  background: rgba(180, 120, 255, 0.16);
+  border: 1px solid rgba(180, 120, 255, 0.6);
+  color: #f6e8ff;
+  transform: rotateY(0deg);
+}
+
+body[data-theme="violet-dark"] .kana-card-back {
+  background: rgba(180, 120, 255, 0.27);
+  border: 1px solid rgba(180, 120, 255, 0.9);
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(180, 120, 255, 0.7);
+  transform: rotateY(180deg);
+}
+
+/* Flip state */
 .kana-card-inner.is-flipped {
   transform: rotateY(180deg);
 }
 
-/* MATCHED STATE */
-
+/* Matched cards (slightly faded) */
 .kana-card.matched .kana-card-inner {
   transform: rotateY(180deg) scale(0.93);
   opacity: 0.6;
 }
-
-.kana-card.matched .kana-card-back {
-  box-shadow: none;
-  color: #ffffff;
-}
-
