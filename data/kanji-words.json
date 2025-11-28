@@ -1,0 +1,249 @@
+[
+  {
+    "kanji": "日",
+    "reading": "ひ",
+    "meaning": "day; sun"
+  },
+  {
+    "kanji": "月",
+    "reading": "つき",
+    "meaning": "moon; month"
+  },
+  {
+    "kanji": "火",
+    "reading": "ひ",
+    "meaning": "fire"
+  },
+  {
+    "kanji": "水",
+    "reading": "みず",
+    "meaning": "water"
+  },
+  {
+    "kanji": "木",
+    "reading": "き",
+    "meaning": "tree; wood"
+  },
+  {
+    "kanji": "金",
+    "reading": "きん",
+    "meaning": "gold; money"
+  },
+  {
+    "kanji": "土",
+    "reading": "つち",
+    "meaning": "earth; soil"
+  },
+  {
+    "kanji": "山",
+    "reading": "やま",
+    "meaning": "mountain"
+  },
+  {
+    "kanji": "川",
+    "reading": "かわ",
+    "meaning": "river"
+  },
+  {
+    "kanji": "人",
+    "reading": "ひと",
+    "meaning": "person"
+  },
+  {
+    "kanji": "口",
+    "reading": "くち",
+    "meaning": "mouth"
+  },
+  {
+    "kanji": "手",
+    "reading": "て",
+    "meaning": "hand"
+  },
+  {
+    "kanji": "目",
+    "reading": "め",
+    "meaning": "eye"
+  },
+  {
+    "kanji": "耳",
+    "reading": "みみ",
+    "meaning": "ear"
+  },
+  {
+    "kanji": "本",
+    "reading": "ほん",
+    "meaning": "book"
+  },
+  {
+    "kanji": "雨",
+    "reading": "あめ",
+    "meaning": "rain"
+  },
+  {
+    "kanji": "雪",
+    "reading": "ゆき",
+    "meaning": "snow"
+  },
+  {
+    "kanji": "犬",
+    "reading": "いぬ",
+    "meaning": "dog"
+  },
+  {
+    "kanji": "猫",
+    "reading": "ねこ",
+    "meaning": "cat"
+  },
+  {
+    "kanji": "魚",
+    "reading": "さかな",
+    "meaning": "fish"
+  },
+
+  {
+    "kanji": "学校",
+    "reading": "がっこう",
+    "meaning": "school"
+  },
+  {
+    "kanji": "先生",
+    "reading": "せんせい",
+    "meaning": "teacher"
+  },
+  {
+    "kanji": "日本",
+    "reading": "にほん",
+    "meaning": "Japan"
+  },
+  {
+    "kanji": "電車",
+    "reading": "でんしゃ",
+    "meaning": "train"
+  },
+  {
+    "kanji": "病院",
+    "reading": "びょういん",
+    "meaning": "hospital"
+  },
+  {
+    "kanji": "学生",
+    "reading": "がくせい",
+    "meaning": "student"
+  },
+  {
+    "kanji": "友達",
+    "reading": "ともだち",
+    "meaning": "friend"
+  },
+  {
+    "kanji": "山川",
+    "reading": "やまかわ",
+    "meaning": "Yamakawa (surname)"
+  },
+  {
+    "kanji": "火山",
+    "reading": "かざん",
+    "meaning": "volcano"
+  },
+  {
+    "kanji": "水田",
+    "reading": "すいでん",
+    "meaning": "rice paddy"
+  },
+  {
+    "kanji": "本屋",
+    "reading": "ほんや",
+    "meaning": "bookstore"
+  },
+  {
+    "kanji": "会社",
+    "reading": "かいしゃ",
+    "meaning": "company; office"
+  },
+  {
+    "kanji": "公園",
+    "reading": "こうえん",
+    "meaning": "park"
+  },
+  {
+    "kanji": "海岸",
+    "reading": "かいがん",
+    "meaning": "seashore; coast"
+  },
+  {
+    "kanji": "電話",
+    "reading": "でんわ",
+    "meaning": "telephone"
+  },
+  {
+    "kanji": "図書",
+    "reading": "としょ",
+    "meaning": "books; literature"
+  },
+  {
+    "kanji": "駅前",
+    "reading": "えきまえ",
+    "meaning": "in front of the station"
+  },
+  {
+    "kanji": "店員",
+    "reading": "てんいん",
+    "meaning": "shop clerk"
+  },
+  {
+    "kanji": "外国",
+    "reading": "がいこく",
+    "meaning": "foreign country"
+  },
+
+  {
+    "kanji": "図書館",
+    "reading": "としょかん",
+    "meaning": "library"
+  },
+  {
+    "kanji": "高校生",
+    "reading": "こうこうせい",
+    "meaning": "high school student"
+  },
+  {
+    "kanji": "大学生",
+    "reading": "だいがくせい",
+    "meaning": "university student"
+  },
+  {
+    "kanji": "新幹線",
+    "reading": "しんかんせん",
+    "meaning": "bullet train"
+  },
+  {
+    "kanji": "小学校",
+    "reading": "しょうがっこう",
+    "meaning": "elementary school"
+  },
+  {
+    "kanji": "中学校",
+    "reading": "ちゅうがっこう",
+    "meaning": "junior high school"
+  },
+  {
+    "kanji": "大学院",
+    "reading": "だいがくいん",
+    "meaning": "graduate school"
+  },
+  {
+    "kanji": "映画館",
+    "reading": "えいがかん",
+    "meaning": "cinema"
+  },
+  {
+    "kanji": "駅員",
+    "reading": "えきいん",
+    "meaning": "station staff"
+  },
+  {
+    "kanji": "会社員",
+    "reading": "かいしゃいん",
+    "meaning": "company employee"
+  }
+]

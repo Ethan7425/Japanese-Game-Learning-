@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Japanese Verb Trainer - Kanji Reaction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" type="image/png" href="../assets/icon.png" />
+</head>
+<body class="dark-theme" data-page="kanji-reaction">
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Japanese Verb Trainer</h1>
+      <div class="header-meta">
+        <span id="current-difficulty-label">Level: N5</span>
+        <span id="xp-label">Lv. 1 · 0/50 XP</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="screen-header">
+          <button class="ghost-btn" type="button" onclick="location.href='../index.html'">
+            ← Main Menu
+          </button>
+          <h2>Kanji Reaction</h2>
+        </div>
+
+        <div class="card">
+          <!-- Difficulty selection / step 1 -->
+          <div class="kanji-react-difficulty-row">
+            <div class="kanji-react-difficulty-headline">
+              <span class="kanji-react-difficulty-step">Step 1</span>
+              <span class="kanji-react-difficulty-label">Choose word length to start</span>
+            </div>
+            <div class="kanji-react-difficulty-buttons">
+              <button class="chip-toggle" type="button" data-length="1">
+                1-kanji words
+              </button>
+              <button class="chip-toggle" type="button" data-length="2">
+                2-kanji words
+              </button>
+              <button class="chip-toggle" type="button" data-length="3">
+                3-kanji words
+              </button>
+            </div>
+          </div>
+
+          <!-- Best stats -->
+          <div class="kanji-react-best-row">
+            <span id="kanji-react-best-avg">Best avg: –</span>
+            <span id="kanji-react-best-single">Best single: –</span>
+          </div>
+
+          <!-- Prompt, timer & mistakes -->
+          <div class="kanji-react-prompt-area">
+            <div id="kanji-react-prompt" class="kanji-react-prompt">
+              Choose a word length to start.
+            </div>
+            <div id="kanji-react-timer" class="kanji-react-timer">
+              0.000 s
+            </div>
+            <div id="kanji-react-mistakes" class="kanji-react-mistakes">
+              Mistakes: 0
+            </div>
+          </div>
+
+          <!-- Grid of single-kanji options -->
+          <div id="kanji-react-grid" class="kanji-react-grid">
+            <!-- buttons injected via JS -->
+          </div>
+
+          <!-- Feedback -->
+          <div id="kanji-react-feedback" class="quiz-feedback"></div>
+
+          <!-- Footer buttons -->
+          <div class="card-footer kanji-react-footer">
+            <button id="kanji-react-restart-session" class="secondary-btn" type="button">
+              Restart session
+            </button>
+          </div>
+        </div>
+
+        <!-- Summary card (shown after 5 rounds) -->
+        <div id="kanji-react-summary-card" class="card kanji-react-summary" hidden>
+          <h3>Session Summary</h3>
+          <p id="kanji-react-summary-headline" class="kanji-react-summary-headline"></p>
+
+          <div class="kanji-react-results-list" id="kanji-react-results-list">
+            <!-- per-round rows -->
+          </div>
+
+          <p id="kanji-react-summary-avg" class="kanji-react-summary-avg"></p>
+
+          <div class="kanji-react-share-area">
+            <label for="kanji-react-share-output" class="share-label">
+              Shareable result card
+            </label>
+            <textarea
+              id="kanji-react-share-output"
+              class="share-textarea"
+              rows="7"
+              readonly
+            ></textarea>
+            <button id="kanji-react-share-copy" class="secondary-btn" type="button">
+              Copy results
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>
+        Runs entirely in your browser · Data stored via
+        <code>localStorage</code>
+      </span>
+    </footer>
+  </div>
+
+  <script src="../js/core.js"></script>
+  <script src="../js/kanji-reaction.js"></script>
+</body>
+</html>

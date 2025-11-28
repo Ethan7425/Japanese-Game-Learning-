@@ -2166,3 +2166,341 @@ body[data-theme="violet-dark"] .kana-card-back {
   background: rgba(255, 80, 110, 0.18);
   border-color: var(--danger);
 }
+
+/* =======================================
+   KANJI REACTION – Global Layout
+   ======================================= */
+
+.kanji-reaction-wrapper {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Prompt (word to find) title (we mostly use the reading/meaning block below) */
+.kanji-reaction-prompt {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.03em;
+}
+
+body[data-theme="neon-dark"] .kanji-reaction-prompt {
+  color: #aff8ff;
+  text-shadow: 0 0 6px rgba(0, 224, 255, 0.55);
+}
+
+body[data-theme="cool-light"] .kanji-reaction-prompt {
+  color: #00465e;
+}
+
+body[data-theme="warm-light"] .kanji-reaction-prompt {
+  color: #7a4b00;
+}
+
+body[data-theme="violet-dark"] .kanji-reaction-prompt {
+  color: #e6d3ff;
+  text-shadow: 0 0 6px rgba(180, 120, 255, 0.55);
+}
+
+/* =======================================
+   DIFFICULTY SELECTION (Centered)
+   ======================================= */
+
+.kanji-react-difficulty-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 auto 1.1rem auto;
+  padding: 1.1rem 1.3rem;
+  max-width: 440px;
+
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-soft);
+
+  text-align: center;
+}
+
+.kanji-react-difficulty-row.is-collapsed {
+  display: none;
+}
+
+.kanji-react-difficulty-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.kanji-react-difficulty-step {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+
+  background: var(--accent-soft);
+  color: var(--accent-strong, var(--bg));
+}
+
+.kanji-react-difficulty-label {
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.kanji-react-difficulty-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.chip-toggle {
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-soft);
+  background: transparent;
+  color: var(--accent);
+  padding: 6px 14px;
+
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease;
+}
+
+.chip-toggle:hover {
+  transform: translateY(-2px);
+}
+
+.chip-toggle.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-strong, var(--bg));
+  font-weight: 600;
+  transform: translateY(-2px);
+}
+
+/* =======================================
+   Countdown
+   ======================================= */
+
+.kanji-reaction-countdown {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0.5rem 0 1.1rem 0;
+  opacity: 0;
+  animation: fadePop 0.8s ease forwards;
+}
+
+@keyframes fadePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =======================================
+   Kanji Reaction – Kanji grid
+   ======================================= */
+
+.kanji-react-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(70px, 1fr)); /* 4 x 3 = 12 tiles */
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* On very small screens, allow 3 columns so things stay readable */
+@media (max-width: 480px) {
+  .kanji-react-grid {
+    grid-template-columns: repeat(3, minmax(70px, 1fr)); /* 4 rows */
+  }
+}
+
+/* Buttons used as kanji tiles */
+.kanji-react-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  padding-block: 0.75rem;
+
+  font-size: 1.7rem;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* Let existing quiz-answer-btn styling handle colors/shadows.
+   We only override alignment & size above. */
+
+/* Extra pop on correct step */
+.kanji-react-option.correct-step {
+  animation: cardPopCorrect 0.25s ease-out;
+}
+
+@keyframes cardPopCorrect {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* =======================================
+   Timer + Mistakes
+   ======================================= */
+
+.kanji-reaction-timer {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.kanji-reaction-mistakes {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+}
+
+/* =======================================
+   End-of-Session Recap (Summary card)
+   ======================================= */
+
+.kanji-recap-modal {
+  margin-top: 1.5rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--radius-xl);
+  background: var(--bg-soft);
+  border: 1px solid var(--border-subtle);
+  text-align: center;
+
+  animation: recapFade 0.25s ease-out;
+}
+
+@keyframes recapFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kanji-recap-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.kanji-recap-line {
+  font-size: 1.05rem;
+  margin: 0.25rem 0;
+}
+
+.kanji-recap-share {
+  margin-top: 1rem;
+}
+
+/* =======================================
+   Kanji Reaction – Stats + Prompt
+   ======================================= */
+
+/* Best avg / best single line */
+.kanji-react-best-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  margin: 0.4rem auto 0.9rem auto;
+  max-width: 420px;
+
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.kanji-react-best-row span {
+  white-space: nowrap;
+}
+
+/* Prompt + timer block */
+.kanji-react-prompt-area {
+  text-align: center;
+  margin-bottom: 0.7rem;
+}
+
+.kanji-react-prompt {
+  margin-bottom: 0.35rem;
+}
+
+.kanji-react-reading {
+  font-size: 1.9rem;
+  letter-spacing: 0.04em;
+}
+
+.kanji-react-meaning {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+/* Timer + mistakes (in the prompt area) */
+.kanji-react-timer {
+  font-family: var(--mono-font, ui-monospace, SFMono-Regular, Menlo, Monaco,
+      Consolas, "Liberation Mono", "Courier New", monospace);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.kanji-react-mistakes {
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* General card footers already centered elsewhere */
+.card-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Correct kanji tile – strong green glow at end of round */
+.kanji-react-option--correct {
+  background: #11c98a;
+  border-color: #6fffd0;
+  color: #02130b;
+  box-shadow: 0 0 16px rgba(0, 255, 160, 0.75);
+}
+
+/* If you want the glow to stay even if it was also the clicked one */
+.kanji-react-option.correct-step.kanji-react-option--correct {
+  animation: cardPopCorrect 0.25s ease-out;
+}
