@@ -56,8 +56,10 @@
     const formsWrapper = document.createElement("div");
     formsWrapper.className = "dict-forms";
 
-    function addFormRow(label, value) {
+    function addFormRow(label, key) {
+      const value = verb.forms?.[key];
       if (!value) return;
+
       const row = document.createElement("div");
       row.className = "dict-form-row";
 
@@ -67,19 +69,25 @@
 
       const valueSpan = document.createElement("span");
       valueSpan.className = "dict-form-value";
-      valueSpan.textContent = value;
+
+      const reading = verb.formsReading?.[key];
+      if (reading) {
+        valueSpan.appendChild(renderFurigana(value, reading));
+      } else {
+        valueSpan.textContent = value;
+      }
 
       row.appendChild(labelSpan);
       row.appendChild(valueSpan);
       formsWrapper.appendChild(row);
     }
 
-    addFormRow("Dictionary", verb.dictionary);
-    addFormRow("ます", verb.forms?.masu);
-    addFormRow("ない", verb.forms?.negative);
-    addFormRow("て", verb.forms?.te);
-    addFormRow("た", verb.forms?.past);
-    addFormRow("〜たい", verb.forms?.tai);
+    addFormRow("Dictionary", "dictionary"); // show as raw text in header already
+    addFormRow("ます", "masu");
+    addFormRow("ない", "negative");
+    addFormRow("て", "te");
+    addFormRow("た", "past");
+    addFormRow("〜たい", "tai");
 
     card.appendChild(formsWrapper);
 
@@ -117,8 +125,7 @@
       container.appendChild(createVerbCard(verb));
     });
 
-    const label =
-      filtered.length === 1 ? "verb found" : "verbs found";
+    const label = filtered.length === 1 ? "verb found" : "verbs found";
     countEl.textContent = `${filtered.length} ${label}`;
   }
 

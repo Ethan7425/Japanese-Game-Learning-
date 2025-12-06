@@ -22,22 +22,38 @@
 
     currentVerb = pool[Math.floor(Math.random() * pool.length)];
 
-    // Insert dictionary w/ furigana
-    const furi = $("#study-verb-furigana");
-    furi.innerHTML = "";
-    furi.appendChild(renderFurigana(currentVerb.dictionary, currentVerb.furigana));
+    // Dictionary with furigana
+    const furiEl = $("#study-verb-furigana");
+    if (furiEl) {
+      furiEl.innerHTML = "";
+      furiEl.appendChild(
+        renderFurigana(currentVerb.dictionary, currentVerb.furigana)
+      );
+    }
 
-    // Reset meaning
-    $("#study-meaning-value").textContent = "？？？";
+    // Reset meaning (flashcard-style)
+    const meaningEl = $("#study-meaning-value");
+    if (meaningEl) {
+      meaningEl.textContent = "？？？";
+    }
 
     // Show group directly
-    $("#study-group-value").textContent = `Group: ${currentVerb.group}`;
+    const groupEl = $("#study-group-value");
+    if (groupEl) {
+      groupEl.textContent = `Group: ${currentVerb.group}`;
+    }
 
     // Reset all forms
-    $("#study-form-masu").textContent = "？？？";
-    $("#study-form-negative").textContent = "？？？";
-    $("#study-form-te").textContent = "？？？";
-    $("#study-form-past").textContent = "？？？";
+    const ids = [
+      "study-form-masu",
+      "study-form-negative",
+      "study-form-te",
+      "study-form-past"
+    ];
+    ids.forEach((id) => {
+      const el = $("#" + id);
+      if (el) el.textContent = "？？？";
+    });
   }
 
   // ----------------------
@@ -45,7 +61,10 @@
   // ----------------------
   function revealMeaning() {
     if (!currentVerb) return;
-    $("#study-meaning-value").textContent = currentVerb.meaning;
+    const meaningEl = $("#study-meaning-value");
+    if (meaningEl) {
+      meaningEl.textContent = currentVerb.meaning;
+    }
   }
 
   // ----------------------
@@ -64,26 +83,44 @@
       past: "study-form-past"
     };
 
-    const el = $("#" + map[formKey]);
-    if (el) el.textContent = value;
+    const targetId = map[formKey];
+    const el = $("#" + targetId);
+    if (!el) return;
+
+    const reading = currentVerb.formsReading?.[formKey];
+
+    // Clear and insert either plain text or ruby with furigana
+    el.innerHTML = "";
+    if (reading) {
+      el.appendChild(renderFurigana(value, reading));
+    } else {
+      el.textContent = value;
+    }
   }
 
   // ----------------------
   // Init
   // ----------------------
   function initStudyPage() {
-    // Reveal meaning
-    $("#study-meaning-btn").addEventListener("click", revealMeaning);
+    // Reveal meaning (flashcard front/back style)
+    const meaningBtn = $("#study-meaning-btn");
+    if (meaningBtn) {
+      meaningBtn.addEventListener("click", revealMeaning);
+    }
 
     // Reveal forms
     $$(".study-form-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        revealForm(btn.dataset.form);
+        const key = btn.dataset.form;
+        revealForm(key);
       });
     });
 
     // New verb
-    $("#study-next-verb").addEventListener("click", loadRandomVerb);
+    const nextBtn = $("#study-next-verb");
+    if (nextBtn) {
+      nextBtn.addEventListener("click", loadRandomVerb);
+    }
 
     loadRandomVerb();
   }

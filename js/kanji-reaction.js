@@ -457,7 +457,13 @@
     const mistakes = state.mistakes;
 
     if (headline) {
-      headline.textContent = `Difficulty: ${state.difficultyLength}-kanji words · Rounds: ${state.totalRounds} · Correct: ${correctCount} · Mistakes: ${mistakes}`;
+    //   headline.textContent = `Difficulty: ${state.difficultyLength} \n · Rounds: ${state.totalRounds} · Correct: ${correctCount} · Mistakes: ${mistakes}`;
+        headline.innerHTML = `
+            <span class="recap-label">Difficulty:</span> ${state.difficultyLength}<br>
+            <span class="recap-label">Rounds:</span> ${state.totalRounds} <br>
+            <span class="recap-label">Correct:</span> ${correctCount} <br>
+            <span class="recap-label">Mistakes:</span> ${mistakes} <br>
+            `;
     }
 
     if (list) {
@@ -480,11 +486,7 @@
       });
     }
 
-    if (avgEl) {
-      avgEl.textContent = `Average: ${formatMs(avgMs)} · Best this run: ${formatMs(
-        bestSingle
-      )} · Mistakes: ${mistakes} · XP gained: ${xpGain}`;
-    }
+     
 
     const shareText = buildShareCard(avgMs, bestSingle, xpGain, mistakes);
     const shareArea = $("#kanji-react-share-output");

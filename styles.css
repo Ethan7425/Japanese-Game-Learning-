@@ -2504,3 +2504,31 @@ body[data-theme="violet-dark"] .kanji-reaction-prompt {
 .kanji-react-option.correct-step.kanji-react-option--correct {
   animation: cardPopCorrect 0.25s ease-out;
 }
+
+.kanji-react-share-area { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.share-textarea {
+  width:  70%;
+  margin-top : 10px ; 
+  margin-bottom : 10px ;
+}
+
+.kanji-react-result-row { 
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.kanji-react-summary-headline { 
+  text-align: center;
+}
+
+.recap-label {
+  font-weight: 600;
+  color: var(--accent);
+}
