@@ -2257,6 +2257,21 @@ body[data-theme="violet-dark"] .kanji-reaction-prompt {
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.6rem;
+  margin-bottom: 40px;
+}
+
+.kanji-react-start-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.kanji-react-start-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
 .chip-toggle {
@@ -2345,6 +2360,11 @@ body[data-theme="violet-dark"] .kanji-reaction-prompt {
   font-weight: 600;
 
   cursor: pointer;
+}
+
+.kanji-react-option--selected {
+  box-shadow: 0 0 0 2px var(--accent), 0 10px 20px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 /* Let existing quiz-answer-btn styling handle colors/shadows.
@@ -2505,18 +2525,22 @@ body[data-theme="violet-dark"] .kanji-reaction-prompt {
   animation: cardPopCorrect 0.25s ease-out;
 }
 
-.kanji-react-share-area { 
+.kanji-react-share-area {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.share-textarea {
-  width:  70%;
-  margin-top : 10px ; 
-  margin-bottom : 10px ;
+.kanji-react-share-hidden {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 1px;
+  width: 1px;
+  left: -9999px;
+  top: auto;
 }
 
 .kanji-react-result-row { 
@@ -2528,7 +2552,43 @@ body[data-theme="violet-dark"] .kanji-reaction-prompt {
   text-align: center;
 }
 
+.kanji-react-summary-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
 .recap-label {
   font-weight: 600;
   color: var(--accent);
+}
+
+.kanji-react-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+.kanji-react-popup-content {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  max-width: 320px;
+}
+
+.kanji-react-popup[hidden] {
+  display: none !important;
+}
+
+.kanji-react-popup-content p {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: 600;
 }

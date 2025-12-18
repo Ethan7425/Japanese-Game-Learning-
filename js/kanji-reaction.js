@@ -1,5 +1,5 @@
 // =====================================
-// Kanji Reaction - kanji-reaction.js
+// Kanji Reaction - Rewritten
 // =====================================
 
 (function () {
@@ -14,49 +14,32 @@
     bestSingleMs: null
   };
 
-  function loadLocalStats() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      if (Number.isFinite(parsed.sessions)) localStats.sessions = parsed.sessions;
-      if (Number.isFinite(parsed.bestAvgMs)) localStats.bestAvgMs = parsed.bestAvgMs;
-      if (Number.isFinite(parsed.bestSingleMs)) localStats.bestSingleMs = parsed.bestSingleMs;
-    } catch (e) {
-      console.warn("Failed to parse kanji reaction stats:", e);
-    }
-  }
-
-  function saveLocalStats() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(localStats));
-  }
-
+  // -----------------------------
+  // Utilities
+  // -----------------------------
   function formatMs(ms) {
     if (!Number.isFinite(ms)) return "–";
-    const seconds = ms / 1000;
-    return `${seconds.toFixed(3)} s`;
+    return `${(ms / 1000).toFixed(3)} s`;
   }
 
-  function updateBestStatsUI() {
-    const avgEl = $("#kanji-react-best-avg");
-    const singleEl = $("#kanji-react-best-single");
-    if (avgEl) {
-      avgEl.textContent = `Best avg: ${
-        localStats.bestAvgMs != null ? formatMs(localStats.bestAvgMs) : "–"
-      }`;
+  function randomFrom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
-    if (singleEl) {
-      singleEl.textContent = `Best single: ${
-        localStats.bestSingleMs != null ? formatMs(localStats.bestSingleMs) : "–"
-      }`;
-    }
+    return a;
   }
 
   // -----------------------------
-  // Data: words + kanji chars
+  // Data loading
   // -----------------------------
   let WORDS = [];
-  let ALL_KANJI_CHARS = [];
+  let ALL_KANJI = [];
 
   const FALLBACK_WORDS = [
     { kanji: "日", reading: "ひ", meaning: "day; sun" },
@@ -71,8 +54,8 @@
     { kanji: "新幹線", reading: "しんかんせん", meaning: "bullet train" }
   ];
 
-  function prepareWords(rawList) {
-    const cleaned = rawList
+  function prepareWords(raw) {
+    const cleaned = raw
       .filter(
         (w) =>
           w &&
@@ -83,26 +66,19 @@
       )
       .map((w) => {
         const chars = Array.from(w.kanji.trim());
-        const uniqueChars = Array.from(new Set(chars));
+        const unique = Array.from(new Set(chars));
         return {
           kanji: w.kanji.trim(),
           reading: w.reading.trim(),
           meaning: w.meaning.trim(),
-          kanjiChars: uniqueChars,
-          kanjiCount: uniqueChars.length
+          kanjiChars: unique,
+          kanjiCount: unique.length
         };
       });
 
     if (!cleaned.length) return;
-
     WORDS = cleaned;
-    ALL_KANJI_CHARS = Array.from(
-      new Set(WORDS.flatMap((w) => w.kanjiChars))
-    );
-  }
-
-  function useFallbackWords() {
-    prepareWords(FALLBACK_WORDS);
+    ALL_KANJI = Array.from(new Set(WORDS.flatMap((w) => w.kanjiChars)));
   }
 
   function loadKanjiWords() {
@@ -112,62 +88,68 @@
         return res.json();
       })
       .then((data) => {
-        if (!Array.isArray(data)) {
-          throw new Error("kanji-words.json must contain an array");
-        }
+        if (!Array.isArray(data)) throw new Error("kanji-words.json must be an array");
         prepareWords(data);
-        if (!WORDS.length) {
-          console.warn("kanji-words.json loaded but contains no usable entries, falling back.");
-          useFallbackWords();
-        }
+        if (!WORDS.length) prepareWords(FALLBACK_WORDS);
       })
-      .catch((err) => {
-        console.warn("Could not load kanji-words.json, using fallback.", err);
-        useFallbackWords();
+      .catch(() => {
+        prepareWords(FALLBACK_WORDS);
       });
   }
 
-  function randomFrom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
-
-  function shuffleArray(arr) {
-    const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
   function getWordsForLength(len) {
-    const candidates = WORDS.filter((w) => w.kanjiCount === len);
-    if (candidates.length) return candidates;
-    return WORDS.slice();
+    const pool = WORDS.filter((w) => w.kanjiCount === len);
+    return pool.length ? pool : WORDS;
   }
 
   // -----------------------------
-  // Game state
+  // State
   // -----------------------------
   const state = {
-    difficultyLength: 1,
+    difficultyLength: null,
     totalRounds: 5,
-    currentRoundIndex: 0,
+    currentRound: 0,
     currentWord: null,
-    targetKanjiSet: new Set(),
-    selectedKanjiSet: new Set(),
+    targetSet: new Set(),
+    selectedSet: new Set(),
     roundStartTime: null,
     roundFinished: false,
+    timerIntervalId: null,
+    countdownId: null,
+    countdownRemaining: 0,
     results: [],
     mistakes: 0,
-    countdownTimerId: null,
-    countdownRemaining: 0,
-    timerIntervalId: null
+    sessionActive: false
   };
 
   // -----------------------------
   // UI helpers
   // -----------------------------
+  function setStatusMessage(msg) {
+    const prompt = $("#kanji-react-prompt");
+    if (prompt) prompt.textContent = msg || "";
+  }
+
+  function setTimerText(ms) {
+    const t = $("#kanji-react-timer");
+    if (t) t.textContent = formatMs(ms);
+  }
+
+  function setTimerVisible(visible) {
+    const t = $("#kanji-react-timer");
+    if (t) t.hidden = !visible;
+  }
+
+  function setMistakesLabel() {
+    const el = $("#kanji-react-mistakes");
+    if (el) el.textContent = `Mistakes: ${state.mistakes}`;
+  }
+
+  function setMistakesVisible(visible) {
+    const el = $("#kanji-react-mistakes");
+    if (el) el.hidden = !visible;
+  }
+
   function setFeedback(msg, type) {
     const el = $("#kanji-react-feedback");
     if (!el) return;
@@ -177,75 +159,61 @@
     if (type === "wrong") el.classList.add("wrong");
   }
 
-  function setTimer(ms) {
-    const el = $("#kanji-react-timer");
-    if (!el) return;
-    el.textContent = formatMs(ms);
-  }
-
-  function updateMistakesLabel() {
-    const el = $("#kanji-react-mistakes");
-    if (!el) return;
-    el.textContent = `Mistakes: ${state.mistakes}`;
-  }
-
-  function buildPrompt() {
-    const promptEl = $("#kanji-react-prompt");
-    if (!promptEl || !state.currentWord) return;
-
-    const { reading, meaning } = state.currentWord;
-
-    promptEl.innerHTML = "";
-
-    const readingDiv = document.createElement("div");
-    readingDiv.className = "kanji-react-reading";
-    readingDiv.textContent = reading;
-
-    const meaningDiv = document.createElement("div");
-    meaningDiv.className = "kanji-react-meaning";
-    meaningDiv.textContent = meaning;
-
-    promptEl.appendChild(readingDiv);
-    promptEl.appendChild(meaningDiv);
-  }
-
-  function buildGrid() {
+  function showGameplayUI(visible) {
     const grid = $("#kanji-react-grid");
-    if (!grid || !state.currentWord) return;
+    if (grid) grid.hidden = !visible;
+  }
 
-    const targets = state.currentWord.kanjiChars;
-    const maxTiles = 12;
-    const neededDistractors = Math.max(0, maxTiles - targets.length);
+  function setBestRowVisible(visible) {
+    const bestRow = document.querySelector(".kanji-react-best-row");
+    if (bestRow) bestRow.hidden = !visible;
+  }
 
-    const distractPool = ALL_KANJI_CHARS.filter(
-      (ch) => !targets.includes(ch)
-    );
-    const distractors = shuffleArray(distractPool).slice(0, neededDistractors);
+  function resetGrid() {
+    const grid = $("#kanji-react-grid");
+    if (grid) grid.innerHTML = "";
+  }
 
-    const options = shuffleArray([...targets, ...distractors]);
-
-    grid.innerHTML = "";
-
-    options.forEach((ch) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "quiz-answer-btn kanji-react-option";
-      btn.textContent = ch;
-      btn.dataset.kanji = ch;
-      btn.addEventListener("click", () => handleOptionClick(btn, ch));
-      grid.appendChild(btn);
-    });
+  function setMainCardVisible(visible) {
+    const card = $("#kanji-react-main-card");
+    if (card) card.hidden = !visible;
   }
 
   function disableGrid() {
-    const buttons = document.querySelectorAll(".kanji-react-option");
-    buttons.forEach((btn) => {
+    document.querySelectorAll(".kanji-react-option").forEach((btn) => {
       btn.disabled = true;
     });
   }
 
   // -----------------------------
-  // Timer helpers (live timer)
+  // Local stats
+  // -----------------------------
+  function loadLocalStats() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Number.isFinite(parsed.sessions)) localStats.sessions = parsed.sessions;
+      if (Number.isFinite(parsed.bestAvgMs)) localStats.bestAvgMs = parsed.bestAvgMs;
+      if (Number.isFinite(parsed.bestSingleMs)) localStats.bestSingleMs = parsed.bestSingleMs;
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function saveLocalStats() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(localStats));
+  }
+
+  function updateBestStatsUI() {
+    const avg = $("#kanji-react-best-avg");
+    const single = $("#kanji-react-best-single");
+    if (avg) avg.textContent = `Best avg: ${formatMs(localStats.bestAvgMs)}`;
+    if (single) single.textContent = `Best single: ${formatMs(localStats.bestSingleMs)}`;
+  }
+
+  // -----------------------------
+  // Rounds
   // -----------------------------
   function clearTimerInterval() {
     if (state.timerIntervalId != null) {
@@ -258,193 +226,233 @@
     clearTimerInterval();
     state.timerIntervalId = setInterval(() => {
       if (!state.roundStartTime || state.roundFinished) return;
-      const now = performance.now();
-      const elapsed = now - state.roundStartTime;
-      setTimer(elapsed);
-    }, 50);
+      setTimerText(performance.now() - state.roundStartTime);
+    }, 40);
   }
 
-  // -----------------------------
-  // Round logic
-  // -----------------------------
+  function buildPrompt() {
+    const prompt = $("#kanji-react-prompt");
+    if (!prompt || !state.currentWord) return;
+    const { reading, meaning } = state.currentWord;
+    prompt.innerHTML = `<div class="kanji-react-reading">${reading}</div><div class="kanji-react-meaning">${meaning}</div>`;
+  }
+
+  function buildGrid() {
+    const grid = $("#kanji-react-grid");
+    if (!grid || !state.currentWord) return;
+    const targets = state.currentWord.kanjiChars;
+    const maxTiles = 12;
+    const distractPool = ALL_KANJI.filter((c) => !targets.includes(c));
+    const distractors = shuffle(distractPool).slice(0, Math.max(0, maxTiles - targets.length));
+    const options = shuffle([...targets, ...distractors]);
+
+    grid.innerHTML = "";
+    options.forEach((ch) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "quiz-answer-btn kanji-react-option";
+      btn.textContent = ch;
+      btn.dataset.kanji = ch;
+      btn.addEventListener("click", () => handleOptionClick(btn, ch));
+      grid.appendChild(btn);
+    });
+  }
+
   function startRound() {
+    showGameplayUI(true);
+    setTimerVisible(true);
+    setMistakesVisible(true);
+    setBestRowVisible(false);
+
     if (!WORDS.length) {
-      const promptEl = $("#kanji-react-prompt");
-      if (promptEl) {
-        promptEl.textContent = "No kanji data loaded.";
-      }
+      setStatusMessage("No kanji data loaded.");
       return;
     }
 
-    const length = state.difficultyLength;
-    const pool = getWordsForLength(length);
-
+    const pool = getWordsForLength(state.difficultyLength);
     state.currentWord = randomFrom(pool);
-    state.targetKanjiSet = new Set(state.currentWord.kanjiChars);
-    state.selectedKanjiSet = new Set();
+    state.targetSet = new Set(state.currentWord.kanjiChars);
+    state.selectedSet = new Set();
     state.roundFinished = false;
     state.roundStartTime = performance.now();
 
-    setTimer(0);
+    setMistakesLabel();
+    setTimerText(0);
     setFeedback("", null);
     buildPrompt();
     buildGrid();
     startLiveTimer();
   }
 
-    function highlightCorrectTiles() {
-    const buttons = document.querySelectorAll(".kanji-react-option");
-    buttons.forEach((btn) => {
-        const ch = btn.dataset.kanji;
-        if (state.targetKanjiSet.has(ch)) {
+  function highlightCorrectTiles() {
+    document.querySelectorAll(".kanji-react-option").forEach((btn) => {
+      if (state.targetSet.has(btn.dataset.kanji)) {
         btn.classList.add("kanji-react-option--correct");
-        }
+      }
     });
-    }
-
+  }
 
   function endRound(timeMs, correct) {
     state.roundFinished = true;
     clearTimerInterval();
     disableGrid();
-    setTimer(timeMs);
-
+    const recordedTime = correct ? timeMs : null;
+    setTimerText(recordedTime);
     highlightCorrectTiles();
 
-    const roundNumber = state.currentRoundIndex + 1;
-
+    const roundNumber = state.currentRound + 1;
     if (!correct) {
       state.mistakes += 1;
-      updateMistakesLabel();
+      setMistakesLabel();
     }
 
-    if (correct) {
-      setFeedback(`Round ${roundNumber}: ✓ (${formatMs(timeMs)})`, "correct");
-    } else {
-      setFeedback(`Round ${roundNumber}: ✗ (${formatMs(timeMs)})`, "wrong");
-    }
+    setFeedback(
+      correct ? `Round ${roundNumber}: ✓ (${formatMs(recordedTime)})` : `Round ${roundNumber}: ✗`,
+      correct ? "correct" : "wrong"
+    );
 
     state.results.push({
       round: roundNumber,
       word: state.currentWord,
       correct,
-      timeMs
+      timeMs: recordedTime
     });
 
-    if (state.currentRoundIndex + 1 >= state.totalRounds) {
-      setTimeout(() => {
-        finishSession();
-      }, 600);
+    if (state.currentRound + 1 >= state.totalRounds) {
+      setTimeout(finishSession, 600);
     } else {
-      state.currentRoundIndex += 1;
-      setTimeout(() => {
-        startRound();
-      }, 600);
+      state.currentRound += 1;
+      setTimeout(startRound, 600);
     }
   }
 
   function handleOptionClick(btn, ch) {
     if (state.roundFinished || !state.roundStartTime) return;
-
     const now = performance.now();
     const timeMs = now - state.roundStartTime;
 
-    if (!state.targetKanjiSet.has(ch) || state.selectedKanjiSet.has(ch)) {
+    btn.classList.add("kanji-react-option--selected");
+
+    if (!state.targetSet.has(ch) || state.selectedSet.has(ch)) {
       btn.classList.add("wrong");
       endRound(timeMs, false);
       return;
     }
 
-    state.selectedKanjiSet.add(ch);
+    state.selectedSet.add(ch);
     btn.classList.add("correct-step");
 
-    if (state.selectedKanjiSet.size >= state.targetKanjiSet.size) {
+    if (state.selectedSet.size >= state.targetSet.size) {
       endRound(timeMs, true);
     }
   }
 
+  // -----------------------------
+  // Countdown + session control
+  // -----------------------------
   function clearCountdown() {
-    if (state.countdownTimerId != null) {
-      clearInterval(state.countdownTimerId);
-      state.countdownTimerId = null;
+    if (state.countdownId != null) {
+      clearInterval(state.countdownId);
+      state.countdownId = null;
     }
     state.countdownRemaining = 0;
   }
 
-  function resetSessionState() {
-    state.currentRoundIndex = 0;
-    state.currentWord = null;
-    state.targetKanjiSet = new Set();
-    state.selectedKanjiSet = new Set();
-    state.roundStartTime = null;
-    state.roundFinished = false;
-    state.results = [];
-    state.mistakes = 0;
-    clearCountdown();
-    clearTimerInterval();
-    setTimer(0);
-    updateMistakesLabel();
-    setFeedback("", null);
-
-    const promptEl = $("#kanji-react-prompt");
-    if (promptEl) {
-      promptEl.textContent = "Choose a word length to start.";
-    }
-    const grid = $("#kanji-react-grid");
-    if (grid) grid.innerHTML = "";
-
-    hideSummary(); // make sure recap is gone while playing
-  }
-
-  function startSessionWithCountdown() {
-    const promptEl = $("#kanji-react-prompt");
-    if (!promptEl) return;
-
-    hideSummary();
-    resetSessionState();
+  function startCountdown() {
+    const startBtn = $("#kanji-react-start-btn");
+    if (startBtn) startBtn.hidden = true;
     setDifficultyCollapsed(true);
 
+    state.sessionActive = true;
+    clearCountdown();
     state.countdownRemaining = 3;
-    promptEl.textContent = `Get ready… starting in ${state.countdownRemaining} s`;
+    setStatusMessage(`Starting in ${state.countdownRemaining}...`);
+    showGameplayUI(false);
+    setTimerVisible(false);
+    setMistakesVisible(false);
+    setPlayAreaVisibility(true);
 
-    state.countdownTimerId = setInterval(() => {
+    state.countdownId = setInterval(() => {
       state.countdownRemaining -= 1;
       if (state.countdownRemaining > 0) {
-        promptEl.textContent = `Get ready… starting in ${state.countdownRemaining} s`;
+        setStatusMessage(`Starting in ${state.countdownRemaining}...`);
       } else {
         clearCountdown();
-        promptEl.textContent = "Go!";
+        setStatusMessage("Go!");
+        state.currentRound = 0;
+        state.results = [];
+        state.mistakes = 0;
         startRound();
       }
     }, 1000);
   }
 
-  // -----------------------------
-  // Session summary
-  // -----------------------------
-  function finishSession() {
-    if (!state.results.length) return;
+  function setPlayAreaVisibility(visible) {
+    const prompt = $("#kanji-react-prompt");
+    const grid = $("#kanji-react-grid");
+    const feedback = $("#kanji-react-feedback");
+    if (prompt) prompt.hidden = !visible;
+    if (grid) grid.hidden = !visible;
+    if (feedback) feedback.hidden = !visible;
+  }
 
-    localStats.sessions += 1;
+  function resetSession(showStart = true) {
+    clearTimerInterval();
+    clearCountdown();
+    state.currentRound = 0;
+    state.currentWord = null;
+    state.targetSet = new Set();
+    state.selectedSet = new Set();
+    state.roundStartTime = null;
+    state.roundFinished = false;
+    state.results = [];
+    state.mistakes = 0;
+    state.sessionActive = false;
 
-    const times = state.results.map((r) => r.timeMs);
-    const avgMs = times.reduce((acc, v) => acc + v, 0) / times.length;
-    const bestSingle = Math.min(...times);
+    setStatusMessage("Choose a word length, then press Start.");
+    setTimerText(0);
+    setTimerVisible(false);
+    setMistakesLabel();
+    setMistakesVisible(false);
+    setFeedback("", null);
+    resetGrid();
+    hideSummary();
+    hideGameOverPopup();
+    setMainCardVisible(true);
+    showGameplayUI(false);
+    setBestRowVisible(false);
+    setPlayAreaVisibility(false);
 
-    if (localStats.bestAvgMs == null || avgMs < localStats.bestAvgMs) {
-      localStats.bestAvgMs = avgMs;
+    const startBtn = $("#kanji-react-start-btn");
+    if (startBtn) {
+      startBtn.hidden = !showStart;
+      startBtn.disabled = !Number.isFinite(state.difficultyLength);
     }
-    if (localStats.bestSingleMs == null || bestSingle < localStats.bestSingleMs) {
-      localStats.bestSingleMs = bestSingle;
-    }
-    saveLocalStats();
-    updateBestStatsUI();
 
-    const correctCount = state.results.filter((r) => r.correct).length;
-    const xpGain = Math.max(5, correctCount * 7);
-    addXp(xpGain);
+    setDifficultyCollapsed(false);
+  }
 
-    buildSummaryUI(avgMs, bestSingle, xpGain);
+  // -----------------------------
+  // Summary & sharing
+  // -----------------------------
+  function buildShareCard(avgMs, bestSingle, xpGain, mistakes) {
+    const lines = [];
+    lines.push("⚡ Kanji Reaction – 5 Round Session");
+    lines.push(`Difficulty: ${state.difficultyLength}-kanji words`);
+    lines.push("");
+    state.results.forEach((res) => {
+      const mark = res.correct ? "✓" : "✗";
+      const time = res.correct ? ` · ${formatMs(res.timeMs)}` : "";
+      lines.push(`Round ${res.round}: ${res.word.reading} (${res.word.meaning}) · ${mark}${time}`);
+    });
+    lines.push("");
+    lines.push(`Average (correct only): ${formatMs(avgMs)}`);
+    lines.push(`Best this run: ${formatMs(bestSingle)}`);
+    lines.push(`Mistakes: ${mistakes}`);
+    lines.push(`XP gained: ${xpGain}`);
+    lines.push("");
+    lines.push("Share your times and compare with friends!");
+    return lines.join("\n");
   }
 
   function buildSummaryUI(avgMs, bestSingle, xpGain) {
@@ -457,13 +465,12 @@
     const mistakes = state.mistakes;
 
     if (headline) {
-    //   headline.textContent = `Difficulty: ${state.difficultyLength} \n · Rounds: ${state.totalRounds} · Correct: ${correctCount} · Mistakes: ${mistakes}`;
-        headline.innerHTML = `
-            <span class="recap-label">Difficulty:</span> ${state.difficultyLength}<br>
-            <span class="recap-label">Rounds:</span> ${state.totalRounds} <br>
-            <span class="recap-label">Correct:</span> ${correctCount} <br>
-            <span class="recap-label">Mistakes:</span> ${mistakes} <br>
-            `;
+      headline.innerHTML = `
+        <span class="recap-label">Difficulty:</span> ${state.difficultyLength}<br>
+        <span class="recap-label">Rounds:</span> ${state.totalRounds}<br>
+        <span class="recap-label">Correct:</span> ${correctCount}<br>
+        <span class="recap-label">Mistakes:</span> ${mistakes}<br>
+      `;
     }
 
     if (list) {
@@ -478,7 +485,7 @@
 
         const right = document.createElement("div");
         right.className = "kanji-react-result-right";
-        right.textContent = `${res.correct ? "✓" : "✗"} ${formatMs(res.timeMs)}`;
+        right.textContent = res.correct ? `✓ ${formatMs(res.timeMs)}` : "✗";
 
         row.appendChild(left);
         row.appendChild(right);
@@ -486,15 +493,17 @@
       });
     }
 
-     
+    if (avgEl) {
+      avgEl.textContent = `Average (correct only): ${formatMs(avgMs)} · Best: ${formatMs(
+        bestSingle
+      )}`;
+    }
 
     const shareText = buildShareCard(avgMs, bestSingle, xpGain, mistakes);
     const shareArea = $("#kanji-react-share-output");
-    if (shareArea) {
-      shareArea.value = shareText;
-    }
+    if (shareArea) shareArea.value = shareText;
 
-    if (summaryCard) summaryCard.hidden = false; // only show at end
+    if (summaryCard) summaryCard.hidden = false;
   }
 
   function hideSummary() {
@@ -502,35 +511,52 @@
     if (summaryCard) summaryCard.hidden = true;
   }
 
-  function buildShareCard(avgMs, bestSingle, xpGain, mistakes) {
-    const lines = [];
-    lines.push("⚡ Kanji Reaction – 5 Round Session");
-    lines.push("");
-    lines.push(`Difficulty: ${state.difficultyLength}-kanji words`);
-    lines.push("");
+  function showGameOverPopup() {
+    const popup = $("#kanji-react-popup");
+    if (popup) popup.hidden = false;
+  }
 
-    state.results.forEach((res) => {
-      const mark = res.correct ? "✓" : "✗";
-      lines.push(
-        `Round ${res.round}: ${res.word.reading} (${res.word.meaning}) · ${mark} ${formatMs(
-          res.timeMs
-        )}`
-      );
-    });
+  function hideGameOverPopup() {
+    const popup = $("#kanji-react-popup");
+    if (popup) popup.hidden = true;
+  }
 
-    lines.push("");
-    lines.push(`Average: ${formatMs(avgMs)}`);
-    lines.push(`Best this run: ${formatMs(bestSingle)}`);
-    lines.push(`Mistakes: ${mistakes}`);
-    lines.push(`XP gained: ${xpGain}`);
-    lines.push("");
-    lines.push("Share your times and compare with friends!");
+  function finishSession() {
+    if (!state.results.length) return;
+    localStats.sessions += 1;
 
-    return lines.join("\n");
+    const correctTimes = state.results
+      .filter((r) => r.correct && Number.isFinite(r.timeMs))
+      .map((r) => r.timeMs);
+    const avgMs = correctTimes.length
+      ? correctTimes.reduce((acc, v) => acc + v, 0) / correctTimes.length
+      : null;
+    const bestSingle = correctTimes.length ? Math.min(...correctTimes) : null;
+
+    if (avgMs != null && (localStats.bestAvgMs == null || avgMs < localStats.bestAvgMs)) {
+      localStats.bestAvgMs = avgMs;
+    }
+    if (bestSingle != null && (localStats.bestSingleMs == null || bestSingle < localStats.bestSingleMs)) {
+      localStats.bestSingleMs = bestSingle;
+    }
+    saveLocalStats();
+    updateBestStatsUI();
+    setBestRowVisible(false);
+
+    const correctCount = state.results.filter((r) => r.correct).length;
+    const xpGain = Math.max(5, correctCount * 7);
+    addXp(xpGain);
+
+    buildSummaryUI(avgMs, bestSingle, xpGain);
+    state.sessionActive = false;
+    setMainCardVisible(false);
+    showGameplayUI(false);
+    setPlayAreaVisibility(false);
+    setTimeout(showGameOverPopup, 50);
   }
 
   // -----------------------------
-  // Difficulty UI & buttons
+  // Difficulty & buttons
   // -----------------------------
   function setDifficultyCollapsed(collapsed) {
     const row = document.querySelector(".kanji-react-difficulty-row");
@@ -540,33 +566,48 @@
   }
 
   function initDifficultyControls() {
-    const buttons = document.querySelectorAll(
-      ".kanji-react-difficulty-buttons .chip-toggle"
-    );
+    const buttons = document.querySelectorAll(".kanji-react-difficulty-buttons .chip-toggle");
+    const startBtn = $("#kanji-react-start-btn");
+
+    const applySelection = (btn, len) => {
+      state.difficultyLength = len;
+      buttons.forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      if (startBtn) startBtn.disabled = false;
+    };
+
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const len = parseInt(btn.dataset.length, 10);
         if (!Number.isFinite(len) || len < 1) return;
-
-        state.difficultyLength = len;
-
-        buttons.forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-
-        clearCountdown();
-        startSessionWithCountdown();
+        applySelection(btn, len);
       });
     });
+
+    if (buttons[0]) {
+      const len = parseInt(buttons[0].dataset.length, 10);
+      if (Number.isFinite(len)) applySelection(buttons[0], len);
+    }
   }
 
   function initButtons() {
+    const startBtn = $("#kanji-react-start-btn");
+    if (startBtn) {
+      startBtn.addEventListener("click", () => {
+        if (!Number.isFinite(state.difficultyLength)) {
+          setFeedback("Pick a word length first.", "wrong");
+          return;
+        }
+        resetSession(false);
+        setFeedback("", null);
+        startCountdown();
+      });
+    }
+
     const restartBtn = $("#kanji-react-restart-session");
     if (restartBtn) {
       restartBtn.addEventListener("click", () => {
-        setDifficultyCollapsed(false);
-        hideSummary();
-        clearCountdown();
-        resetSessionState();
+        resetSession(true);
       });
     }
 
@@ -575,25 +616,42 @@
       copyBtn.addEventListener("click", () => {
         const area = $("#kanji-react-share-output");
         if (!area) return;
-        area.focus();
-        area.select();
         const text = area.value || "";
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).catch(() => {});
+        } else {
+          area.focus();
+          area.select();
+          document.execCommand("copy");
         }
       });
     }
+
+    const popupClose = $("#kanji-react-popup-close");
+    if (popupClose) {
+      popupClose.addEventListener("click", () => hideGameOverPopup());
+    }
   }
 
+  // -----------------------------
+  // Init
+  // -----------------------------
   function initPage() {
     loadLocalStats();
     updateBestStatsUI();
-    updateMistakesLabel();
-    hideSummary(); // hidden by default
+    setMistakesLabel();
+    setTimerText(0);
+    setStatusMessage("Choose a word length, then press Start.");
+    setFeedback("", null);
+    hideSummary();
+    hideGameOverPopup();
+    showGameplayUI(false);
+    setPlayAreaVisibility(false);
 
     loadKanjiWords().then(() => {
       initDifficultyControls();
       initButtons();
+      resetSession(true);
     });
   }
 

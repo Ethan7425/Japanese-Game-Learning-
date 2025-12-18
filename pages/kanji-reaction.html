@@ -26,12 +26,11 @@
           <h2>Kanji Reaction</h2>
         </div>
 
-        <div class="card">
+        <div id="kanji-react-main-card" class="card">
           <!-- Difficulty selection / step 1 -->
           <div class="kanji-react-difficulty-row">
             <div class="kanji-react-difficulty-headline">
-              <span class="kanji-react-difficulty-step">Step 1</span>
-              <span class="kanji-react-difficulty-label">Choose word length to start</span>
+              <span class="kanji-react-difficulty-label">Choose word length</span>
             </div>
             <div class="kanji-react-difficulty-buttons">
               <button class="chip-toggle" type="button" data-length="1">
@@ -44,23 +43,26 @@
                 3-kanji words
               </button>
             </div>
+            <div class="kanji-react-start-row">
+              <button id="kanji-react-start-btn" class="primary-btn" type="button">
+                Start Game
+              </button>
+            </div>
           </div>
 
           <!-- Best stats -->
-          <div class="kanji-react-best-row">
+          <div class="kanji-react-best-row" hidden>
             <span id="kanji-react-best-avg">Best avg: –</span>
             <span id="kanji-react-best-single">Best single: –</span>
           </div>
 
           <!-- Prompt, timer & mistakes -->
           <div class="kanji-react-prompt-area">
-            <div id="kanji-react-prompt" class="kanji-react-prompt">
-              Choose a word length to start.
-            </div>
-            <div id="kanji-react-timer" class="kanji-react-timer">
+            <div id="kanji-react-prompt" class="kanji-react-prompt"></div>
+            <div id="kanji-react-timer" class="kanji-react-timer" hidden>
               0.000 s
             </div>
-            <div id="kanji-react-mistakes" class="kanji-react-mistakes">
+            <div id="kanji-react-mistakes" class="kanji-react-mistakes" hidden>
               Mistakes: 0
             </div>
           </div>
@@ -73,12 +75,6 @@
           <!-- Feedback -->
           <div id="kanji-react-feedback" class="quiz-feedback"></div>
 
-          <!-- Footer buttons -->
-          <div class="card-footer kanji-react-footer">
-            <button id="kanji-react-restart-session" class="secondary-btn" type="button">
-              Restart session
-            </button>
-          </div>
         </div>
 
         <!-- Summary card (shown after 5 rounds) -->
@@ -93,17 +89,30 @@
           <p id="kanji-react-summary-avg" class="kanji-react-summary-avg"></p>
 
           <div class="kanji-react-share-area">
-            <label for="kanji-react-share-output" class="share-label">
-              Shareable result card
-            </label>
             <textarea
               id="kanji-react-share-output"
-              class="share-textarea"
-              rows="7"
+              class="share-textarea kanji-react-share-hidden"
+              rows="3"
               readonly
+              aria-hidden="true"
             ></textarea>
             <button id="kanji-react-share-copy" class="secondary-btn" type="button">
               Copy results
+            </button>
+          </div>
+
+          <div class="kanji-react-summary-actions">
+            <button id="kanji-react-restart-session" class="secondary-btn" type="button">
+              Restart session
+            </button>
+          </div>
+        </div>
+
+        <div id="kanji-react-popup" class="kanji-react-popup" hidden>
+          <div class="kanji-react-popup-content">
+            <p id="kanji-react-popup-text">Game over! Check your summary below.</p>
+            <button id="kanji-react-popup-close" class="primary-btn" type="button">
+              Got it
             </button>
           </div>
         </div>
