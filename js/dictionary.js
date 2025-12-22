@@ -87,7 +87,9 @@
     addFormRow("ない", "negative");
     addFormRow("て", "te");
     addFormRow("た", "past");
+    addFormRow("なかった", "nakatta");
     addFormRow("〜たい", "tai");
+    addFormRow("可能", "kanou");
 
     card.appendChild(formsWrapper);
 

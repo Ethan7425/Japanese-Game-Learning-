@@ -245,5 +245,90 @@
     "kanji": "会社員",
     "reading": "かいしゃいん",
     "meaning": "company employee"
+  },
+  {
+    "kanji": "森",
+    "reading": "もり",
+    "meaning": "forest"
+  },
+  {
+    "kanji": "花",
+    "reading": "はな",
+    "meaning": "flower"
+  },
+  {
+    "kanji": "風",
+    "reading": "かぜ",
+    "meaning": "wind"
+  },
+  {
+    "kanji": "空港",
+    "reading": "くうこう",
+    "meaning": "airport"
+  },
+  {
+    "kanji": "地下鉄",
+    "reading": "ちかてつ",
+    "meaning": "subway"
+  },
+  {
+    "kanji": "教室",
+    "reading": "きょうしつ",
+    "meaning": "classroom"
+  },
+  {
+    "kanji": "読書",
+    "reading": "どくしょ",
+    "meaning": "reading books"
+  },
+  {
+    "kanji": "料理",
+    "reading": "りょうり",
+    "meaning": "cooking; cuisine"
+  },
+  {
+    "kanji": "電気代",
+    "reading": "でんきだい",
+    "meaning": "electricity bill"
+  },
+  {
+    "kanji": "新聞社",
+    "reading": "しんぶんしゃ",
+    "meaning": "newspaper company"
+  },
+  {
+    "kanji": "美術館",
+    "reading": "びじゅつかん",
+    "meaning": "art museum"
+  },
+  {
+    "kanji": "文化祭",
+    "reading": "ぶんかさい",
+    "meaning": "cultural festival"
+  },
+  {
+    "kanji": "自動車",
+    "reading": "じどうしゃ",
+    "meaning": "automobile"
+  },
+  {
+    "kanji": "部活動",
+    "reading": "ぶかつどう",
+    "meaning": "club activities"
+  },
+  {
+    "kanji": "試合",
+    "reading": "しあい",
+    "meaning": "match; game"
+  },
+  {
+    "kanji": "朝食",
+    "reading": "ちょうしょく",
+    "meaning": "breakfast"
+  },
+  {
+    "kanji": "夕食",
+    "reading": "ゆうしょく",
+    "meaning": "dinner"
   }
 ]

@@ -48,7 +48,9 @@
       "study-form-masu",
       "study-form-negative",
       "study-form-te",
-      "study-form-past"
+      "study-form-past",
+      "study-form-nakatta",
+      "study-form-kanou"
     ];
     ids.forEach((id) => {
       const el = $("#" + id);
@@ -80,7 +82,9 @@
       masu: "study-form-masu",
       negative: "study-form-negative",
       te: "study-form-te",
-      past: "study-form-past"
+      past: "study-form-past",
+      nakatta: "study-form-nakatta",
+      kanou: "study-form-kanou"
     };
 
     const targetId = map[formKey];

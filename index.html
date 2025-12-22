@@ -32,13 +32,24 @@
         <button
           class="icon-btn"
           type="button"
-          onclick="location.href='options.html'"
+          onclick="location.href='/pages/options.html'"
           title="Options"
         >
           <span class="icon-circle icon-circle-gear">
             <span class="icon-gear-spoke"></span>
           </span>
           <span class="icon-label">Options</span>
+        </button>
+        <button
+          class="icon-btn feedback-btn"
+          type="button"
+          id="feedback-open-btn"
+          title="Send feedback"
+        >
+          <span class="icon-circle">
+            <span class="icon-dot"></span>
+          </span>
+          <span class="icon-label">Feedback</span>
         </button>
       </div>
     </header>
@@ -289,6 +300,24 @@
     <footer class="app-footer">
       <span>Runs in your browser · Data stored in <code>localStorage</code></span>
     </footer>
+
+    <div id="feedback-modal" class="feedback-overlay" hidden>
+      <div class="feedback-card">
+        <h3>Send Feedback</h3>
+        <p class="feedback-hint">Tell us what you like or what could be better.</p>
+        <textarea
+          id="feedback-text"
+          class="feedback-textarea"
+          rows="4"
+          placeholder="Your message..."
+        ></textarea>
+        <div class="feedback-actions">
+          <button id="feedback-cancel" class="secondary-btn" type="button">Cancel</button>
+          <button id="feedback-send" class="primary-btn" type="button">Send</button>
+        </div>
+        <div id="feedback-status" class="feedback-status"></div>
+      </div>
+    </div>
   </div>
 
   <script src="js/core.js"></script>

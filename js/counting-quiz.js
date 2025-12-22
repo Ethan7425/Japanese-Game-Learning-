@@ -9,17 +9,78 @@
   let flatExamples = [];
   let allNumberKanji = [];
   let allCounters = [];
+  const PRON_GROUPS = [
+    ["は", "ば", "ぱ"],
+    ["ひ", "び", "ぴ"],
+    ["ふ", "ぶ", "ぷ"],
+    ["へ", "べ", "ぺ"],
+    ["ほ", "ぼ", "ぽ"],
+    ["か", "が"],
+    ["き", "ぎ"],
+    ["く", "ぐ"],
+    ["け", "げ"],
+    ["こ", "ご"],
+    ["さ", "ざ"],
+    ["し", "じ"],
+    ["す", "ず"],
+    ["せ", "ぜ"],
+    ["そ", "ぞ"],
+    ["た", "だ"],
+    ["ち", "ぢ"],
+    ["つ", "づ"],
+    ["て", "で"],
+    ["と", "ど"]
+  ];
+
+  const PRON_OPTIONS = [
+    { value: "base", label: "Normal" },
+    { value: "dakuten", label: "Tenten (゛)" },
+    { value: "handakuten", label: "Maru (゜)" }
+  ];
 
   const quizState = {
     current: null,
     answered: false,
     selectedNumber: null,   // kanji, e.g. "三"
     selectedCounter: null,  // counter char, e.g. "本"
+    selectedPron: null      // pronunciation variant value: base/dakuten/handakuten
   };
 
   // -----------------------------
   // Load counters & preprocess
   // -----------------------------
+
+  function findPronGroup(char) {
+    return PRON_GROUPS.find((grp) => grp.includes(char));
+  }
+
+  function detectPronVariant(counterReading, fullReading) {
+    if (!counterReading || !fullReading) return { type: "other", display: "" };
+    const baseChars = Array.from(counterReading);
+    const fullChars = Array.from(fullReading);
+    const suffix = fullChars.slice(-baseChars.length);
+    if (!suffix.length) return { type: "other", display: "" };
+    const baseChar = baseChars[0];
+    const suffixChar = suffix[0];
+
+    const group = findPronGroup(baseChar);
+    if (!group) {
+      const type = suffixChar === baseChar ? "base" : "other";
+      return { type, display: suffixChar };
+    }
+
+    if (suffixChar === group[0]) return { type: "base", display: suffixChar };
+    if (group[1] && suffixChar === group[1])
+      return { type: "dakuten", display: suffixChar };
+    if (group[2] && suffixChar === group[2])
+      return { type: "handakuten", display: suffixChar };
+    return { type: "other", display: suffixChar };
+  }
+
+  function counterReadingToDisplay(reading) {
+    const chars = Array.from(reading || "");
+    return chars[0] || "";
+  }
 
   function loadCounters() {
     if (counterData) return Promise.resolve(counterData);
@@ -49,6 +110,8 @@
                 numberKanji = ex.kanji.slice(0, -counterKanji.length);
               }
 
+              const pron = detectPronVariant(c.counterReading, ex.reading);
+
               flatExamples.push({
                 counter: c.counter,
                 counterReading: c.counterReading,
@@ -56,7 +119,9 @@
                 number: ex.number,
                 numberKanji,
                 kanji: ex.kanji,
-                reading: ex.reading
+                reading: ex.reading,
+                pronVariant: pron.type,
+                pronDisplay: pron.display || counterReadingToDisplay(c.counterReading)
               });
 
               numberSet.add(numberKanji);
@@ -80,6 +145,10 @@
     return flatExamples[idx];
   }
 
+  function buildPronOptions() {
+    return PRON_OPTIONS;
+  }
+
   // -----------------------------
   // Rendering helpers
   // -----------------------------
@@ -87,6 +156,7 @@
   function renderBanks() {
     renderNumberBank();
     renderCounterBank();
+    renderPronBank();
   }
 
   function renderNumberBank() {
@@ -143,9 +213,32 @@
     });
   }
 
+  function renderPronBank() {
+    const container = $("#count-pron-bank");
+    if (!container) return;
+
+    container.innerHTML = "";
+    PRON_OPTIONS.forEach((opt) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "count-tile";
+      btn.textContent = opt.label;
+      btn.dataset.value = opt.value;
+
+      btn.addEventListener("click", () => {
+        if (quizState.answered) return;
+        quizState.selectedPron = quizState.selectedPron === opt.value ? null : opt.value;
+        updateSelectionUI();
+      });
+
+      container.appendChild(btn);
+    });
+  }
+
   function updateSelectionUI() {
     const numberDrop = $("#count-number-dropzone");
     const counterDrop = $("#count-counter-dropzone");
+    const pronDrop = $("#count-pron-dropzone");
     if (numberDrop) {
       numberDrop.innerHTML = "";
       if (quizState.selectedNumber) {
@@ -167,6 +260,19 @@
         counterDrop.appendChild(span);
       } else {
         counterDrop.textContent = "Choose a counter";
+      }
+    }
+
+    if (pronDrop) {
+      pronDrop.innerHTML = "";
+      if (quizState.selectedPron) {
+        const opt = PRON_OPTIONS.find((o) => o.value === quizState.selectedPron);
+        const span = document.createElement("div");
+        span.className = "count-drop-value";
+        span.textContent = opt ? opt.label : quizState.selectedPron;
+        pronDrop.appendChild(span);
+      } else {
+        pronDrop.textContent = "Choose pronunciation";
       }
     }
 
@@ -195,6 +301,18 @@
         }
       });
     }
+
+    const pronBank = $("#count-pron-bank");
+    if (pronBank) {
+      Array.from(pronBank.querySelectorAll(".count-tile")).forEach((btn) => {
+        const v = btn.dataset.value;
+        if (v === quizState.selectedPron) {
+          btn.classList.add("selected");
+        } else {
+          btn.classList.remove("selected");
+        }
+      });
+    }
   }
 
   // -----------------------------
@@ -216,6 +334,8 @@
     quizState.answered = false;
     quizState.selectedNumber = null;
     quizState.selectedCounter = null;
+    quizState.selectedPron = null;
+    quizState.currentPronOptions = buildPronOptions();
 
     // Question: "3 long objects"
     questionEl.textContent = `${ex.number} ${ex.meaning}`;
@@ -226,6 +346,7 @@
     nextBtn.disabled = true;
 
     updateSelectionUI();
+    renderPronBank();
   }
 
   // -----------------------------
@@ -240,8 +361,8 @@
     const nextBtn = $("#count-next-btn");
     if (!feedbackEl || !checkBtn || !nextBtn) return;
 
-    if (!quizState.selectedNumber || !quizState.selectedCounter) {
-      feedbackEl.textContent = "Pick a number and a counter 💡";
+    if (!quizState.selectedNumber || !quizState.selectedCounter || !quizState.selectedPron) {
+      feedbackEl.textContent = "Pick a number, counter, and pronunciation 💡";
       feedbackEl.className = "quiz-feedback";
       return;
     }
@@ -249,6 +370,7 @@
     const correctNumber = quizState.current.numberKanji;
     const correctCounter = quizState.current.counter;
     const correctWord = quizState.current.kanji;
+    const correctPronVariant = quizState.current.pronVariant;
 
     quizState.answered = true;
     checkBtn.disabled = true;
@@ -256,9 +378,14 @@
 
     feedbackEl.innerHTML = "";
 
+    const expectedPron = ["base", "dakuten", "handakuten"].includes(correctPronVariant)
+      ? correctPronVariant
+      : "base";
+
     const isCorrect =
       quizState.selectedNumber === correctNumber &&
-      quizState.selectedCounter === correctCounter;
+      quizState.selectedCounter === correctCounter &&
+      quizState.selectedPron === expectedPron;
 
     if (isCorrect) {
       feedbackEl.className = "quiz-feedback correct";
@@ -275,7 +402,7 @@
       const counterInfo = document.createElement("div");
       counterInfo.className = "count-feedback-counter";
       counterInfo.textContent =
-        `Counter: ${quizState.current.counter} (${quizState.current.meaning})`;
+        `Counter: ${quizState.current.counter} (${quizState.current.meaning}) · Pronunciation: ${quizState.current.pronDisplay}`;
 
       feedbackEl.appendChild(msgLine);
       feedbackEl.appendChild(answerWrapper);
@@ -297,7 +424,7 @@
       const counterInfo = document.createElement("div");
       counterInfo.className = "count-feedback-counter";
       counterInfo.textContent =
-        `Counter: ${quizState.current.counter} (${quizState.current.meaning})`;
+        `Counter: ${quizState.current.counter} (${quizState.current.meaning}) · Pronunciation: ${quizState.current.pronDisplay}`;
 
       feedbackEl.appendChild(msgLine);
       feedbackEl.appendChild(answerWrapper);
