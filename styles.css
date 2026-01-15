@@ -2664,3 +2664,7 @@ body[data-theme="violet-dark"] .kanji-reaction-prompt {
   font-size: 0.9rem;
   color: var(--text-muted);
 }
+
+.study-form-value.is-hidden {
+  display: none;
+}

@@ -39,8 +39,14 @@
 
     // Show group directly
     const groupEl = $("#study-group-value");
+    const groupBtn = $("#study-group-btn");
     if (groupEl) {
-      groupEl.textContent = `Group: ${currentVerb.group}`;
+      groupEl.textContent = "？？？";
+      groupEl.classList.add("is-hidden");
+      groupEl.hidden = true;
+    }
+    if (groupBtn) {
+      groupBtn.disabled = false;
     }
 
     // Reset all forms
@@ -56,6 +62,23 @@
       const el = $("#" + id);
       if (el) el.textContent = "？？？";
     });
+  }
+
+  // ----------------------
+  // Reveal group
+  // ----------------------
+  function revealGroup() {
+    if (!currentVerb) return;
+    const groupEl = $("#study-group-value");
+    const groupBtn = $("#study-group-btn");
+    if (groupEl) {
+      groupEl.textContent = `Group: ${currentVerb.group}`;
+      groupEl.classList.remove("is-hidden");
+      groupEl.hidden = false;
+    }
+    if (groupBtn) {
+      groupBtn.disabled = true;
+    }
   }
 
   // ----------------------
@@ -119,6 +142,12 @@
         revealForm(key);
       });
     });
+
+    // Reveal group
+    const groupBtn = $("#study-group-btn");
+    if (groupBtn) {
+      groupBtn.addEventListener("click", revealGroup);
+    }
 
     // New verb
     const nextBtn = $("#study-next-verb");
