@@ -56,6 +56,7 @@
       "study-form-te",
       "study-form-past",
       "study-form-nakatta",
+      "study-form-ba",
       "study-form-kanou"
     ];
     ids.forEach((id) => {
@@ -107,6 +108,7 @@
       te: "study-form-te",
       past: "study-form-past",
       nakatta: "study-form-nakatta",
+      ba: "study-form-ba",
       kanou: "study-form-kanou"
     };
 

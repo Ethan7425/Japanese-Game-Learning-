@@ -14,7 +14,8 @@
     theme: "neon-dark", // "neon-dark" | "cool-light" | "warm-light" | "violet-dark"
     difficulty: "N5",   // N5 or N4
     quizMode: "sameVerb", // "sameVerb" | "sameForm" | "mixed"
-    xp: 0
+    xp: 0,
+    playerName: "Player"
   };
 
   const stats = {
@@ -34,6 +35,9 @@
     HIGHSCORE: "jvt_quiz_highscore",
     STATS: "jvt_stats"
   };
+
+  const DISCORD_WEBHOOK =
+    "https://discord.com/api/webhooks/1451361839152763092/PbFjPHmVUI6WBg-5pmy2cwMzpmihzs-cZo4MDv3rrr0sI8kRHf3eU0_f6axmwxGj3CHv";
 
   const FORM_CONFIG = {
     masu: "ます form",
@@ -120,6 +124,10 @@
 
       if (typeof parsed.xp === "number" && parsed.xp >= 0) {
         settings.xp = parsed.xp;
+      }
+
+      if (typeof parsed.playerName === "string" && parsed.playerName.trim()) {
+        settings.playerName = parsed.playerName.trim().slice(0, 40);
       }
     } catch (e) {
       console.warn("Failed to parse settings:", e);
@@ -282,6 +290,26 @@
     overlay.classList.add("is-visible");
   }
 
+  function sendLevelUpWebhook(level) {
+    if (!DISCORD_WEBHOOK) return;
+
+    const player = settings.playerName || "Player";
+    const xp = settings.xp || 0;
+    const difficulty = settings.difficulty || "N5";
+
+    fetch(DISCORD_WEBHOOK, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        content: `Level up! ${player} reached level ${level} (difficulty ${difficulty}, total XP: ${xp}).`
+      })
+    }).catch(() => {
+      // Swallow network errors so gameplay is unaffected.
+    });
+  }
+
   function addXp(amount) {
     if (!Number.isFinite(amount) || amount <= 0) return;
 
@@ -297,7 +325,40 @@
     // Level up check
     if (afterInfo.level > beforeInfo.level) {
       showLevelUp(afterInfo.level);
+      sendLevelUpWebhook(afterInfo.level);
     }
+  }
+
+  // Admin helpers for quick adjustments
+  function adminAddXp(amount) {
+    addXp(amount);
+  }
+
+  function adminRemoveXp(amount) {
+    if (!Number.isFinite(amount) || amount <= 0) return;
+    settings.xp = Math.max(0, (settings.xp || 0) - amount);
+    saveSettingsToStorage();
+    updateXpLabel();
+  }
+
+  function ensurePlayerName() {
+    if (settings.playerName && settings.playerName !== "Player") return;
+    const input = window.prompt("Welcome! What's your name? (for progress tracking)") || "";
+    const clean = input.trim().slice(0, 40);
+    settings.playerName = clean || "Player";
+    saveSettingsToStorage();
+  }
+
+  function updatePlayerNameLabel() {
+    const container = document.querySelector(".header-meta");
+    if (!container) return;
+    let el = document.getElementById("player-name-label");
+    if (!el) {
+      el = document.createElement("span");
+      el.id = "player-name-label";
+      container.prepend(el);
+    }
+    el.textContent = `Player: ${settings.playerName || "Player"}`;
   }
 
   function syncSettingsToUI() {
@@ -332,6 +393,7 @@
     });
 
     updateXpLabel();
+    updatePlayerNameLabel();
   }
 
   // -----------------------------
@@ -417,6 +479,7 @@
     document.addEventListener("DOMContentLoaded", async () => {
       loadSettingsFromStorage();
       loadStatsFromStorage();
+      ensurePlayerName();
       applyTheme();
       syncSettingsToUI();
 
@@ -443,6 +506,7 @@
     STORAGE_KEYS,
     FORM_CONFIG,
     FORM_LABELS,
+    DISCORD_WEBHOOK,
 
     // utils
     $,
@@ -458,6 +522,8 @@
     getLevelInfo,
     updateXpLabel,
     addXp,
+    adminAddXp,
+    adminRemoveXp,
     syncSettingsToUI,
     getCurrentVerbPool,
     shuffleArray,

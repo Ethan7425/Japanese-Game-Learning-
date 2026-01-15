@@ -88,6 +88,7 @@
     addFormRow("て", "te");
     addFormRow("た", "past");
     addFormRow("なかった", "nakatta");
+    addFormRow("ば", "ba");
     addFormRow("〜たい", "tai");
     addFormRow("可能", "kanou");
 

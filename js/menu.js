@@ -4,10 +4,7 @@
 // =====================================
 
 (function () {
-  const { $, $$, bootstrap, syncSettingsToUI } = JVT;
-
-  const FEEDBACK_WEBHOOK =
-    "https://discord.com/api/webhooks/1451361839152763092/PbFjPHmVUI6WBg-5pmy2cwMzpmihzs-cZo4MDv3rrr0sI8kRHf3eU0_f6axmwxGj3CHv";
+  const { $, $$, bootstrap, syncSettingsToUI, DISCORD_WEBHOOK } = JVT;
 
   function showFeedbackModal(show) {
     const modal = $("#feedback-modal");
@@ -43,7 +40,7 @@
     sendBtn.disabled = true;
     setFeedbackStatus("Sending...");
 
-    fetch(FEEDBACK_WEBHOOK, {
+    fetch(DISCORD_WEBHOOK, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
